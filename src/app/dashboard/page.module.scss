@@ -1,0 +1,156 @@
+.dashboardContainer {
+  width: 100%;
+  height: 100%;
+  padding-top: 90vpx;
+
+  .main {
+    width: 100%;
+    min-height: calc(100% - 90vpx);
+    background-color: #FAFAFF;
+    padding-bottom: 28vpx;
+
+    .title {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 53vpx;
+      display: flex;
+      padding-top: 30vpx;
+      padding-bottom: 26vpx;
+      justify-content: flex-end;
+
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 400;
+      font-size: 24vpx;
+      color: #333333;
+      line-height: 33vpx;
+
+      > span {
+        cursor: pointer;
+        &:nth-of-type(2) {
+          padding: 0 0.5em;
+        }
+      }
+    }
+
+    .content {
+      width: 100%;
+      box-sizing: border-box;
+      padding-left: 270vpx;
+      padding-right: 150vpx;
+
+      .planTitle {
+        font-family: PingFangSC, PingFang SC;
+        font-weight: 600;
+        font-size: 30vpx;
+        color: #333333;
+        line-height: 42vpx;
+        padding-bottom: 30vpx;
+        padding-left: 30vpx;
+      }
+
+      .progressWrapper {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 30vpx;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40vpx;
+
+        .progressBox {
+          width: 700vpx;
+          display: flex;
+          flex-direction: column;
+
+          .progressText {
+            width: 100%;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 20vpx;
+            color: #333333;
+            line-height: 28vpx;
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .tip {
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 20vpx;
+            color: #333333;
+            line-height: 28vpx;
+          }
+
+          .view {
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 20vpx;
+            color: #000AFF;
+            line-height: 28vpx;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .quickActionWrapper {
+        width: 1500vpx;
+        min-height: 637vpx;
+        background: #F5F5FE;
+        border: 1px solid #FFFFFF;
+        position: relative;
+        padding-bottom: 20vpx;
+
+        .left {
+          width: 547vpx;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+          padding-left: 72vpx;
+
+          .quickTitle {
+            padding-top: 60vpx;
+            padding-bottom: 58vpx;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 600;
+            font-size: 30vpx;
+            color: #333333;
+            line-height: 42vpx;
+          }
+
+          .actionItem {
+            display: flex;
+            align-items: center;
+            font-family: ArialMT;
+            font-size: 26vpx;
+            color: #333333;
+            margin-bottom: 60vpx;
+            cursor: pointer;
+
+            &:nth-last-of-type(1) {
+              margin-bottom: 0;
+            }
+
+            .circle {
+              width: 24vpx;
+              height: 24vpx;
+              background: #FFFFFF;
+              border: 1px solid #E0E0E0;
+              border-radius: 50%;
+              margin-right: 32vpx;
+            }
+          }
+        }
+
+        .quickActionIcon {
+          position: absolute;
+          left: 547vpx;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 893vpx;
+          height: 517vpx;
+          z-index: 10;
+        }
+      }
+    }
+  }
+}

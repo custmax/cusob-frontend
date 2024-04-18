@@ -1,0 +1,52 @@
+.sideBarContainer {
+  position: fixed;
+  left: 0;
+  z-index: 10;
+  top: 90vpx;
+  width: 120vpx;
+  background: #000AFF;
+  border-radius: 0px 37vpx 37vpx 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  max-height: calc(100% - 90vpx);
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollWrapper {
+    padding-top: 60vpx;
+    padding-bottom: 120vpx;
+
+    .barItem {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 80vpx;
+      cursor: pointer;
+  
+      &:nth-last-of-type(1) {
+        margin-bottom: 0;
+      }
+  
+      .barIcon {
+        width: 33vpx;
+        height: 24vpx;
+        margin-bottom: 25vpx;
+      }
+  
+      .barText {
+        font-family: Arial, Arial;
+        font-weight: normal;
+        font-size: 14vpx;
+        color: #FFFFFF;
+        line-height: 16vpx;
+      }
+    }
+
+  }
+}

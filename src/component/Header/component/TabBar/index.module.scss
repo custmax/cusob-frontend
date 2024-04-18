@@ -1,0 +1,26 @@
+.tabBarContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+
+  .tabItem {
+    font-family: ArialMT;
+    font-size: 20vpx;
+    color: #666666;
+    cursor: pointer;
+
+    &:nth-of-type(1) {
+      margin-right: 192vpx;
+    }
+
+    &.active {
+      font-family: Arial, Arial;
+      font-size: 20vpx;
+      color: #000AFF;
+    }
+
+  }
+}

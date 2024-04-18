@@ -1,0 +1,20 @@
+.signContainer {
+  display: flex;
+  align-items: center;
+  width: 159vpx;
+  height: 26vpx;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  font-size: 19vpx;
+  color: #333333;
+  line-height: 26vpx;
+  cursor: pointer;
+
+  .division {
+    width: 1px;
+    height: 60%;
+    margin-top: 20%;
+    background-color: #333333;
+    margin: 0 10vpx;
+  }
+}
