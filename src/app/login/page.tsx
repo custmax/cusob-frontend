@@ -54,7 +54,7 @@ const Login = () => {
       setLocalUser({ email: '' })
     }
     delete value.remember
-    message.loading({ content: 'loading', duration: 10, key: 'loading' })
+    message.loading({ content: 'Loading...', duration: 10, key: 'loading' })
     const res = await login(value)
     message.destroy('loading')
     if (res.code === SUCCESS_CODE) {
@@ -91,16 +91,16 @@ const Login = () => {
           <Form.Item
               label="Email Address"
               name='email'
-              rules={[{required: true, message: 'Please input your name!'}]}
+              rules={[{required: true, message: 'Please input your Email address!'}]}
           >
-            <Input placeholder="Please input your emaill address"/>
+            <Input placeholder="Email address"/>
           </Form.Item>
           <Form.Item
               label="Password"
               name='password'
-              rules={[{required: true, message: 'Please input your name!'}]}
+              rules={[{required: true, message: 'Please input your Password!'}]}
           >
-            <Input type='password' placeholder="Please input your emaill password"/>
+            <Input type='password' placeholder="Password"/>
           </Form.Item>
           <Form.Item label="" name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>
