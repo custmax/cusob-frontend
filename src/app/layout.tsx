@@ -22,6 +22,7 @@ export default function RootLayout({
         () => import('../component/Crisp/index')
     )
   return (
+      <>
       <html lang="en">
       <CrispWithNoSSR />
       <body className={inter.className}>
@@ -29,5 +30,6 @@ export default function RootLayout({
       </body>
       <GoogleTagManager gtmId="G-9B4TXJVBQZ"/>
       </html>
+      </>
   );
 }

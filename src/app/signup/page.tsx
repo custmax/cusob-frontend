@@ -3,14 +3,14 @@ import {Button, Checkbox, Form, Input, Select, message, Space} from 'antd';
 import styles from './page.module.scss';
 import { countryOptions } from '@/constant/phone';
 import Link from 'next/link';
-import { sendVerifyCode, register } from '@/server/user';
+import {sendVerifyCode, register, sendPhoneCode} from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {getCaptcha} from '@/server/captcha';
 import Captcha from "@/component/Captcha";
 import {useCallback, useEffect, useState} from "react";
 
-
+import Head from 'next/head';
 const selectOptions = countryOptions;
 
 const {
@@ -29,10 +29,13 @@ const Signup = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [captchaCode, setCaptchaCode] = useState('')
+  const [country, setCountry] = useState('')
 
   const setCode = (code:string) => {
     setCaptchaCode(code)
   }
+
+
 
   const onVerify = async () => {
     const email = form.getFieldValue('email')
@@ -41,7 +44,19 @@ const Signup = () => {
     if (res.code !== SUCCESS_CODE) {
       message.error(res.message);
     }
-  };
+  }
+  useEffect(() => {
+    fetchCountry();
+  }, [/* 依赖项 */]);
+    const fetchCountry = async () => {
+      const prefix = form.getFieldValue('prefix');
+      const res = await sendPhoneCode(prefix);
+      if (res.code !== SUCCESS_CODE) {
+        message.error(res.message);
+      } else {
+        setCountry(res.data);
+      }
+    };
 
   const onFinish = async (value: User.UserSign & { prefix?: 'string', agree?: string, captcha?: string; }) => {
     if (value.captcha !== captchaCode) {
@@ -54,6 +69,7 @@ const Signup = () => {
         message.error('please agree to the Terms of Service and privacy Policy first')
         return;
       }
+
       delete value.prefix
       delete value.agree
       // console.log('value', value)
@@ -71,43 +87,50 @@ const Signup = () => {
     }
   }
 
+
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
         style={{ width: 'auto' }}
         options={selectOptions}
+        onChange={async (value) => {
+          form.setFieldsValue({prefix: value});
+          console.log(value);
+          await fetchCountry(); // 在这里直接调用 fetchCountry 函数
+        }}
       />
     </Form.Item>
   );
 
-  return <div className={signupWrapper}>
-    <div className={header}>
-      <div className={left}>Sign Up</div>
-      <div className={right}>
-        <Link href='/login'>Have a CusOb Account  | Sign in</Link>
+    return <div className={signupWrapper}>
+      <div className={header}>
+        <div className={left}>Sign Up</div>
+        <div className={right}>
+          <Link href='/login'>Have a CusOb Account  | Sign in</Link>
+        </div>
       </div>
-    </div>
-    <div className={formWrapper}>
-      <Form
-        form={form}
-        name="signup"
-        className={signupForm}
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-        labelAlign='left'
-        initialValues={{ prefix: '+86' }}
-        onFinish={onFinish}
-      >
-        <Form.Item
-          label="Email *"
-          name='email'
-          rules={[{ message: 'Please input your email!' }]}
+      <div className={formWrapper}>
+        <Form
+          form={form}
+          name="signup"
+          className={signupForm}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 19 }}
+          labelAlign='left'
+          initialValues={{ prefix: '+86' }}
+          onFinish={onFinish}
         >
-          <div className={emailWrapper}>
-            <Input placeholder="Please input your email" />
-            <div className={verifyBtn} onClick={onVerify}>Verify</div>
-          </div>
-        </Form.Item>
+          <Form.Item
+            label="Email *"
+            name='email'
+            rules={[{ message: 'Please input your email!' }]}
+          >
+            <div className={emailWrapper}>
+              <Input placeholder="Please input your email" />
+              <div className={verifyBtn} onClick={onVerify}>Verify</div>
+            </div>
+          </Form.Item>
         <Form.Item
           label="Verify Code *"
           name='verifyCode'
@@ -131,7 +154,9 @@ const Signup = () => {
             addonBefore={prefixSelector}
             placeholder="Please input your phone number"
           />
+          {country && <span className="hint-text">{country}</span>}
         </Form.Item>
+
         {/* <Form.Item
           label="First Name*"
           name='firstName'
@@ -184,6 +209,7 @@ const Signup = () => {
       </Form>
     </div>
   </div>
+
 };
 
 export default Signup;
