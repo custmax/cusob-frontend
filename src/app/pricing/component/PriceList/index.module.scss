@@ -9,7 +9,7 @@
   .filterBox {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
     :global {
@@ -53,6 +53,17 @@
           width: 100%;
           height: 100%;
         }
+      }
+    }
+
+    .timeSelector{
+      width: 200vpx;
+      height: 50vpx;
+      background: #FFFFFF;
+
+      .currencySelector {
+        width: 100%;
+        height: 100%;
       }
     }
 

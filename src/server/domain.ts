@@ -8,3 +8,11 @@ export const domainVerify = async (email: string) => {
     })
     return res;
 }
+
+export const getDomainList = async () =>{
+    const res = await clientFetch({
+        url: `/api/domain/getDomainList`,
+        method: 'GET',
+    })
+    return res;
+}

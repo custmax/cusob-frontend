@@ -57,14 +57,17 @@ const BillingHistory = () => {
       dataIndex: 'details',
       key: 'details',
       render: (_item, record) => <div>
-        <span>emailCapacity: {record.emailCapacity}</span>
-        <span>contactCapacity: {record.contactCapacity}</span>
+        <div>Contacts: {record.contactCapacity}</div>
+        <div>Sends: {record.emailCapacity}</div>
       </div>
     },
     {
       title: 'Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
+      render: (_item, record) => <div>
+        <div>US${record.totalAmount}</div>
+      </div>
     },
     {
       title: 'Create time',

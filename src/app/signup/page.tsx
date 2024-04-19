@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import {getCaptcha} from '@/server/captcha';
 import Captcha from "@/component/Captcha";
 import {useCallback, useEffect, useState} from "react";
+import EnteredHeader from "@/component/EnteredHeader";
+import ImgWrapper from "@/component/ImgWrapper";
 
 
 const selectOptions = countryOptions;
@@ -16,6 +18,7 @@ const selectOptions = countryOptions;
 const {
   signupWrapper,
   header,
+  logoBox,
   left,
   right,
   formWrapper,
@@ -82,7 +85,10 @@ const Signup = () => {
 
   return <div className={signupWrapper}>
     <div className={header}>
-      <div className={left}>Sign Up</div>
+      <Link href='/'>
+        <ImgWrapper className={logoBox} alt='logo' src='/img/logo.png'/>
+      </Link>
+      {/*<div className={left}>Sign Up</div>*/}
       <div className={right}>
         <Link href='/login'>Have a CusOb Account  | Sign in</Link>
       </div>
@@ -132,34 +138,6 @@ const Signup = () => {
             placeholder="Please input your phone number"
           />
         </Form.Item>
-        {/* <Form.Item
-          label="First Name*"
-          name='firstName'
-          rules={[{ message: 'Please input your first name!' }]}
-        >
-          <Input placeholder="Please input your first name" />
-        </Form.Item>
-        <Form.Item
-          label="Last Name*"
-          name='lastName'
-          rules={[{ message: 'Please input your last name!' }]}
-        >
-          <Input placeholder="Please input your last name" />
-        </Form.Item> */}
-        {/* <Form.Item
-          label="Country*"
-          name='country'
-          rules={[{ message: 'Please input your country!' }]}
-        >
-          <Input placeholder="Please input your country" />
-        </Form.Item>
-        <Form.Item
-          label="Company*"
-          name='company'
-          rules={[{ message: 'Please input your company!' }]}
-        >
-          <Input placeholder="Please input your company" />
-        </Form.Item> */}
 
         <Form.Item label="Captcha">
           <Space className={captchaBox}>
