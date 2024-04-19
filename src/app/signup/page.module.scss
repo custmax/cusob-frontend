@@ -13,9 +13,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 170vpx;
+    padding-left: 40vpx;
     padding-right: 60vpx;
     border-bottom: 1px solid #E1E1E1;
+
+    .logoBox {
+      width: 167vpx;
+      height: 45vpx;
+    }
 
     .left {
       font-family: ArialMT;
