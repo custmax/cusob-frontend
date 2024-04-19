@@ -2,7 +2,19 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import {Button, Divider, Input, Modal, Popconfirm, Space, Table, TableProps, message, PaginationProps} from 'antd';
+import {
+  Button,
+  Divider,
+  Input,
+  Modal,
+  Popconfirm,
+  Space,
+  Table,
+  TableProps,
+  message,
+  PaginationProps,
+  PopconfirmProps
+} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useCallback, useEffect, useState } from 'react';
 import { TableRowSelection } from 'antd/es/table/interface';
@@ -263,6 +275,14 @@ const ContactList = () => {
     }
   }
 
+  const confirm: PopconfirmProps['onConfirm'] = (e) => {
+    onDelete();
+  };
+
+  const cancel: PopconfirmProps['onCancel'] = (e) => {
+    console.log(e);
+  };
+
   return <div className={contactListContainer}>
     <EnteredHeader />
     <SideBar />
@@ -277,7 +297,16 @@ const ContactList = () => {
           <div className={filterLeft}>
             <span><Link href='/contactEditor'>Add New</Link></span>
             <span><Link href='/importWay'>Import</Link></span>
-            <span onClick={onDelete}>Delete</span>
+            <Popconfirm
+                title="Delete the contact"
+                description="Are you sure to delete this contact?"
+                onConfirm={confirm}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+            >
+              <span>Delete</span>
+            </Popconfirm>
           </div>
           <div className={searchInputBox}>
             <Input className={searchInput} value={searchVal} onChange={e => setSearchVal(e.target.value)} placeholder='Search' />

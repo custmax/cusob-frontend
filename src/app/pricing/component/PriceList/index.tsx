@@ -16,6 +16,7 @@ const {
   priceListContainer,
   filterBox,
   left,
+  timeSelector,
   right,
   label,
   value,
@@ -130,6 +131,17 @@ const PriceList = () => {
             options={options}
           />
         </div>
+      </div>
+      <div className={timeSelector}>
+        <Select
+            className={currencySelector}
+            defaultValue="Monthly"
+            onChange={onCurrencySelect}
+            options={[
+              { value: 'Monthly', label: 'Monthly' },
+              { value: 'Yearly', label: 'Yearly' },
+            ]}
+        />
       </div>
       <div className={right}>
           <Select

@@ -74,10 +74,6 @@ const Login = () => {
   }
 
   return <>
-    <Head>
-      <title>Sling Academy</title>
-      <meta name='description' content='I hope this tutorial is helpful for you' />
-    </Head>
     <div className={loginWrapper}>
       <ImgWrapper className={loginBg} alt='login_bg' src='/img/login_bg.png'/>
       <div className={loginBox}>
