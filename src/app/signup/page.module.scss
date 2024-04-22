@@ -118,7 +118,7 @@
         height: 100%;
   
         .verifyBtn {
-          padding: 0 20vpx;
+          padding: 20vpx;
           background: #000AFF;
           border-radius: 2vpx;
           border: 1px solid #0A14D2;
@@ -133,7 +133,27 @@
             background-color: #ccc;
           }
         }
+
       }
     }
   }
+}
+.details{
+  text-align: center;
+  font-size: 18vpx;
+  color: #ABABAB
+}
+.details a{
+  color: blue;
+  text-decoration: underline;
+}
+
+.sign{
+  text-align: center;
+  font-size: 25vpx;
+  color: #808080;
+}
+.sign a{
+  color: blue;
+  text-decoration: underline;
 }

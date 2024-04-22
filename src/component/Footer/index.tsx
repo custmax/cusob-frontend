@@ -64,8 +64,12 @@ const Footer = () => {
 		</section>
 		<section className={section4}>
 			<div className={section4Title}>Company</div>
-			<div className={section4SubTitle}>About</div>
-			<div className={section4SubTitle}>Careers</div>
+			<div className={section4SubTitle}>
+				<Link href='/about'>About</Link>
+			</div>
+			<div className={section4SubTitle}>
+				<Link href='/careers' className={siteText}>Careers</Link>
+			</div>
 			<div className={section4SubTitle}>Blog</div>
 			<div className={section4SubTitle}>Contact</div>
 		</section>
@@ -77,7 +81,7 @@ const Footer = () => {
 				<div className={line}></div>
 				<Link href='/aboutCookies' className={siteText}>Cookie Preferences</Link>
 				<div className={line}></div>
-				<div className={siteText}>Sitemap</div>
+				<Link href='/sitemap' className={siteText}>Sitemap</Link>
 			</div>
 			<div className={copyright}>Copyright @ 2024 Customer Obsession Inc.</div>
 		</section>

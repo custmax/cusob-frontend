@@ -26,6 +26,8 @@ const {
   verifyBtn,
   signupForm,
   captchaBox,
+  details,
+  sign
 } = styles;
 
 const Signup = () => {
@@ -48,18 +50,18 @@ const Signup = () => {
       message.error(res.message);
     }
   }
-  useEffect(() => {
-    fetchCountry();
-  }, [/* 依赖项 */]);
-    const fetchCountry = async () => {
-      const prefix = form.getFieldValue('prefix');
-      const res = await sendPhoneCode(prefix);
-      if (res.code !== SUCCESS_CODE) {
-        message.error(res.message);
-      } else {
-        setCountry(res.data);
-      }
-    };
+  // useEffect(() => {
+  //   fetchCountry();
+  // }, [/* 依赖项 */]);
+  //   const fetchCountry = async () => {
+  //     const prefix = form.getFieldValue('prefix');
+  //     const res = await sendPhoneCode(prefix);
+  //     if (res.code !== SUCCESS_CODE) {
+  //       message.error(res.message);
+  //     } else {
+  //       setCountry(res.data);
+  //     }
+  //   };
 
   const onFinish = async (value: User.UserSign & { prefix?: 'string', agree?: string, captcha?: string; }) => {
     if (value.captcha !== captchaCode) {
@@ -97,98 +99,106 @@ const Signup = () => {
       <Select
         style={{ width: 'auto' }}
         options={selectOptions}
-        onChange={async (value) => {
-          form.setFieldsValue({prefix: value});
-          console.log(value);
-          await fetchCountry(); // 在这里直接调用 fetchCountry 函数
-        }}
+        // onChange={async (value) => {
+        //   form.setFieldsValue({prefix: value});
+        //   await fetchCountry(); // 在这里直接调用 fetchCountry 函数
+        // }}
       />
     </Form.Item>
   );
 
 
-  return <div className={signupWrapper}>
-    <div className={header}>
-      <Link href='/'>
-        <ImgWrapper className={logoBox} alt='logo' src='/img/logo.png'/>
-      </Link>
-      {/*<div className={left}>Sign Up</div>*/}
-      <div className={right}>
-        <Link href='/login'>Have a CusOb Account  | Sign in</Link>
-      </div>
-      <div className={formWrapper}>
-        <Form
-          form={form}
-          name="signup"
-          className={signupForm}
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 19 }}
-          labelAlign='left'
-          initialValues={{ prefix: '+86' }}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            label="Email *"
-            name='email'
-            rules={[{ message: 'Please input your email!' }]}
-          >
-            <div className={emailWrapper}>
-              <Input placeholder="Please input your email" />
-              <div className={verifyBtn} onClick={onVerify}>Verify</div>
+  return <div>
+        <div className={signupWrapper}>
+          <div className={header}>
+            <div className={left}>Sign Up</div>
+            <div className={right}>
+              <Link href='/login'>Have a CusOb Account  | Sign in</Link>
             </div>
-          </Form.Item>
-        <Form.Item
-          label="Verify Code *"
-          name='verifyCode'
-          rules={[{ message: 'Please input your email!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Password *"
-          name='password'
-          rules={[{ message: 'Please input your password!' }]}
-        >
-          <Input type='password' placeholder="Please input your password" />
-        </Form.Item>
-        <Form.Item
-          label="Phone Number *"
-          name='phone'
-          rules={[{ message: 'Please input your phone number!' }]}
-        >
-          <Input
-            addonBefore={prefixSelector}
-            placeholder="Please input your phone number"
-          />
-          {country && <span className="hint-text">{country}</span>}
-        </Form.Item>
-
-
-        <Form.Item label="Captcha">
-          <Space className={captchaBox}>
-            <Form.Item
-                name="captcha"
-                rules={[{ required: true, message: 'Please input captcha!' }]}
+          </div>
+          <div className={formWrapper}>
+            <Form
+                form={form}
+                name="signup"
+                className={signupForm}
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 19 }}
+                labelAlign='left'
+                initialValues={{ prefix: '+86' }}
+                onFinish={onFinish}
             >
-              <Input />
-            </Form.Item>
-            <Captcha setCode={setCode.bind(this)}></Captcha>
-          </Space>
-        </Form.Item>
+              <Form.Item
+                  label="Email *"
+                  name='email'
+                  rules={[{ message: 'Please input your email!' }]}
+              >
+                <div className={emailWrapper}>
+                  <Input placeholder="Please input your email" />
+                  <div className={verifyBtn} onClick={onVerify}>Verify</div>
+                </div>
+              </Form.Item>
+              <Form.Item
+                  label="Verify Code *"
+                  name='verifyCode'
+                  rules={[{ message: 'Please input your email!' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Password *"
+                  name='password'
+                  rules={[{ message: 'Please input your password!' }]}
+              >
+                <Input type='password' placeholder="Please input your password" />
+              </Form.Item>
+              <Form.Item
+                  label="Phone Number *"
+                  name='phone'
+                  rules={[{ message: 'Please input your phone number!' }]}
+              >
+                <Input
+                    addonBefore={prefixSelector}
+                    placeholder="Please input your phone number"
+                />
+                {/*{country && <span className="hint-text">{country}</span>}*/}
+              </Form.Item>
 
-        <Form.Item label="" name="agree" valuePropName="checked">
-          <Checkbox>I agree to the Terms of Service and privacy Policy.</Checkbox>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType='submit'>
-            SIGN UP NOW
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
-  </div>
-  </div>
+              <Form.Item label="Captcha">
+                <Space className={captchaBox}>
+                  <Form.Item
+                      name="captcha"
+                      rules={[{ required: true, message: 'Please input captcha!' }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Captcha setCode={setCode.bind(this)}></Captcha>
+                </Space>
+              </Form.Item>
+
+              <Form.Item label="" name="agree" valuePropName="checked">
+                <Checkbox>I agree to the Terms of Service and privacy Policy.</Checkbox>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType='submit'>
+                  SIGN UP NOW
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <p className={details}>By clicking "Sign up now" , you agree to the <a href="/terms">Terms of Use</a> and <a href="/policy">
+                  Privacy Policy </a></p>
+              <br/>
+                <p className={details}>*By opting in, you are consenting to receive product, service and events
+                  updates from Cusob. You can unsubscribe at any time.</p>
+                <p className={sign}>Already have an account?<a href="/login">Sign in</a></p>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+      </div>
 
 };
+
+
 
 export default Signup;
