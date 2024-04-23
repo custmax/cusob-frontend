@@ -8,9 +8,8 @@ import { useRef, useState } from 'react';
 import { batchImport } from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
-import {CONTACT_TEMPLATE} from '@/constant/cusob'
 
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];  
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const {
   importFileContainer,
@@ -33,24 +32,25 @@ const {
 const ImportFile = () => {
   const router = useRouter()
   const [groupName, setGroupName] = useState('')
-  const fileRef = useRef<UploadFile<any>>()
+  const fileRef = useRef<Blob>()
 
-  const beforeUpload = (file: FileType) => {
-    return true;
+  const beforeUpload = (file: Blob) => {
+    fileRef.current = file
+    return false;
   };
 
   const handleChange: UploadProps['onChange'] = async (info) => {
-    if (info.file.status === 'uploading') {
-      return;
-    }
-    if (info.file.status === 'done') {
-      fileRef.current = info.file
-    }
+    // if (info.file.status === 'uploading') {
+    //   return;
+    // }
+    // if (info.file.status === 'done') {
+    //   fileRef.current = info.file
+    // }
   };
 
   const onImport = async () => {
     const formData = new FormData();
-    formData.append('file', fileRef.current?.originFileObj as Blob)
+    if (fileRef.current) formData.append('file', fileRef.current as Blob)
     formData.append('groupName', groupName)
     const res = await batchImport(formData)
     if (res.code === SUCCESS_CODE) {
@@ -66,7 +66,7 @@ const ImportFile = () => {
     console.log('onSampleClick')
     const a = document.createElement('a');
     a.download = 'Sample File';
-    a.href = CONTACT_TEMPLATE;
+    a.href = 'http://69.164.202.126:9001/template/contact.xlsx';
     a.click();
   }
 
@@ -84,12 +84,12 @@ const ImportFile = () => {
         <div className={uploadWrapper}>
           <div className={label}>FILE</div>
           <Upload
-            name="select"
-            className={selectWrapper}
-            maxCount={1}
-            action=""
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
+              name="select"
+              className={selectWrapper}
+              maxCount={1}
+              action=""
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
           >
             <div className={selectBtn}>Select</div>
           </Upload>
