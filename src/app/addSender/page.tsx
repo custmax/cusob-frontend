@@ -3,7 +3,7 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
-import { Checkbox, Form, Input, Modal, Radio, message } from 'antd';
+import {Checkbox, Form, Input, Modal, Radio, message, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useState } from 'react';
 import { saveSender, sendCodeForSender } from '@/server/sender';
@@ -173,7 +173,13 @@ const AddSender = () => {
             label="Server Type"
             name='serverType'
           >
-            <Input />
+            {/*<Input />*/}
+            <Select
+                defaultValue='IMAP'
+                options={[
+                  {value: 'IMAP', label: 'IMAP'}
+                ]}
+            />
           </Form.Item>
           <Form.Item
             label="E-mail account"
@@ -187,18 +193,18 @@ const AddSender = () => {
           >
             <Input type='password' />
           </Form.Item>
-          <Form.Item
-            label="POP Port"
-            name='popPort'
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="POP Server"
-            name='popServer'
-          >
-            <Input />
-          </Form.Item>
+          {/*<Form.Item*/}
+          {/*  label="POP Port"*/}
+          {/*  name='popPort'*/}
+          {/*>*/}
+          {/*  <Input />*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item*/}
+          {/*  label="POP Server"*/}
+          {/*  name='popServer'*/}
+          {/*>*/}
+          {/*  <Input />*/}
+          {/*</Form.Item>*/}
           <Form.Item
             label="IMAP Port"
             name='imapPort'
