@@ -61,10 +61,12 @@ const SenderList = () => {
             render: (_, spf) => (
                 <Space size="middle">
                     {spf &&
-                        <CheckOutlined className={iconTrue}/>
+                        <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
+                                       onPointerLeaveCapture={undefined}/>
                     }
                     {!spf &&
-                        <CloseOutlined className={iconFalse}/>
+                        <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
+                                       onPointerLeaveCapture={undefined}/>
                     }
                 </Space>
             )
@@ -76,10 +78,12 @@ const SenderList = () => {
             render: (_, dkim) => (
                 <Space size="middle">
                     {dkim &&
-                        <CheckOutlined className={iconTrue}/>
+                        <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
+                                       onPointerLeaveCapture={undefined}/>
                     }
                     {!dkim &&
-                        <CloseOutlined className={iconFalse}/>
+                        <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
+                                       onPointerLeaveCapture={undefined}/>
                     }
                 </Space>
             )
