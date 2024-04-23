@@ -1,12 +1,12 @@
 import clientFetch from '@/helper/clientFetch';
 
-export const getContactCapacityList = async () => {
-  const res = await clientFetch({
-    url: `/api/plan/price/getContactCapacityList`,
-    method: 'GET',
-  })
-  return res;
-}
+// export const getContactCapacityList = async () => {
+//   const res = await clientFetch({
+//     url: `/api/plan/price/getContactCapacityList`,
+//     method: 'GET',
+//   })
+//   return res;
+// }
 
 export const getPlanByContactCapacity = async (capacity: number) => {
   const res = await clientFetch({
