@@ -7,10 +7,10 @@ import dynamic from "next/dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata: Metadata = {
-//   title: "Email Marketing Platform | Cusob",
-//   description: "CusOb",
-// };
+export const metadata: Metadata = {
+  title: "Email Marketing Platform | Cusob",
+  description: "CusOb",
+};
 
 export default function RootLayout({
   children,
