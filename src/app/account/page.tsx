@@ -50,7 +50,9 @@ const Account = () => {
   }, [])
 
   const initUserInfo = async () => {
+    message.loading({ content: 'loading', duration: 10, key: 'loading' })
     const res = await getUserInfo()
+    message.destroy('loading')
     if (res.code === SUCCESS_CODE) {
       const { 
         firstName,

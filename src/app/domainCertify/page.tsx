@@ -10,6 +10,8 @@ import copy from 'copy-to-clipboard';
 import {getPublicKey} from "@/server/dkim";
 import {domainVerify} from "@/server/domain";
 import {SPF_VALUE} from "@/constant/cusob"
+import {useSearchParams} from "next/navigation";
+
 
 const {
   domainCertifyContainer,
@@ -41,8 +43,18 @@ const {
 const DomainCertify = () => {
   const senderListRef = useRef<{ value: number, label: string }[]>([])
   const [senderEmail, setSenderEmail] = useState('')
-  const [domain, setDomain] = useState('daybreakhust.top')
+  const [domain, setDomain] = useState('')
   const [dkimValue, setDkimValue] = useState<string>('')
+
+  const searchParams = useSearchParams()
+  const domainValue = searchParams.get("domain")
+
+  const initDomain = useCallback(() => {
+    if (domainValue){
+      setDomain(domainValue)
+    }
+  }, [domainValue])
+
 
   const initSender = useCallback(async () => {
     const res = await getSenderList()
@@ -83,43 +95,44 @@ const DomainCertify = () => {
   }
 
   useEffect(() => {
+    initDomain()
     initSender()
     initPublicKey()
-  }, []);
+  }, [initDomain]);
 
   return <div className={domainCertifyContainer}>
     <EnteredHeader />
     <SideBar />
     <div className={main}>
-      <div className={title}>Domain Auth.</div>
-      <div className={addressWrapper}>
-        <div className={addressBox}>
-          <div className={addressItem}>
-            <div className={label}>Add Sender Address</div>
-            {/*<Input className={addressInput} placeholder='Enter email address'/>*/}
-            <Select
-                className={addressInput}
-                onChange={handleChange}
-                // options={senderListRef.current}
-                options={[
-                  {
-                    value: 'daybreak@chtrak.com',
-                    label: 'daybreak@chtrak.com',
-                  },
-                ]}
-            />
-          </div>
-          {/*<div className={addressTip}>Enter a maximum of 5 sender email addresses and Press ENTER after each address.</div>*/}
-          {/*<div className={addressBtn}>Auto. Domain Verifcation</div>*/}
-        </div>
-      </div>
+      <div className={title}>Domain Auth For {domain}</div>
+      {/*<div className={addressWrapper}>*/}
+      {/*  <div className={addressBox}>*/}
+      {/*    <div className={addressItem}>*/}
+      {/*      <div className={label}>Add Sender Address</div>*/}
+      {/*      /!*<Input className={addressInput} placeholder='Enter email address'/>*!/*/}
+      {/*      <Select*/}
+      {/*          className={addressInput}*/}
+      {/*          onChange={handleChange}*/}
+      {/*          // options={senderListRef.current}*/}
+      {/*          options={[*/}
+      {/*            {*/}
+      {/*              value: 'daybreak@chtrak.com',*/}
+      {/*              label: 'daybreak@chtrak.com',*/}
+      {/*            },*/}
+      {/*          ]}*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*    <div className={addressTip}>Enter a maximum of 5 sender email addresses and Press ENTER after each address.</div>*/}
+      {/*    <div className={addressBtn}>Auto. Domain Verifcation</div>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       <div className={addressWrapper}>
         <div className={spfBox}>
           <div className={spfTitle}>Copy the SPF record shown below and publish it in your domain DNS</div>
           <div className={hostName}>
             <span className={label}>Host Name to add</span>
             {/*<span>{domain}</span>*/}
-            <span className={domainBind}>chtrak.com</span>
+            <span className={domainBind}>{domain}</span>
           </div>
           <div className={txtRecord}>
             <div className={label}>TXT Record to add</div>

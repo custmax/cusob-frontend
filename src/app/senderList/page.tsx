@@ -8,6 +8,7 @@ import {getDomainList} from "@/server/domain";
 import {useCallback, useState} from "react";
 import {SUCCESS_CODE} from "@/constant/common";
 import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 type DataType = {
     key: string;
@@ -42,8 +43,8 @@ const SenderList = () => {
         }
     }
 
-    const pushToDomainCertify = () => {
-        router.push("/domainCertify")
+    const pushToAddSender = () => {
+        router.push("/addSender")
     }
 
     const columns: TableProps<DataType>['columns'] = [
@@ -88,7 +89,9 @@ const SenderList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a onClick={pushToDomainCertify}>Settings</a>
+                    <Link href={{pathname: "/domainCertify", query: {domain: record.domain}}}>
+                        Settings
+                    </Link>
                 </Space>
             ),
         },
@@ -123,7 +126,7 @@ const SenderList = () => {
         <SideBar />
         <div className={main}>
             <div className={addSender}>
-                <Button className={buttonAdd}>Add Sender</Button>
+                <Button onClick={pushToAddSender} className={buttonAdd}>Add Sender</Button>
             </div>
             <div className={verifyNotice}>
 
