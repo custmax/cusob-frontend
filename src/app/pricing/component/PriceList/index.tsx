@@ -4,12 +4,14 @@ import ImgWrapper from '@/component/ImgWrapper';
 import styles from './index.module.scss';
 import {Select, message, Button} from 'antd';
 import { useCallback, useEffect, useState } from 'react';
-import { getContactCapacityList, getPlanByContactCapacity } from '@/server/plan';
+// import { getContactCapacityList, getPlanByContactCapacity } from '@/server/plan';
 import { SUCCESS_CODE } from '@/constant/common';
 import Link from 'next/link';
 import {useRouter, useSearchParams} from 'next/navigation';
 import { payCancel } from '@/server/payment';
 import {getToken} from "@/util/storage";
+import {getPriceList, getContactCapacityList} from "@/server/price";
+import {number} from "prop-types";
 
 
 const {
@@ -28,6 +30,7 @@ const {
   moneyBox,
   tip,
   payBtn,
+  btnDisable,
   line,
   rightList,
   rightItem,
@@ -55,12 +58,32 @@ const nameMapFunction: Record<string, { userNum: number | string, customerSuppor
 }
 
 const PriceList = () => {
-  const [options, setOptions] = useState<{ value: string, label: string }[]>([])
-  const [plans, setPlans] = useState<Plan.PlanItem[]>([])
-  const [selecteNum, setSelectedNum] = useState(0)
+  const [plans, setPlans] = useState<Price.PriceItem[]>([])
   const router = useRouter()
   const searchParams = useSearchParams()
   const type = searchParams.get('type')
+  const [contactCapacity, setContactCapacity] = useState(1000)
+  const [months, setMonths] = useState(1)
+  const [currency, setCurrency] = useState(0)
+  const [capacityList, setCapacityList] = useState<{value: number, label:number}[]>([])
+
+  const initPriceList = useCallback(async () => {
+    message.loading({ content: 'loading', duration: 10, key: 'loading' })
+    const res = await getPriceList(contactCapacity, months, currency)
+    message.destroy('loading')
+    if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+      setPlans(res.data)
+    }
+
+  }, [contactCapacity, months, currency])
+
+  const initContactCapacity = useCallback(async () =>{
+    const res = await getContactCapacityList()
+    if (res.code === SUCCESS_CODE && res.data && res.data.length){
+      const newOptions = res.data.map((item: number) => ({value: item, label: item}))
+      setCapacityList(newOptions)
+    }
+  }, [])
 
   const initPayCancel = useCallback(async () => {
     if (type === 'cancelPay') {
@@ -73,42 +96,26 @@ const PriceList = () => {
     }
   }, [type])
 
-  const initContactList = useCallback(async () => {
-    message.loading({ content: 'loading', duration: 10, key: 'loading' })
-    const res = await getContactCapacityList()
-    message.destroy('loading')
-    if (res.code === SUCCESS_CODE && res.data && res.data.length) {
-      const newOptions = res.data.map((item: number) => ({ value: String(item), label: String(item) }))
-      setOptions(newOptions)
-      setSelectedNum(newOptions[0]?.value || 0)
-      initPlans(res.data[0])
-    } else {
-      message.error(res.message)
-    }
-  }, [])
-
   useEffect(() => {
-    initContactList()
+    initContactCapacity()
     initPayCancel()
-  }, [initContactList, initPayCancel])
+    initPriceList()
+  }, [initContactCapacity, initPayCancel, initPriceList])
 
-  const initPlans = async (num: number) => {
-    const res = await getPlanByContactCapacity(num)
-    if (res.code === SUCCESS_CODE) {
-      setPlans(res.data)
-    } else {
-      message.error(res.message)
+  // capacity
+  const onNumSelect = (value: number) => {
+    setContactCapacity(value)
+    initPriceList()
+  };
+
+  const onMonthsChange = (value: string) => {
+    if (value === 'Monthly'){
+      setMonths(1)
+    }else {
+      setMonths(12)
     }
+    initPriceList()
   }
-
-  const onNumSelect = (value: string) => {
-    setSelectedNum(Number(value))
-    initPlans(Number(value))
-  };
-
-  const onCurrencySelect = (value: string) => {
-    console.log(`selected ${value}`);
-  };
 
   const onBuyClick = (value: number) => {
     const token = getToken()
@@ -126,17 +133,17 @@ const PriceList = () => {
         <div className={value}>
           <Select
             className={numSelector}
-            value={String(selecteNum)}
+            value={contactCapacity}
             onChange={onNumSelect}
-            options={options}
+            options={capacityList}
           />
         </div>
       </div>
       <div className={timeSelector}>
         <Select
             className={currencySelector}
-            defaultValue="Monthly"
-            onChange={onCurrencySelect}
+            defaultValue='Monthly'
+            onChange={onMonthsChange}
             options={[
               { value: 'Monthly', label: 'Monthly' },
               { value: 'Yearly', label: 'Yearly' },
@@ -147,10 +154,12 @@ const PriceList = () => {
           <Select
             className={currencySelector}
             defaultValue="USD"
-            onChange={onCurrencySelect}
+            // onChange={onCurrencySelect}
             options={[
-              { value: '$USD', label: 'USD' },
-              { value: '¥CNY', label: 'CNY' },
+              { value: 0, label: 'USD' },
+              // { value: 1, label: 'EUR' },
+              // { value: 2, label: 'HKD' },
+              // { value: 3, label: 'JPY' },
             ]}
           />
       </div>
@@ -161,13 +170,12 @@ const PriceList = () => {
           <div className={title}>{item.name}</div>
           <div className={moneyBox}>
             <div className={label}>US$</div>
-            <div className={value}>{item.price}</div>
+            <div className={value}>{item.amountUSD}</div>
           </div>
           <div className={tip}>{nameMapFunction[item.name]?.userNum} {item.name === 'Premium' ? 'users' : `user${nameMapFunction[item.name]?.userNum === 1 ? '' : 's'}`}</div>
           <div className={tip}>{item.name === 'Premium' ? 'Unlimited Monthly Email Sends' : `${item.emailCapacity} Monthly Email Sends`}</div>
           <div className={tip}>{nameMapFunction[item.name]?.customerSupport}</div>
-          {/*<Link href={`/payment?id=${item.id}`} className={payBtn}>{item.name === 'Free' ? 'Sign Up' : 'Buy Now'}</Link>*/}
-          <Button onClick={() => onBuyClick(item.id)} className={payBtn}>{item.name === 'Free' ? 'Sign Up' : 'Buy Now'}</Button>
+          <Button disabled={item.isAvailable === 0} onClick={() => onBuyClick(item.id)} className={item.isAvailable===1?payBtn:btnDisable}>{item.name === 'Free' ? 'Sign Up' : 'Buy Now'}</Button>
           <div className={line}></div>
           <div className={rightList}>
             <div className={rightItem}>

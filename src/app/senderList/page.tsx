@@ -7,6 +7,7 @@ import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 import {getDomainList} from "@/server/domain";
 import {useCallback, useState} from "react";
 import {SUCCESS_CODE} from "@/constant/common";
+import {useRouter} from "next/navigation";
 
 type DataType = {
     key: string;
@@ -29,6 +30,8 @@ const {
 
 const SenderList = () => {
 
+    const router = useRouter()
+
     // todo
     const [domainList, setDomainList] = useState([]);
 
@@ -37,6 +40,10 @@ const SenderList = () => {
         if (res.code === SUCCESS_CODE && res.data){
             setDomainList(res.data)
         }
+    }
+
+    const pushToDomainCertify = () => {
+        router.push("/domainCertify")
     }
 
     const columns: TableProps<DataType>['columns'] = [
@@ -81,7 +88,7 @@ const SenderList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a>Settings</a>
+                    <a onClick={pushToDomainCertify}>Settings</a>
                 </Space>
             ),
         },
