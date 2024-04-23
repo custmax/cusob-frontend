@@ -10,6 +10,14 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { paySuccess } from '@/server/payment';
+import type {Metadata} from "next";
+import Head from "next/head";
+
+
+// export const metadata: Metadata = {
+//   title: "pricing",
+//   description: "CusOb",
+// };
 
 const {
   dashboardContainer,
@@ -61,6 +69,9 @@ const Dashboard = () => {
 
 
   return <div className={dashboardContainer}>
+    <Head>
+      <title>dashboard123</title>
+    </Head>
     <EnteredHeader />
     <SideBar />
     <div className={main}>
