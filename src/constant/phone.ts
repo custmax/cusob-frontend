@@ -986,5 +986,5 @@ export const countryOptions = [
   }
 ].map(item => ({
   value: item.code,
-  label: item.code,
+  label: item.en+"  "+item.code,
 }))

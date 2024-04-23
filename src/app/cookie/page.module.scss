@@ -1,0 +1,60 @@
+.cookieContainer{
+  .headerContainer {
+    width: 100%;
+    height: 90vpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-left: 40vpx;
+    padding-right: 60vpx;
+    box-sizing: border-box;
+    z-index: 100;
+    background-color: #fff;
+    border-bottom: 1px solid #BCBAB8;
+    margin-bottom: 20px;
+    .logoBox {
+      width: 167vpx;
+      height: 45vpx;
+      position: relative;
+
+      .logo {
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .blank {
+    padding: 40vpx;
+    text-align: center;
+    font-size: 45vpx;
+    margin-bottom: 0;
+  }
+  .header {
+
+    padding: 30vpx;
+    font-size: 45vpx;
+    margin-bottom: 0;
+  }
+
+  .header2 {
+
+    padding: 20vpx;
+    font-size: 32vpx;
+    margin-bottom: 0;
+  }
+  .content{
+    margin-top: 0;
+    padding-left: 100vpx;
+    padding-right: 100vpx;
+    font-size: 15vpx;
+  }
+}

@@ -12,6 +12,16 @@ export const sendVerifyCode = async (email: string) => {
   return res;
 }
 
+export const sendPhoneCode = async (prefix: string)=>{
+  const res = await clientFetch({
+    url: '/api/user/sendPhoneCode',
+    method: 'POST',
+    data: { prefix },
+    contentType: 'application/x-www-form-urlencoded',
+  })
+  return res;
+}
+
 export const register = async (info: User.UserSign) => {
   const res = await clientFetch({
     url: '/api/user/register',
