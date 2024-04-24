@@ -27,7 +27,9 @@ const {
   signupForm,
   captchaBox,
   details,
-  sign
+  sign,
+    pop,
+  custom_select
 } = styles;
 
 const Signup = () => {
@@ -68,7 +70,9 @@ const Signup = () => {
       message.warning("Captcha is wrong!")
     }else{
       if (value.phone && value.prefix) {
-        value.phone = value.prefix.replace('+', '') + '-' + value.phone
+
+        var plus = value.prefix.indexOf("+");
+        value.phone = value.prefix.substring(plus+1)+ '-' + value.phone
       }
       if (!value.agree) {
         message.error('please agree to the Terms of Service and privacy Policy first')
@@ -97,8 +101,11 @@ const Signup = () => {
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
-        style={{ width: 'auto' }}
+        style={{ width: 100 }}
+        dropdownStyle={{ minWidth: '100vpx' }}
         options={selectOptions}
+        showSearch
+        placeholder="+86"
         // onChange={async (value) => {
         //   form.setFieldsValue({prefix: value});
         //   await fetchCountry(); // 在这里直接调用 fetchCountry 函数
@@ -183,15 +190,15 @@ const Signup = () => {
                   SIGN UP NOW
                 </Button>
               </Form.Item>
-              <Form.Item>
+
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <p className={details}>By clicking "Sign up now" , you agree to the <a href="/terms">Terms of Use</a> and <a href="/policy">
+                <p className={details}>By clicking "Sign up now" , you agree to the <Link href="/terms">Terms of Use</Link> and <a href="/policy">
                   Privacy Policy </a></p>
               <br/>
                 <p className={details}>*By opting in, you are consenting to receive product, service and events
                   updates from Cusob. You can unsubscribe at any time.</p>
-                <p className={sign}>Already have an account?<a href="/login">Sign in</a></p>
-              </Form.Item>
+                <p className={sign}>Already have an account?<Link href="/login">Sign in</Link></p>
+
             </Form>
           </div>
         </div>

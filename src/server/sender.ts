@@ -10,6 +10,16 @@ export const sendCodeForSender = async (email: string) => {
   return res;
 }
 
+// export const getEmailSettings = async (email: string)=> {
+//   const res = await clientFetch({
+//     url: '/api/sender/getEmailsinfo',
+//     method: 'POST',
+//     data: {email},
+//     contentType: 'application/x-www-form-urlencoded',
+//   })
+//   return res;
+// }
+
 export const saveSender = async (data: Omit<Sender.SaveSender, 'id'>) => {
   const res = await clientFetch({
     url: `/api/sender/save`,

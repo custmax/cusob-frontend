@@ -1,3 +1,4 @@
+
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import Banner from './component/Banner'
@@ -13,9 +14,7 @@ const {
 
 const Index = () => {
   return <div className={classNames(indexContainer)}>
-    <Head>
-      <title>Email Marketing Platform |Cusob</title>
-    </Head>
+
     <Banner />
     <Feature1 />
     <Feature2 />

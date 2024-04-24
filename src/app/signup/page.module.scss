@@ -136,17 +136,20 @@
 
       }
     }
+
   }
 }
 .details{
   text-align: center;
   font-size: 18vpx;
-  color: #ABABAB
+  color: #ABABAB;
+
+  a{
+    color: blue;
+    text-decoration: underline;
+  }
 }
-.details a{
-  color: blue;
-  text-decoration: underline;
-}
+
 
 .sign{
   text-align: center;
