@@ -191,6 +191,19 @@
   .formWrapper {
     width: 100%;
     padding: 0 20vpx;
+    position: relative;
+  }
+  .formControls{
+    position: relative;
+    left: 0;
+
+    top: 120vpx; /* 调整为适当的值 */
+
+  }
+  .err{
+    padding-top: 0;
+    text-align: center;
+    color: red;
   }
 
   .checkboxWrapper {

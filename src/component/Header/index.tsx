@@ -33,9 +33,6 @@ const {
 } = styles;
 
 
-
-
-
 const Header: FC<Props> = (props) => {
   const { showBar = false, showSign = false } = props;
   const [firstName, setFirstName] = useState<string>()
