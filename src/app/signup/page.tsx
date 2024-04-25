@@ -190,16 +190,17 @@ const Signup = () => {
                   SIGN UP NOW
                 </Button>
               </Form.Item>
-
-                {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <p className={details}>By clicking "Sign up now" , you agree to the <Link href="/terms">Terms of Use</Link> and <a href="/policy">
-                  Privacy Policy </a></p>
-              <br/>
-                <p className={details}>*By opting in, you are consenting to receive product, service and events
-                  updates from Cusob. You can unsubscribe at any time.</p>
-                <p className={sign}>Already have an account?<Link href="/login">Sign in</Link></p>
-
             </Form>
+
+          </div>
+          <div>
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
+            <p className={details}>By clicking "Sign up now" , you agree to the <Link href="/terms">Terms of Use</Link> and <a href="/policy">
+              Privacy Policy </a></p>
+            <br/>
+            <p className={details}>*By opting in, you are consenting to receive product, service and events
+              updates from Cusob. You can unsubscribe at any time.</p>
+            <p className={sign}>Already have an account?<Link href="/login">Sign in</Link></p>
           </div>
         </div>
       </div>

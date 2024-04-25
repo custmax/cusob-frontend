@@ -7,10 +7,13 @@ import Feature2 from './component/Feature2'
 import Feature3 from './component/Feature3'
 import Feature4 from './component/Feature4'
 import Head from "next/head";
+import type {Metadata} from "next";
 
 const {
   indexContainer
 } = styles;
+
+
 
 const Index = () => {
   return <div className={classNames(indexContainer)}>
