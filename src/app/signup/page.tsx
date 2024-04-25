@@ -27,7 +27,9 @@ const {
   signupForm,
   captchaBox,
   details,
-  sign
+  sign,
+    pop,
+  custom_select
 } = styles;
 
 const Signup = () => {
@@ -68,7 +70,9 @@ const Signup = () => {
       message.warning("Captcha is wrong!")
     }else{
       if (value.phone && value.prefix) {
-        value.phone = value.prefix.replace('+', '') + '-' + value.phone
+
+        var plus = value.prefix.indexOf("+");
+        value.phone = value.prefix.substring(plus+1)+ '-' + value.phone
       }
       if (!value.agree) {
         message.error('please agree to the Terms of Service and privacy Policy first')
@@ -97,8 +101,11 @@ const Signup = () => {
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
-        style={{ width: 'auto' }}
+        style={{ width: 100 }}
+        dropdownStyle={{ minWidth: '100vpx' }}
         options={selectOptions}
+        showSearch
+        placeholder="+86"
         // onChange={async (value) => {
         //   form.setFieldsValue({prefix: value});
         //   await fetchCountry(); // 在这里直接调用 fetchCountry 函数
