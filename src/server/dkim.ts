@@ -8,3 +8,12 @@ export const getPublicKey = async (domain: string) => {
     })
     return res;
 }
+
+export const getDkim = async (domain: string) => {
+    const res = await clientFetch({
+        url: `/api/dkim/get`,
+        method: 'GET',
+        data: {domain}
+    })
+    return res;
+}
