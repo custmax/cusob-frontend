@@ -10,7 +10,7 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { paySuccess } from '@/server/payment';
-import Head from "next/head";
+
 
 const {
   dashboardContainer,
@@ -54,14 +54,17 @@ const Dashboard = () => {
       }
     }
   }, [PayerID, paymentId])
-
   useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
     initPlan()
     initPaySuccess()
   }, [initPlan, initPaySuccess])
 
 
   return <div className={dashboardContainer}>
+    <Head>
+      <title>dashboard123</title>
+    </Head>
     <EnteredHeader />
     <SideBar />
     <div className={main}>

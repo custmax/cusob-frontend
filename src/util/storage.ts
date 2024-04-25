@@ -7,11 +7,11 @@ export type LocalUser = {
 }
 
 export const getToken = () => {
-  return window.localStorage.getItem('token') || ''
+  return window.localStorage.getItem('token'); // 如果数据未过期，则返回数据值
 };
 
 export const setToken = (token: string) => {
-  window.localStorage.setItem('token', token || '')
+  window.localStorage.setItem('token', token)
 }
 
 export const clearToken = () => {

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import {Checkbox, Form, Input, Modal, Radio, message, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useState } from 'react';
-import { saveSender, sendCodeForSender } from '@/server/sender';
+import { saveSender, sendCodeForSender} from '@/server/sender';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 
@@ -49,7 +49,22 @@ const AddSender = () => {
   const onVertifyCancel = () => {
     setShowVertify(false);
   };
-  
+  // const isValidEmail = (email: string) => {
+  //   // 正则表达式来匹配邮箱格式
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailPattern.test(email);
+  // };
+  //
+  // const searchEmail = async ()=>{
+  //   const email = form.getFieldValue('email');
+  //   if(isValidEmail(email)){
+  //       const res = await getEmailSettings(email);
+  //       form.setFieldValue('imapPort',res.data.imapPort)
+  //       form.setFieldValue('smtpPort',res.data.smtpPort)
+  //       form.setFieldValue('imapServer',res.data.imapServer)
+  //       form.setFieldValue('smtpServer',res.data.smtpServer)
+  //   }
+  // }
 
   const onBinderOk = async () => {
     const {
@@ -183,9 +198,9 @@ const AddSender = () => {
           </Form.Item>
           <Form.Item
             label="E-mail account"
-            name='email'
-          >
-            <Input />
+            name='email'>
+            <Input/>
+
           </Form.Item>
           <Form.Item
             label="Password"

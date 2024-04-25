@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { login } from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
-import { getLocalUser, setLocalUser, setToken } from '@/util/storage';
+import {getLocalUser, getToken, setLocalUser, setToken} from '@/util/storage';
 import Head from "next/head";
 
 const {
@@ -31,7 +31,7 @@ const Login = () => {
   useEffect(() => {
     initEmail()
   }, [])
-
+  
   const initEmail = () => {
     const localUser = getLocalUser() || {}
     if (localUser.email) {
@@ -59,6 +59,8 @@ const Login = () => {
     message.destroy('loading')
     if (res.code === SUCCESS_CODE) {
       const { token = '', firstName = '', lastName = '', avatar = '', id } = res?.data || {}
+      console.log("token=>",token)
+
       setToken(token)
       setLocalUser({ firstName, lastName, avatar, id })
       message.success({
