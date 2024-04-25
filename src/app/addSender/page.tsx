@@ -3,7 +3,7 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
-import {Checkbox, Form, Input, Modal, Radio, message, Select} from 'antd';
+import {Checkbox, Form, Input, Modal, Radio, message, Select, Button} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useState } from 'react';
 import { saveSender, sendCodeForSender} from '@/server/sender';
@@ -38,6 +38,7 @@ const AddSender = () => {
   const [form] = Form.useForm()
   const [showVertify, setShowVertify] = useState<boolean>(false);
   const [showBinder, setShowBinder] = useState<boolean>(false);
+  const [showManual, setShowManual] = useState<boolean>(false);
   const [verifyEmail, setVerifyEmail] = useState('');
   const router = useRouter()
   const [checked, setChecked] = useState(false)
@@ -68,7 +69,6 @@ const AddSender = () => {
 
   const onBinderOk = async () => {
     const {
-      serverType,
       email,
       password,
       popServer,
@@ -87,7 +87,6 @@ const AddSender = () => {
       smtpPort,
       password,
       popServer,
-      serverType,
       smtpServer,
     }
     const res = await saveSender(data)
@@ -106,6 +105,10 @@ const AddSender = () => {
   const onUseChange = () => {
     setChecked(prev => !prev)
   };
+
+  const handleClick = () =>{
+    setShowManual(true)
+  }
 
   const onSendCode = async () => {
     if (verifyEmail) {
@@ -184,18 +187,7 @@ const AddSender = () => {
           labelAlign='right'
           colon={false}
         >
-          <Form.Item
-            label="Server Type"
-            name='serverType'
-          >
-            {/*<Input />*/}
-            <Select
-                defaultValue='IMAP'
-                options={[
-                  {value: 'IMAP', label: 'IMAP'}
-                ]}
-            />
-          </Form.Item>
+
           <Form.Item
             label="E-mail account"
             name='email'>
@@ -208,18 +200,51 @@ const AddSender = () => {
           >
             <Input type='password' />
           </Form.Item>
-          {/*<Form.Item*/}
-          {/*  label="POP Port"*/}
-          {/*  name='popPort'*/}
-          {/*>*/}
-          {/*  <Input />*/}
-          {/*</Form.Item>*/}
-          {/*<Form.Item*/}
-          {/*  label="POP Server"*/}
-          {/*  name='popServer'*/}
-          {/*>*/}
-          {/*  <Input />*/}
-          {/*</Form.Item>*/}
+
+        </Form>
+        <Button type="primary" onClick={handleClick}>MANUAL</Button>
+      </div>
+      <div className={checkboxWrapper}>
+        <Checkbox
+          checked={checked}
+          className={checkBox}
+          onChange={onUseChange}
+        >
+          Use STARTTLS if server supports
+        </Checkbox>
+      </div>
+    </Modal>
+    <Modal
+        title="Manual Settings"
+        open={showManual}
+        onOk={onBinderOk}
+        onCancel={onBinderCancel}
+        okText='Done'
+        wrapClassName={binderModal}
+    >
+      <div className={formWrapper}>
+        <Form
+            form={form}
+            name="binder"
+            className={binderForm}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            labelAlign='right'
+            colon={false}
+        >
+
+          <Form.Item
+            label="POP Port"
+            name='popPort'
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="POP Server"
+            name='popServer'
+          >
+            <Input />
+          </Form.Item>
           <Form.Item
             label="IMAP Port"
             name='imapPort'
@@ -244,13 +269,15 @@ const AddSender = () => {
           >
             <Input />
           </Form.Item>
+
         </Form>
+        <Button type="primary">MANUAL</Button>
       </div>
       <div className={checkboxWrapper}>
         <Checkbox
-          checked={checked}
-          className={checkBox}
-          onChange={onUseChange}
+            checked={checked}
+            className={checkBox}
+            onChange={onUseChange}
         >
           Use STARTTLS if server supports
         </Checkbox>

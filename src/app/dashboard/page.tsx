@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { paySuccess } from '@/server/payment';
 
-
 const {
   dashboardContainer,
   main,
@@ -62,9 +61,6 @@ const Dashboard = () => {
 
 
   return <div className={dashboardContainer}>
-    <Head>
-      <title>dashboard123</title>
-    </Head>
     <EnteredHeader />
     <SideBar />
     <div className={main}>

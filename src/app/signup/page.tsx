@@ -176,7 +176,7 @@ const Signup = () => {
                       name="captcha"
                       rules={[{ required: true, message: 'Please input captcha!' }]}
                   >
-                    <Input />
+                    <Input/>
                   </Form.Item>
                   <Captcha setCode={setCode.bind(this)}></Captcha>
                 </Space>
