@@ -10,7 +10,6 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { paySuccess } from '@/server/payment';
-import {getToken} from "@/util/storage";
 
 const {
   dashboardContainer,
