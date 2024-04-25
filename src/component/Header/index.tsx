@@ -1,3 +1,4 @@
+'use client'
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import Image from 'next/image';
@@ -5,6 +6,7 @@ import Sign from './component/Sign';
 import TabBar from './component/TabBar';
 import Link from 'next/link';
 import { FC } from 'react';
+import Profile from "@/component/EnteredHeader/component/Profile";
 
 type Props = {
   showBar?: boolean,
@@ -34,7 +36,8 @@ const Header: FC<Props> = (props) => {
       </div>
     </Link>
     {showBar && <TabBar />}
-    {showSign && <Sign />}
+    {/*{showSign && <Sign />}*/}
+    <Profile></Profile>
   </div>
 };
 

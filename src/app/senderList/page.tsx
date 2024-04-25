@@ -2,10 +2,10 @@
 import styles from './page.module.scss';
 import EnteredHeader from "@/component/EnteredHeader";
 import SideBar from "@/component/SideBar";
-import {Button, Space, Table, TableProps, Tag} from "antd";
+import {Button, message, Space, Table, TableProps, Tag} from "antd";
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 import {getDomainList} from "@/server/domain";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {SUCCESS_CODE} from "@/constant/common";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
@@ -32,16 +32,20 @@ const {
 const SenderList = () => {
 
     const router = useRouter()
-
-    // todo
     const [domainList, setDomainList] = useState([]);
 
     const initDomainList = async () => {
+        message.loading({ content: 'loading', duration: 10, key: 'loading' })
         const res = await getDomainList();
+        message.destroy('loading')
         if (res.code === SUCCESS_CODE && res.data){
-            setDomainList(res.data)
+            setDomainList(res.data.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
         }
     }
+
+    useEffect(() => {
+        initDomainList()
+    }, []);
 
     const pushToAddSender = () => {
         router.push("/addSender")
@@ -58,13 +62,13 @@ const SenderList = () => {
             title: 'SPF',
             dataIndex: 'spf',
             key: 'spf',
-            render: (_, spf) => (
+            render: (_, record) => (
                 <Space size="middle">
-                    {spf &&
+                    {record.spf &&
                         <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
                                        onPointerLeaveCapture={undefined}/>
                     }
-                    {!spf &&
+                    {!record.spf &&
                         <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
                                        onPointerLeaveCapture={undefined}/>
                     }
@@ -75,13 +79,13 @@ const SenderList = () => {
             title: 'DKIM',
             dataIndex: 'dkim',
             key: 'dkim',
-            render: (_, dkim) => (
+            render: (_, record) => (
                 <Space size="middle">
-                    {dkim &&
+                    {record.dkim &&
                         <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
                                        onPointerLeaveCapture={undefined}/>
                     }
-                    {!dkim &&
+                    {!record.dkim &&
                         <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
                                        onPointerLeaveCapture={undefined}/>
                     }
@@ -110,21 +114,6 @@ const SenderList = () => {
         },
     ];
 
-    const data: DataType[] = [
-        {
-            key: '1',
-            domain: 'daybreakhust.top',
-            spf: false,
-            dkim: true,
-        },
-        {
-            key: '2',
-            domain: 'chtrak.com',
-            spf: true,
-            dkim: false,
-        },
-    ];
-
     return <div className={senderListContainer}>
         <EnteredHeader />
         <SideBar />
@@ -133,11 +122,10 @@ const SenderList = () => {
                 <Button onClick={pushToAddSender} className={buttonAdd}>Add Sender</Button>
             </div>
             <div className={verifyNotice}>
-
                 <div className={noticeTxt}>Your domain has not been verified</div>
             </div>
             <div className={tableDomain}>
-                <Table columns={columns} dataSource={data}></Table>
+                <Table columns={columns} dataSource={domainList}></Table>
             </div>
         </div>
 
