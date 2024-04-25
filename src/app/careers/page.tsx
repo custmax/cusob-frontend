@@ -42,6 +42,7 @@ const Careers = () => {
                     Marketing Specialist
                 </h3>
                 <section>
+                    {/* eslint-disable-next-line react/no-unescaped-entities */}
                     Are you a creative and results-driven marketer with a passion for driving growth? Join our marketing team as a Marketing Specialist and help us build and execute impactful marketing campaigns. From digital marketing to content creation, you'll have the opportunity to make a meaningful impact on our brand and business. If you have a proven track record in marketing, a creative mindset, and a desire to drive results, we'd love to hear from you.
                   </section>
                 <h3>

@@ -7,7 +7,6 @@ declare module Sender {
     password: string,
     popPort: number,
     popServer: string,
-    serverType: string,
     smtpPort: number,
     smtpServer: string,
   }
