@@ -3,10 +3,11 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import ImgWrapper from '@/component/ImgWrapper';
 import Link from 'next/link';
-import { Table, TableProps, message } from 'antd';
+import {Table, TableProps, message, PaginationProps} from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { getOrderHistory } from '@/server/orderHistory';
 import { SUCCESS_CODE } from '@/constant/common';
+import {getHistoryList, getList} from "@/server/contact";
 
 type DataType = Order.orderHistory & { key: number }
 
@@ -26,11 +27,13 @@ const pageSize = 10;
 const BillingHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [historyList, setHistoryList] = useState([])
-
+  const [total, setTotal] = useState(0)
 
   const initOrderHistory = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const res = await getOrderHistory(currentPage, pageSize)
+    console.log(res)
+    setTotal(res.data?.total)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
       setHistoryList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
@@ -40,7 +43,18 @@ const BillingHistory = () => {
   useEffect(() => {
     initOrderHistory()
   }, [initOrderHistory])
-  
+  const onPageChange: PaginationProps['onChange'] = async (pageNumber:number) => {
+    setCurrentPage(pageNumber)
+    message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
+    const res = await getOrderHistory(pageNumber, pageSize)
+    message.destroy('listLoading')
+    if (res.code === SUCCESS_CODE) {
+      console.log(res.data)
+      setHistoryList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
+      setTotal(res.data?.total)
+    }
+  }
+
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#',
@@ -75,6 +89,13 @@ const BillingHistory = () => {
       key: 'createTime',
     },
   ];
+  const pagination = {
+    currentPage: currentPage,
+    pageSize: pageSize,
+    defaultCurrent: 1,
+    total: total,
+    onChange: onPageChange,
+  }
 
   return <div className={billingHistoryContainer}>
     <EnteredHeader />
@@ -85,7 +106,7 @@ const BillingHistory = () => {
           ? <Table
             columns={columns}
             dataSource={historyList}
-            pagination={{ pageSize: 8 }}
+            pagination={pagination}
           />
           : <div className={content}>
               <ImgWrapper className={historyIcon} src='/img/history_icon.png' alt='history icon' />
