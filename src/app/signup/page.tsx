@@ -106,10 +106,7 @@ const Signup = () => {
         options={selectOptions}
         showSearch
         placeholder="+86"
-        // onChange={async (value) => {
-        //   form.setFieldsValue({prefix: value});
-        //   await fetchCountry(); // 在这里直接调用 fetchCountry 函数
-        // }}
+
       />
     </Form.Item>
   );

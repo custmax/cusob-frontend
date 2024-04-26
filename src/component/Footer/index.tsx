@@ -77,7 +77,7 @@ const Footer = () => {
 			<div className={sitemap}>
 				<div className={siteText}>Contact</div>
 				<div className={line}></div>
-				<div className={siteText}>Terms</div>
+				<Link href='/terms'><div className={siteText}>Terms</div></Link>
 				<div className={line}></div>
 				<Link href='/aboutCookies' className={siteText}>Cookie Preferences</Link>
 				<div className={line}></div>

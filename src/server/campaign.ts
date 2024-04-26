@@ -1,11 +1,15 @@
 import clientFetch from '@/helper/clientFetch';
 
 export const getCampaignPage = async (limit: number, page: number, query: Record<string, string>) => {
+  console.log(limit)
+  console.log(page)
+
   const res = await clientFetch({
     url: `/api/campaign/getPage/${limit}/${page}`,
     method: 'GET',
     data: query,
   })
+  console.log(res.data)
   return res;
 }
 

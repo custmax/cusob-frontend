@@ -135,6 +135,7 @@ const ContactList = () => {
 
   const onEditGroupDelete = async () => {
     if (activeGroupId !== -1) {
+
       const res = await removeGroup(activeGroupId)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
@@ -156,6 +157,7 @@ const ContactList = () => {
     const res = await getList(pageNumber, pageSize)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
+      console.log(res.data)
       setContactList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total)
     }
@@ -163,7 +165,7 @@ const ContactList = () => {
 
   const pagination = {
     currentPage: currentPage,
-    pageSize: 10,
+    pageSize: pageSize,
     defaultCurrent: 1,
     total: total,
     onChange: onPageChange,
@@ -230,7 +232,7 @@ const ContactList = () => {
         message.error(res.message)
       }
     }
-    
+
   }
 
   const onGroupItemClick = async (groupItem: { groupName: string, id: number }) => {
