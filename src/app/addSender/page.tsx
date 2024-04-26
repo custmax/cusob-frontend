@@ -160,19 +160,19 @@ const AddSender = () => {
         <div className={exitBtn} onClick={() => {router.back() }}>Exit</div>
       </div>
       <div className={content}>
-        <div className={classNames(card, { [active]: showVertify })} onClick={() => setShowVertify(true)}>
-          <ImgWrapper src='/img/vertification_icon.png' alt='vertification icon' className={vertifyIcon} />
-          <Radio checked={showVertify} className={radio} />
-          <span>Verification code</span>
-        </div>
+        {/*<div className={classNames(card, { [active]: showVertify })} onClick={() => setShowVertify(true)}>*/}
+        {/*  <ImgWrapper src='/img/vertification_icon.png' alt='vertification icon' className={vertifyIcon} />*/}
+        {/*  <Radio checked={showVertify} className={radio} />*/}
+        {/*  <span>Verification code</span>*/}
+        {/*</div>*/}
         <div className={classNames(card, { [active]: showBinder })} onClick={() => setShowBinder(true)}>
           <Radio checked={showBinder} className={radio} />
           <span>Bind your Email Account</span>
         </div>
-        <div className={card} onClick={jumpToDomainCertify}>
-          <Radio className={radio} />
-          <span>Domain Authentication</span>
-        </div>
+        {/*<div className={card} onClick={jumpToDomainCertify}>*/}
+        {/*  <Radio className={radio} />*/}
+        {/*  <span>Domain Authentication</span>*/}
+        {/*</div>*/}
       </div>
     </div>
     <Modal

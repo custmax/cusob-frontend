@@ -4,7 +4,7 @@ import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import { GetProp, Input, Pagination, PaginationProps, Select, Table, TableProps, Upload, UploadProps, message } from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { getMediaList, removeMedia, uploadMedia } from '@/server/media';
 import { SUCCESS_CODE } from '@/constant/common';
@@ -71,7 +71,8 @@ const Medias = () => {
   const [total, setTotal] = useState(0)
   const [mediaType, setMediaType] = useState('all')
   const [action, setAction] = useState('')
-  
+  const fileRef = useRef<Blob>()
+
   useEffect(() => {
     initList();
   }, [])
