@@ -38,6 +38,8 @@ const Header: FC<Props> = (props) => {
   const [firstName, setFirstName] = useState<string>()
   const [localAvatar, setLocalAvatar] = useState<string>('')
   const [showChangePw, setShowChangePw] = useState<boolean>(false);
+  const [token, setToken] = useState("")
+
   const initLocal = () => {
     const localUser = getLocalUser() || {}
     if (localUser.firstName) {
@@ -61,6 +63,11 @@ const Header: FC<Props> = (props) => {
     setShowChangePw(false)
   }
 
+  const initToken = () => {
+    setToken(getToken())
+  }
+
+
   useEffect(() => {
     initLocal();
   }, []);
@@ -79,7 +86,7 @@ const Header: FC<Props> = (props) => {
     </Link>
 
     {showBar && <TabBar />}
-    {!getToken() ? <Sign /> :
+    {!token ? <Sign /> :
         <div>
         <div className={right} id="enterHeader">
           <Link href='/stationMessage'>
