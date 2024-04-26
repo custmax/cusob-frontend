@@ -5,8 +5,6 @@ declare module Sender {
     imapPort: number,
     imapServer: string,
     password: string,
-    popPort: number,
-    popServer: string,
     smtpPort: number,
     smtpServer: string,
   }
