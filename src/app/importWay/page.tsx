@@ -80,13 +80,13 @@ const ImportWay = () => {
           <div className={continueBtn} onClick={onContinue}>Continue</div>
         </div>
         <div className={wayWrapper}>
-          <div onClick={() => onWayBoxClick('another')} className={classNames(wayBox, { [active]: way === 'another' })}>
-            <div className={radioBox}>
-              <ImgWrapper className={icon} src='/img/download_icon.png' alt='download icon' />
-              <Radio checked={way === 'another'} className={radio} />
-            </div>
-            <div className={explain}>import from another service</div>
-          </div>
+          {/*<div onClick={() => onWayBoxClick('another')} className={classNames(wayBox, { [active]: way === 'another' })}>*/}
+          {/*  <div className={radioBox}>*/}
+          {/*    <ImgWrapper className={icon} src='/img/download_icon.png' alt='download icon' />*/}
+          {/*    <Radio checked={way === 'another'} className={radio} />*/}
+          {/*  </div>*/}
+          {/*  <div className={explain}>import from another service</div>*/}
+          {/*</div>*/}
           <div onClick={() => onWayBoxClick('upload')} className={classNames(wayBox, { [active]: way === 'upload' })}>
             <div className={radioBox}>
               <ImgWrapper className={icon} src='/img/upload_icon.png' alt='upload icon' />
@@ -95,13 +95,13 @@ const ImportWay = () => {
             <div className={explain}>Upload a file</div>
             <div onClick={onSampleClick} className={sample}>Sample file</div>
           </div>
-          <div onClick={() => onWayBoxClick('copy')} className={classNames(wayBox, { [active]: way === 'copy' })}>
-            <div className={radioBox}>
-              <ImgWrapper className={icon} src='/img/copy_icon.png' alt='copy icon' />
-              <Radio checked={way === 'copy'} className={radio} />
-            </div>
-            <div className={explain}>Copy and paste</div>
-          </div>
+          {/*<div onClick={() => onWayBoxClick('copy')} className={classNames(wayBox, { [active]: way === 'copy' })}>*/}
+          {/*  <div className={radioBox}>*/}
+          {/*    <ImgWrapper className={icon} src='/img/copy_icon.png' alt='copy icon' />*/}
+          {/*    <Radio checked={way === 'copy'} className={radio} />*/}
+          {/*  </div>*/}
+          {/*  <div className={explain}>Copy and paste</div>*/}
+          {/*</div>*/}
         </div>
       </div>
     </div>
