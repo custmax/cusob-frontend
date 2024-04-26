@@ -1,3 +1,4 @@
+
 export type LocalUser = {
   firstName?: string,
   lastName?: string,

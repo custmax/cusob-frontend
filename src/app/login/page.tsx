@@ -9,7 +9,6 @@ import { login } from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {getLocalUser, getToken, setLocalUser, setToken} from '@/util/storage';
-import Head from "next/head";
 
 const {
   loginWrapper,

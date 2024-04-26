@@ -3,7 +3,7 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
-import {Checkbox, Form, Input, Modal, Radio, message, Select, Button} from 'antd';
+import {Checkbox, Form, Input, Modal, Radio, message,  Button} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useState } from 'react';
 import { saveSender, sendCodeForSender} from '@/server/sender';
@@ -32,75 +32,83 @@ const {
   active,
   radio,
   vertifyIcon,
+    err,
+  formControls
 } = styles;
 
 const AddSender = () => {
-  const [form] = Form.useForm()
+  const [form1] = Form.useForm()
+  const [form2] = Form.useForm()
   const [showVertify, setShowVertify] = useState<boolean>(false);
   const [showBinder, setShowBinder] = useState<boolean>(false);
   const [showManual, setShowManual] = useState<boolean>(false);
   const [verifyEmail, setVerifyEmail] = useState('');
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-  
+  const [error, setError] = useState('');
   const onVertifyOk = () => {
     setShowVertify(false);
   };
 
+  function validateEmail(email:string) {
+    // 正则表达式用于验证邮箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
   const onVertifyCancel = () => {
     setShowVertify(false);
   };
-  // const isValidEmail = (email: string) => {
-  //   // 正则表达式来匹配邮箱格式
-  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailPattern.test(email);
-  // };
-  //
-  // const searchEmail = async ()=>{
-  //   const email = form.getFieldValue('email');
-  //   if(isValidEmail(email)){
-  //       const res = await getEmailSettings(email);
-  //       form.setFieldValue('imapPort',res.data.imapPort)
-  //       form.setFieldValue('smtpPort',res.data.smtpPort)
-  //       form.setFieldValue('imapServer',res.data.imapServer)
-  //       form.setFieldValue('smtpServer',res.data.smtpServer)
-  //   }
-  // }
+
+  const onManualOk = () => {
+    setShowManual(false);
+  }
 
   const onBinderOk = async () => {
     const {
       email,
       password,
-      popServer,
+    } = form1.getFieldsValue();
+    const {
+      smtpServer,
       imapPort,
       imapServer,
-      smtpServer,
-      popPort,
       smtpPort,
-    } = form.getFieldsValue();
+    } = form2.getFieldsValue();
 
     const data = {
       email,
-      imapPort,
-      imapServer,
-      popPort,
-      smtpPort,
+      imapPort: imapPort,
+      imapServer: imapServer,
+      smtpPort: smtpPort ,
       password,
-      popServer,
-      smtpServer,
+      smtpServer: smtpServer,
     }
-    const res = await saveSender(data)
-    if (res.code === SUCCESS_CODE) {
-      message.success(res.message)
-    } else {
-      message.error(res.message)
+    if(validateEmail(email)){
+      const res = await saveSender(data)
+      if (res.code === SUCCESS_CODE) {
+        message.success(res.message)
+      } else {
+        message.error(res.message)
+      }
+    }else {
+      setError('请输入有效的邮箱地址');
+      return;
     }
+    console.log(data)
+
     setShowBinder(false);
   };
 
   const onBinderCancel = () => {
+    form1.resetFields(); // 重置表单数据
+    form2.resetFields(); // 重置表单数据
+    setError('')
     setShowBinder(false);
   };
+
+  const onManualCancel=()=>{
+    setShowManual(false);
+  }
 
   const onUseChange = () => {
     setChecked(prev => !prev)
@@ -124,6 +132,20 @@ const AddSender = () => {
   const jumpToDomainCertify = () => {
     router.push("/domainCertify");
   }
+  const handleSubmit = () => {
+    form1
+        .validateFields()
+        .then(values => {
+          // 在这里处理表单验证成功后的逻辑，例如提交表单数据等操作
+          onBinderOk()
+        })
+        .catch(errorInfo => {
+          // 在这里处理表单验证失败后的逻辑，例如提示用户错误信息等操作
+          console.error('Validation failed:', errorInfo);
+        });
+
+
+  };
 
   return <div className={addSenderContainer}>
     <EnteredHeader />
@@ -172,37 +194,43 @@ const AddSender = () => {
     <Modal
       title="Bind your Email Account"
       open={showBinder}
-      onOk={onBinderOk}
+      onOk={handleSubmit}
       onCancel={onBinderCancel}
       okText='Done'
       wrapClassName={binderModal}
     >
       <div className={formWrapper}>
         <Form
-          form={form}
-          name="binder"
-          className={binderForm}
-          labelCol={{ span: 6 }}
-          wrapperCol={{ span: 18 }}
-          labelAlign='right'
-          colon={false}
+            form={form1}
+            name="binder"
+            className={binderForm}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            labelAlign='right'
+            colon={false}
+            onFinish={onBinderOk}
         >
-
+          {error && <div className={err}>{error}</div>}
           <Form.Item
-            label="E-mail account"
-            name='email'>
-            <Input/>
-
+              label="E-mail account"
+              name='email'
+              rules={[{required:true,message: "Please input your email!"}]}
+          >
+            <Input />
           </Form.Item>
+
           <Form.Item
-            label="Password"
-            name='password'
+              label="Password"
+              name='password'
+              rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input type='password' />
           </Form.Item>
-
         </Form>
-        <Button type="primary" onClick={handleClick}>MANUAL</Button>
+
+          <Button className={formControls} type="primary" onClick={handleClick}>MANUAL</Button>
+
+
       </div>
       <div className={checkboxWrapper}>
         <Checkbox
@@ -217,37 +245,27 @@ const AddSender = () => {
     <Modal
         title="Manual Settings"
         open={showManual}
-        onOk={onBinderOk}
-        onCancel={onBinderCancel}
+        onOk={onManualOk}
+        onCancel={onManualCancel}
         okText='Done'
         wrapClassName={binderModal}
     >
       <div className={formWrapper}>
         <Form
-            form={form}
-            name="binder"
+            form={form2}
+            name="manual"
             className={binderForm}
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 18 }}
             labelAlign='right'
             colon={false}
+
         >
 
           <Form.Item
-            label="POP Port"
-            name='popPort'
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="POP Server"
-            name='popServer'
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
             label="IMAP Port"
             name='imapPort'
+
           >
             <Input />
           </Form.Item>
@@ -271,16 +289,6 @@ const AddSender = () => {
           </Form.Item>
 
         </Form>
-        <Button type="primary">MANUAL</Button>
-      </div>
-      <div className={checkboxWrapper}>
-        <Checkbox
-            checked={checked}
-            className={checkBox}
-            onChange={onUseChange}
-        >
-          Use STARTTLS if server supports
-        </Checkbox>
       </div>
     </Modal>
   </div>
