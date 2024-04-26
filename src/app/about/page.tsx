@@ -20,7 +20,7 @@ const Terms = () => {
                 <span style={{ color: '#1E1E69' }}>support@Cusob.com</span>
             </div>
             <div className={content}>
-                <section>
+                <section >
                     {/* eslint-disable-next-line react/no-unescaped-entities */}
                     Welcome to CusOb, where we're inspired by a blend of esteemed philosophies and innovative visions. Drawing from the foundational principles of industry leaders and dynamic organizations, we are dedicated to forging a new paradigm in entrepreneurship.
                 </section>
