@@ -4,12 +4,12 @@ import styles from './page.module.scss';
 import Header from '@/component/Header';
 import ImgWrapper from '@/component/ImgWrapper';
 import { SUCCESS_CODE } from '@/constant/common';
-import { getPlanById } from '@/server/plan';
 import { Checkbox, Form, Input, Radio, RadioChangeEvent, Select, Space, message } from 'antd';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { countryOptions } from '@/constant/phone';
 import { submitOrder } from '@/server/orderInfo';
+import {getPlanById} from "@/server/price";
 
 
 const selectOptions = countryOptions;
@@ -453,25 +453,25 @@ const Payment = () => {
         <div className={title}>Purchase summary</div>
         <div className={subTitle}>
           <span style={{ color: '#666666' }}>Billed in </span>
-          <span style={{ color: '#999999' }}>$ us Dollars</span>
+          <span style={{ color: '#999999' }}>$ US Dollars</span>
         </div>
         <div className={planBox}>
           <div className={planTitle}>
             <span>{plan?.name} plan</span>
-            <span>${plan?.price.toFixed(2)}</span>
+            <span>${plan?.priceUSD.toFixed(2)}</span>
           </div>
           <div className={planItem}>
             <span>{plan?.contactCapacity} contacts*</span>
             <span>per month</span>
           </div>
           <div className={planItem}>
-            <span>{plan?.emailCapacity} email sends*</span>
+            <span>{plan?.name === 'Premium'? 'Unlimited' : plan?.emailCapacity} email sends*</span>
           </div>
         </div>
         <div className={discountBox}>
           <div className={discountTitle}>
             <span>Discounts</span>
-            <span style={{ color: '#5F6EA0' }}>$0.00</span>
+            <span style={{ color: '#5F6EA0' }}>${plan?.discountUSD.toFixed(2)}</span>
           </div>
           {/*<div className={discountItem}>*/}
           {/*  <span>1 Month Free Trial (100%)</span>*/}
@@ -483,20 +483,20 @@ const Payment = () => {
         </div>
         <div className={totalBox}>
           <span>Total</span>
-          <span>${plan?.price.toFixed(2)}</span>
+          <span>${plan?.amountUSD.toFixed(2)}</span>
         </div>
         <Checkbox className={agreeCheckBox} checked={agreed} onChange={onAgreeChange}>
-          <span>By selecting &#34;Pay now&#34;, l authorize CusOb to charge.my payment method on Mar 7, 2024 and monthly aftthat at the then-current price plus tax. l can cancelanytime by going to the Billing page in Account Settings. l agree to the </span>
+          <span>By selecting &#34;Pay now&#34;, l authorize Cusob to charge and clearly define the amount, currency type, and payment method .l agree to the </span>
           <span>terms</span>
           <span> and have read and acknowledged </span>
-          <span>privacy statement</span>
+          <span>Privacy Policy</span>
         </Checkbox>
         <div className={payNow} onClick={onPay}>
           <ImgWrapper className={payNowIcon} alt='payment icon' src='/img/pay_now_icon.png'/>
           <span>Pay now</span>
           </div>
-        <div className={tip}>* When you exceed your limit, you incur additional charges of $6.50/mo per additional 150 contacts (comes with additional1.800 email sends).</div>
-        <div className={learnMore}>Learn more</div>
+        {/*<div className={tip}>* When you exceed your limit, you incur additional charges of $6.50/mo per additional 150 contacts (comes with additional1.800 email sends).</div>*/}
+        {/*<div className={learnMore}>Learn more</div>*/}
         <div className={receiptBox}>
           <span>Your receipt wil be sent to tinka.eryme@gmail.com</span>
           <span style={{ color: '#6784B5' }}>Edlite</span>

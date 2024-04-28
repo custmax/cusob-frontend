@@ -172,8 +172,9 @@ const Medias = () => {
     }
   }
 
-  const beforeUpload = (file: FileType) => {
+  const beforeUpload = (file: Blob) => {
     setShowUploadList(true)
+    fileRef.current = file
     return true;
   };
 
@@ -183,11 +184,13 @@ const Medias = () => {
     }
     if (info.file.status === 'done') {
       const formData = new FormData();
-      formData.append('file', info.file.originFileObj as Blob)
+      if (fileRef.current) formData.append('file', fileRef.current as Blob)
+      // formData.append('file', info.file.originFileObj as Blob)
       const res = await uploadMedia(formData)
       if (res.code === SUCCESS_CODE) {
         setShowUploadList(false)
         message.success(res.message)
+        initList()
       } else {
         message.error(res.message)
       }

@@ -100,6 +100,10 @@ const Reports = () => {
       dataIndex: 'contact',
       key: 'contact',
       align: 'center',
+      render: (_item, record) => {
+        return <div >{record.groupName}</div>
+      }
+      
     },
     {
       title: 'Last Modified',
