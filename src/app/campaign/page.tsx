@@ -49,10 +49,11 @@ const Campaign = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [campaignList, setCampaignList] = useState<(Campaign.CampaignNew & { status: number, updateTime: string })[]>([])
   const [total, setTotal] = useState(0)
+  const [order, setOrder] = useState<string>('0');
 
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
-    const query = { status, name: searchVal }
+    const query = { status, name: searchVal, order: order }
     const res = await getCampaignPage(pageSize, currentPage, query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
@@ -88,7 +89,17 @@ const Campaign = () => {
     }
   };
 
-  const onSortChange = () => {};
+  const onSortChange = (value: string) => {
+    // todo 有bug
+    if (value === 'createdTime'){
+      setOrder('0')
+      initList()
+    }
+    if (value === 'updatedTime'){
+      setOrder('1')
+      initList()
+    }
+  };
 
   const onCheckChange = () => {};
 
@@ -112,7 +123,7 @@ const Campaign = () => {
           <div onClick={() => onStatusClick('2')} className={classNames(statusItem, { [active]: status === '2' })}>Completed</div>
         </div>
         <div className={listWrapper}>
-          <div className={listTitle}>Your audience has 2 contacts.2 of these are subscribers.</div>
+          {/*<div className={listTitle}>Your audience has 2 contacts.2 of these are subscribers.</div>*/}
           <div className={filterWrapper}>
             <Input.Search
               placeholder="Find By Name"
@@ -125,11 +136,12 @@ const Campaign = () => {
               <span>Sort by</span>
               <Select
                 className={selector}
-                defaultValue="lastEdited"
-                style={{ width: 120 }}
+                defaultValue="Created Time"
+                style={{ width: 140 }}
                 onChange={onSortChange}
                 options={[
-                  { value: 'lastEdited', label: 'Last edited' },
+                  { value: 'createdTime', label: 'Created Time' },
+                  { value: 'updatedTime', label: 'Updated Time' },
                 ]}
               />
             </div>
@@ -138,7 +150,7 @@ const Campaign = () => {
             {
               campaignList.map((item, index) => <div key={index} className={listItem}>
                 <div className={listLeft}>
-                  <Checkbox onChange={onCheckChange} />
+                  {/*<Checkbox onChange={onCheckChange} />*/}
                   <ImgWrapper src='/img/list_item_icon.png' alt='list item' className={listIcon} />
                   <div className={itemDescBox}>
                     <div className={itemTitle}>{item.campaignName}</div>
