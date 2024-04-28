@@ -8,5 +8,9 @@ declare module Sender {
     password: string,
     smtpPort?: number,
     smtpServer?: string,
+    imapEncryption?: string,
+    smtpEncryption?: string,
+    popEncryption?: string,
+    checked?: boolean,
   }
 }
