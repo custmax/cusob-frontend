@@ -69,6 +69,7 @@ const Header: FC<Props> = (props) => {
 
 
   useEffect(() => {
+    initToken()
     initLocal();
   }, []);
   return <div className={classNames(headerContainer)}>
