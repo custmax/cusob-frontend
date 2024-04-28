@@ -1,11 +1,12 @@
 declare module Sender {
   type SaveSender = {
+    serverType?: string,
     email: string,
     id: number,
-    imapPort: number,
-    imapServer: string,
+    imapPort?: number,
+    imapServer?: string,
     password: string,
-    smtpPort: number,
-    smtpServer: string,
+    smtpPort?: number,
+    smtpServer?: string,
   }
 }

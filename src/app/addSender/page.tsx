@@ -3,12 +3,13 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
-import {Checkbox, Form, Input, Modal, Radio, message,  Button} from 'antd';
+import {Checkbox, Form, Input, Modal, Radio, message, Button, Dropdown, Space, MenuProps, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { saveSender, sendCodeForSender} from '@/server/sender';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
+import {DownOutlined, UserOutlined} from "@ant-design/icons";
 
 const {
   addSenderContainer,
@@ -45,6 +46,8 @@ const AddSender = () => {
   const [verifyEmail, setVerifyEmail] = useState('');
   const router = useRouter()
   const [checked, setChecked] = useState(false)
+  const [sslsmtpchecked, setSslsmtpChecked] = useState(false)
+  const [sslimapchecked, setSslimapChecked] = useState(false)
   const [error, setError] = useState('');
   const onVertifyOk = () => {
     setShowVertify(false);
@@ -56,32 +59,29 @@ const AddSender = () => {
     return emailRegex.test(email);
   }
   const onVertifyCancel = () => {
+
     setShowVertify(false);
   };
 
-  const onManualOk = () => {
-    setShowManual(false);
-  }
-
-  const onBinderOk = async () => {
+  const onManualOk = async () => {
     const {
+      serverType,
       email,
       password,
-    } = form1.getFieldsValue();
-    const {
-      smtpServer,
       imapPort,
-      imapServer,
-      smtpPort,
+      imapServer ,
+      smtpPort ,
+      smtpServer,
     } = form2.getFieldsValue();
 
     const data = {
+      serverType,
       email,
-      imapPort: imapPort,
-      imapServer: imapServer,
-      smtpPort: smtpPort ,
       password,
-      smtpServer: smtpServer,
+      imapPort,
+      imapServer ,
+      smtpPort ,
+      smtpServer,
     }
     if(validateEmail(email)){
       const res = await saveSender(data)
@@ -94,8 +94,30 @@ const AddSender = () => {
       setError('请输入有效的邮箱地址');
       return;
     }
-    console.log(data)
+    setShowBinder(false);
+    setShowManual(false);
+  }
 
+  const onBinderOk = async () => {
+    const {
+      email,
+      password,
+    } = form1.getFieldsValue();
+    const data = {
+      email,
+      password,
+    }
+    if(validateEmail(email)){
+      const res = await saveSender(data)
+      if (res.code === SUCCESS_CODE) {
+        message.success(res.message)
+      } else {
+        message.error(res.message)
+      }
+    }else {
+      setError('请输入有效的邮箱地址');
+      return;
+    }
     setShowBinder(false);
   };
 
@@ -114,6 +136,13 @@ const AddSender = () => {
     setChecked(prev => !prev)
   };
 
+  const onSSLsmtpUseChange = () => {
+    setSslsmtpChecked(prev => !prev)
+  };
+
+  const onSSLimapUseChange = () => {
+    setSslimapChecked(prev => !prev)
+  };
   const handleClick = () =>{
     setShowManual(true)
   }
@@ -143,9 +172,13 @@ const AddSender = () => {
           // 在这里处理表单验证失败后的逻辑，例如提示用户错误信息等操作
           console.error('Validation failed:', errorInfo);
         });
-
-
   };
+
+  const selectOptions = [{"type":"POP3"},{"type":"IMAP"}].map(item => ({
+    value: item.type,
+    label: item.type,
+  }))
+
 
   return <div className={addSenderContainer}>
     <EnteredHeader />
@@ -210,9 +243,10 @@ const AddSender = () => {
             colon={false}
             onFinish={onBinderOk}
         >
+
           {error && <div className={err}>{error}</div>}
           <Form.Item
-              label="E-mail account"
+              label="E-mail"
               name='email'
               rules={[{required:true,message: "Please input your email!"}]}
           >
@@ -261,33 +295,75 @@ const AddSender = () => {
             colon={false}
 
         >
+          <Form.Item name="serverType"
+                     label="Server Type"
+          >
+            <Select
 
+                options={selectOptions}
+                placeholder="POP3"
+            />
+          </Form.Item>
           <Form.Item
-            label="IMAP Port"
-            name='imapPort'
-
+              label="E-mail account"
+              name='email1'
+              rules={[{required:true,message: "Please input your email!"}]}
           >
             <Input />
           </Form.Item>
+
+          <Form.Item
+              label="Password"
+              name='password1'
+              rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input type='password' />
+          </Form.Item>
+
           <Form.Item
             label="IMAP Server"
             name='imapServer'
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="SMTP Port"
-            name='smtpPort'
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="SMTP Server"
-            name='smtpServer'
-          >
-            <Input />
+            <div style={{ display: 'flex' }}>
+              <Input style={{ marginRight: '10px' }} />
+              <div style={{ marginTop: '5px' }}>
+                <Checkbox
+                    checked={checked}
+                    onChange={onSSLimapUseChange}
+                >
+                  SSL
+                </Checkbox>
+              </div>
+              <Form.Item
+                  label="Port"
+                  name='imapPort'
+                  style={{ marginBottom: 0 }}
+              >
+                <Input />
+              </Form.Item>
+            </div>
           </Form.Item>
 
+          <Form.Item label="SMTP Server" name='smtpServer' >
+            <div style={{ display: 'flex' }}>
+              <Input style={{ marginRight: '10px' }} />
+              <div style={{ marginTop: '5px' }}>
+                <Checkbox
+                    checked={checked}
+                    onChange={onSSLsmtpUseChange}
+                >
+                  SSL
+                </Checkbox>
+              </div>
+              <Form.Item
+                  label="Port"
+                  name='smtpPort'
+                  style={{ marginBottom: 0 }}
+              >
+                <Input />
+              </Form.Item>
+            </div>
+          </Form.Item>
         </Form>
       </div>
     </Modal>
