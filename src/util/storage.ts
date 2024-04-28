@@ -1,4 +1,4 @@
-
+'use client'
 export type LocalUser = {
   firstName?: string,
   lastName?: string,
@@ -8,12 +8,26 @@ export type LocalUser = {
 }
 
 export const getToken = () => {
-  return window.localStorage.getItem('token' ) || ''; // 如果数据未过期，则返回数据值
+  const token = window.localStorage.getItem('token');
+  if (!token) {
+    return '';
+  }
+  const tokenData = JSON.parse(token);
+  console.log(tokenData)
+  if (Date.now() > tokenData.expiresAt) {
+    // Token 已过期，删除 token
+    window.localStorage.removeItem('token');
+    return '';
+  }
+  return tokenData.value;
 };
 
 export const setToken = (token: string) => {
-  window.localStorage.setItem('token', token || '')
-}
+  const expiresIn = 14*24*3600;
+  const expiresAt = Date.now() + expiresIn * 1000; // 转换为毫秒
+  const tokenData = JSON.stringify({ value: token, expiresAt });
+  window.localStorage.setItem('token', tokenData);
+};
 
 export const clearToken = () => {
   window.localStorage.removeItem('token')

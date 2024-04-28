@@ -5,10 +5,11 @@ import SideBar from '@/component/SideBar';
 import ImgWrapper from '@/component/ImgWrapper';
 import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
-import { Checkbox, Input, Select, message } from 'antd';
+import {Checkbox, Input, Select, message, Table, PaginationProps} from 'antd';
 import Link from 'next/link';
 import { getCampaignPage } from '@/server/campaign';
 import { SUCCESS_CODE } from '@/constant/common';
+import {getOrderHistory} from "@/server/orderHistory";
 
 const {
   campaignContainer,
@@ -54,7 +55,7 @@ const Campaign = () => {
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const query = { status, name: searchVal, order: order }
-    const res = await getCampaignPage(pageSize, currentPage, query)
+    const res = await getCampaignPage(currentPage, pageSize, query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
@@ -70,13 +71,26 @@ const Campaign = () => {
     setStatus(val)
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const query = { status: val, name: searchVal }
-    const res = await getCampaignPage(pageSize, currentPage, query)
+    const res = await getCampaignPage(currentPage, pageSize, query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
-      setCampaignList(res.data?.records || [])
+      setCampaignList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total || 0)
     }
   };
+
+  const onPageChange: PaginationProps['onChange'] = async (pageNumber:number) => {
+    setCurrentPage(pageNumber)
+    message.loading({ content: 'loading', duration: 10, key: ',listLoading' })
+    const query = { status, name: searchVal }
+    const res = await getCampaignPage(pageNumber, pageSize,query)
+    message.destroy('listLoading')
+    if (res.code === SUCCESS_CODE) {
+      console.log(res.data)
+      setCampaignList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
+      setTotal(res.data?.total)
+    }
+  }
 
   const onSearch = async (val: string) => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
@@ -84,10 +98,11 @@ const Campaign = () => {
     const res = await getCampaignPage(pageSize, currentPage, query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
-      setCampaignList(res.data?.records || [])
+      setCampaignList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total || 0)
     }
   };
+
 
   const onSortChange = (value: string) => {
     // todo 有bug
@@ -101,7 +116,13 @@ const Campaign = () => {
     }
   };
 
-  const onCheckChange = () => {};
+  const pagination = {
+    currentPage: currentPage,
+    pageSize: pageSize,
+    defaultCurrent: 1,
+    total: total,
+    onChange: onPageChange,
+  }
 
   return <div className={campaignContainer}>
     <EnteredHeader />
@@ -147,26 +168,38 @@ const Campaign = () => {
             </div>
           </div>
           <div className={listBox}>
-            {
-              campaignList.map((item, index) => <div key={index} className={listItem}>
-                <div className={listLeft}>
-                  {/*<Checkbox onChange={onCheckChange} />*/}
-                  <ImgWrapper src='/img/list_item_icon.png' alt='list item' className={listIcon} />
-                  <div className={itemDescBox}>
-                    <div className={itemTitle}>{item.campaignName}</div>
-                    <div className={itemDescText}>{item.updateTime} by you</div>
-                  </div>
-                </div>
-                <div className={listCenter}>
-                  <div className={draftStatus}>
-                    {item.status === 0 ? 'Draft' : (item.status === 1 ? 'Ongoing' : 'Completed')}
-                  </div>
-                </div>
-                <div className={listRight}>
-                  <Link href={`/campaignEditor?id=${item.id}`} className={editBtn}>Edit</Link>
-                </div>
-              </div>)
-            }
+            <Table
+                dataSource={campaignList}
+                pagination={pagination}
+                rowKey="id"
+                showHeader={false} // 隐藏表头
+                columns={[ // 定义表格列
+                  {
+                    dataIndex: 'campaignName',
+                    key: 'campaignName',
+                    render: (text, record) => (
+                        <div className={listItem}>
+                          <div className={listLeft}>
+                            <ImgWrapper src='/img/list_item_icon.png' alt='list item' className={listIcon} />
+                            <div className={itemDescBox}>
+                              <div className={itemTitle}>{record.campaignName}</div>
+                              <div className={itemDescText}>{record.updateTime} by you</div>
+                            </div>
+                          </div>
+                          <div className={listCenter}>
+                            <div className={draftStatus}>
+                              {record.status === 0 ? 'Draft' : (record.status === 1 ? 'Ongoing' : 'Completed')}
+                            </div>
+                          </div>
+                          <div className={listRight}>
+                            <Link href={`/campaignEditor?id=${record.id}`} className={editBtn}>Edit</Link>
+                          </div>
+                        </div>
+                    ),
+                  },
+                ]}
+            />
+
           </div>
         </div>
       </div>

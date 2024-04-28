@@ -10,6 +10,14 @@ export const getList = async (page: number, limit: number, keyword?: string, gro
   return res;
 }
 
+export const getHistoryList = async (page: number, limit: number) => {
+  const res = await clientFetch({
+    url: `/api/contact/getList/${page}/${limit}`,
+    method: 'GET',
+  })
+  return res;
+}
+
 export const addContact = async (data: Contact.NewContact) => {
   const res = await clientFetch({
     url: `/api/contact/add`,

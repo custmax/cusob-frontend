@@ -59,7 +59,7 @@ const Reports = () => {
 
   const pagination = {
     currentPage: currentPage,
-    pageSize: 10,
+    pageSize: pageSize,
     defaultCurrent: 1,
     total: total,
     onChange: onPageChange,

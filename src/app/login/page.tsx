@@ -28,6 +28,9 @@ const Login = () => {
   const [showForgotPw, setShowForgotPw] = useState<boolean>(false);
 
   useEffect(() => {
+    if(getToken()){
+      router.push("/dashboard")
+    }
     initEmail()
   }, [])
   

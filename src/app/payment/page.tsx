@@ -11,6 +11,7 @@ import { countryOptions } from '@/constant/phone';
 import { submitOrder } from '@/server/orderInfo';
 import {getPlanById} from "@/server/price";
 
+
 const selectOptions = countryOptions;
 
 const {
@@ -132,8 +133,11 @@ const Payment = () => {
   const prefixSelector1 = (
     <Form.Item name="accountPrefix" noStyle>
       <Select
-        style={{ width: '80px' }}
-        options={selectOptions}
+          style={{ width: 100 }}
+          dropdownStyle={{ minWidth: '100vpx' }}
+          options={selectOptions}
+          showSearch
+          placeholder="+86"
       />
     </Form.Item>
   );
@@ -141,8 +145,12 @@ const Payment = () => {
   const prefixSelector2 = (
     <Form.Item name="billingPrefix" noStyle>
       <Select
-        style={{ width: '80px' }}
-        options={selectOptions}
+          style={{ width: 100 }}
+          dropdownStyle={{ minWidth: '100vpx' }}
+          options={selectOptions}
+          showSearch
+          placeholder="+86"
+
       />
     </Form.Item>
   );

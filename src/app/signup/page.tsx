@@ -13,6 +13,8 @@ import EnteredHeader from "@/component/EnteredHeader";
 import ImgWrapper from "@/component/ImgWrapper";
 
 import Head from 'next/head';
+import classNames from "classnames";
+import Image from "next/image";
 const selectOptions = countryOptions;
 
 const {
@@ -29,6 +31,7 @@ const {
   details,
   sign,
     pop,
+    logo,
   custom_select
 } = styles;
 
@@ -43,7 +46,6 @@ const Signup = () => {
   }
 
 
-
   const onVerify = async () => {
     const email = form.getFieldValue('email')
     message.success('send successfully!');
@@ -52,18 +54,6 @@ const Signup = () => {
       message.error(res.message);
     }
   }
-  // useEffect(() => {
-  //   fetchCountry();
-  // }, [/* 依赖项 */]);
-  //   const fetchCountry = async () => {
-  //     const prefix = form.getFieldValue('prefix');
-  //     const res = await sendPhoneCode(prefix);
-  //     if (res.code !== SUCCESS_CODE) {
-  //       message.error(res.message);
-  //     } else {
-  //       setCountry(res.data);
-  //     }
-  //   };
 
   const onFinish = async (value: User.UserSign & { prefix?: 'string', agree?: string, captcha?: string; }) => {
     if (value.captcha !== captchaCode) {
@@ -105,11 +95,8 @@ const Signup = () => {
         dropdownStyle={{ minWidth: '100vpx' }}
         options={selectOptions}
         showSearch
-        placeholder="+86"
-        // onChange={async (value) => {
-        //   form.setFieldsValue({prefix: value});
-        //   await fetchCountry(); // 在这里直接调用 fetchCountry 函数
-        // }}
+        placeholder="CN +86"
+
       />
     </Form.Item>
   );
@@ -118,7 +105,18 @@ const Signup = () => {
   return <div>
         <div className={signupWrapper}>
           <div className={header}>
-            <div className={left}>Sign Up</div>
+            <Link href='/'>
+              <div className={classNames(logoBox)}>
+                <Image
+                    fill
+                    className={classNames(logo)}
+                    alt='logo'
+                    src='/img/logo.png'
+                    sizes='100%'
+                    priority
+                />
+              </div>
+            </Link>
             <div className={right}>
               <Link href='/login'>Have a CusOb Account  | Sign in</Link>
             </div>
