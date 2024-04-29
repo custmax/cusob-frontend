@@ -11,6 +11,5 @@ declare module Sender {
     imapEncryption?: string,
     smtpEncryption?: string,
     popEncryption?: string,
-    checked?: boolean,
   }
 }
