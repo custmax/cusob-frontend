@@ -13,7 +13,6 @@ export const getToken = () => {
     return '';
   }
   const tokenData = JSON.parse(token);
-  console.log(tokenData)
   if (Date.now() > tokenData.expiresAt) {
     // Token 已过期，删除 token
     window.localStorage.removeItem('token');
