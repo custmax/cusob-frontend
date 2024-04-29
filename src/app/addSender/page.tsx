@@ -75,16 +75,21 @@ const AddSender = () => {
       smtpPort ,
       smtpServer,
     } = form2.getFieldsValue();
+    const smtpEncryption = checked ? "STARTTLS" : sslsmtpchecked ? "SSL" : "NO" ;
+    const imapEncryption = select==="POP3" ? undefined : sslimapchecked ? "SSL" : "NO";
+    const popEncryption = select==="IMAP" ? undefined : sslpopchecked ? "SSL" : "NO";
 
     const data = {
-      serverType,
+      serverType: select,
       email,
       password,
-      checked,
       imapPort,
       imapServer ,
       smtpPort ,
       smtpServer,
+      smtpEncryption,
+      imapEncryption,
+      popEncryption
     }
 
     if(validateEmail(email)){
@@ -197,14 +202,27 @@ const AddSender = () => {
         });
   };
 
+  const handleSubmitManual = () => {
+    form2
+        .validateFields()
+        .then(values => {
+          // 在这里处理表单验证成功后的逻辑，例如提交表单数据等操作
+          onManualOk()
+        })
+        .catch(errorInfo => {
+          // 在这里处理表单验证失败后的逻辑，例如提示用户错误信息等操作
+          console.error('Validation failed:', errorInfo);
+        });
+  };
+
   const selectOptions = [{"type":"POP3"},{"type":"IMAP"}].map(item => ({
     value: item.type,
     label: item.type,
   }))
 
   const handleSelectChange = (selectedValue: string) => {
+
     setSelect(selectedValue)
-    // 在这里执行其他操作，如更新状态或调用其他函数
   };
 
 
@@ -299,7 +317,7 @@ const AddSender = () => {
     <Modal
         title="Manual Settings"
         open={showManual}
-        onOk={onManualOk}
+        onOk={handleSubmitManual}
         onCancel={onManualCancel}
         okText='Done'
         wrapClassName={binderModal}
@@ -330,17 +348,19 @@ const AddSender = () => {
                 onChange={handleSelectChange}
             />
           </Form.Item>
+          {error && <div className={err}>{error}</div>}
           <Form.Item
               label="E-mail account"
-              name='email1'
+              name='email'
               rules={[{required:true,message: "Please input your email!"}]}
           >
+
             <Input />
           </Form.Item>
 
           <Form.Item
               label="Password"
-              name='password1'
+              name='password'
               rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input type='password' />
