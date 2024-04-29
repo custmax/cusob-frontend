@@ -60,7 +60,9 @@ const Footer = () => {
 		</section>
 		<section className={section3}>
 			<div className={section3Title}>Resources</div>
-			<div className={section3SubTitle}>Help</div>
+			<div className={section3SubTitle}>
+				<Link href="/pricing" className={siteText}>Help</Link>
+			</div>
 		</section>
 		<section className={section4}>
 			<div className={section4Title}>Company</div>
@@ -70,13 +72,15 @@ const Footer = () => {
 			<div className={section4SubTitle}>
 				<Link href='/careers' className={siteText}>Careers</Link>
 			</div>
-			<div className={section4SubTitle}>Blog</div>
-			<div className={section4SubTitle}>Contact</div>
+			{/*<div className={section4SubTitle}>Blog</div>*/}
+			<div className={section4SubTitle}>
+				<Link href="/bookDemo" className={siteText}>Contact</Link>
+			</div>
 		</section>
 		<section className={section5}>
 			<div className={sitemap}>
-				<div className={siteText}>Contact</div>
-				<div className={line}></div>
+				{/*<div className={siteText}>Contact</div>*/}
+				{/*<div className={line}></div>*/}
 				<Link href='/terms'><div className={siteText}>Terms</div></Link>
 				<div className={line}></div>
 				<Link href='/aboutCookies' className={siteText}>Cookie Preferences</Link>
