@@ -11,11 +11,12 @@ import { getUserInfo, updateUser, uploadAvatar } from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { setLocalUser } from '@/util/storage';
 import ChangePwModal from '@/component/ChangePwModal';
+import {countryOptionss} from "@/constant/country";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const selectOptions = countryOptions;
-
+const CountryOptions = countryOptionss;
 const {
   accountContainer,
   main,
@@ -44,6 +45,8 @@ const Account = () => {
   const [userId, setUserId] = useState(-1);
   const [showChangePw, setShowChangePw] = useState<boolean>(false);
   const [originUser, setOriginUser] = useState<User.UserShown | null>(null)
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredOptions, setFilteredOptions] = useState(selectOptions);
 
   useEffect(() => {
     initUserInfo()
@@ -181,14 +184,52 @@ const Account = () => {
       })
     }
   }
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+    const filtered = selectOptions.filter((option) =>
+        option.value.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredOptions(filtered);
+  };
 
   const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{ width: 'auto' }}
-        options={selectOptions}
-      />
-    </Form.Item>
+      <Form.Item name="prefix" noStyle>
+        <Select
+            style={{width: 120}}
+            dropdownStyle={{ minWidth: 250,minHeight: 250 }}
+            dropdownRender={(menu) => (
+                <div>
+                  <Input
+                      style={{margin: '8px', width: 'calc(100% - 16px)'}}
+                      placeholder="Search"
+                      value={searchValue}
+                      onChange={(e) => handleSearch(e.target.value)}
+                  />
+                  {menu}
+                </div>
+            )}
+            filterOption={false}
+            placeholder="CN +86"
+            options={filteredOptions}
+            optionRender={(option) => (
+                <Space>
+                  {option.data.customLabel}
+                </Space>
+            )}
+        >
+        </Select>
+      </Form.Item>
+  );
+  const countrySelector = (
+      <Form.Item name="country" noStyle>
+        <Select
+            style={{width: 400}}
+            dropdownStyle={{ minWidth: 250,minHeight: 250 }}
+            showSearch
+            options={CountryOptions}
+        >
+        </Select>
+      </Form.Item>
   );
 
   const uploadButton = (
@@ -226,22 +267,20 @@ const Account = () => {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
           labelAlign='right'
-          initialValues={{ prefix: '+86', password: '*******' }}
+          initialValues={{ prefix: 'CN +86', password: '*******' }}
           colon={false}
         >
-          <Form.Item label=" " >
-            <Space.Compact block size='large' direction='vertical'>
-              <Form.Item
-                name='firstName'
-              >
-                <Input placeholder="First name" />
-              </Form.Item>
-              <Form.Item
-                name='lastName'
-              >
-                <Input placeholder="Lastname" />
-              </Form.Item>
-            </Space.Compact>
+          <Form.Item
+            label="First name"
+            name='firstName'
+          >
+            <Input placeholder="First name" />
+          </Form.Item>
+          <Form.Item
+              label="Last name"
+            name='lastName'
+          >
+            <Input placeholder="Lastname" />
           </Form.Item>
           <Form.Item
             label="Login Password"
@@ -271,13 +310,13 @@ const Account = () => {
             label="Country"
             name='country'
           >
-            <Input placeholder="USA" />
+            {countrySelector}
           </Form.Item>
           <Form.Item
             label="Company"
             name='company'
           >
-            <Input />
+            <Input/>
           </Form.Item>
         </Form>
         <div className={operateBox}>

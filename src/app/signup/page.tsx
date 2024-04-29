@@ -8,13 +8,15 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {getCaptcha} from '@/server/captcha';
 import Captcha from "@/component/Captcha";
-import {useCallback, useEffect, useState} from "react";
-import EnteredHeader from "@/component/EnteredHeader";
-import ImgWrapper from "@/component/ImgWrapper";
 
-import Head from 'next/head';
+
+
+import {AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal,
+  useState
+} from "react";
 import classNames from "classnames";
 import Image from "next/image";
+
 const selectOptions = countryOptions;
 
 const {
@@ -30,8 +32,8 @@ const {
   captchaBox,
   details,
   sign,
-    pop,
-    logo,
+  pop,
+  logo,
   custom_select
 } = styles;
 
@@ -39,9 +41,9 @@ const Signup = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [captchaCode, setCaptchaCode] = useState('')
-  const [country, setCountry] = useState('')
-
-  const setCode = (code:string) => {
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredOptions, setFilteredOptions] = useState(selectOptions);
+  const setCode = (code: string) => {
     setCaptchaCode(code)
   }
 
@@ -58,47 +60,69 @@ const Signup = () => {
   const onFinish = async (value: User.UserSign & { prefix?: 'string', agree?: string, captcha?: string; }) => {
     if (value.captcha !== captchaCode) {
       message.warning("Captcha is wrong!")
-    }else{
+    } else {
       if (value.phone && value.prefix) {
-
         var plus = value.prefix.indexOf("+");
-        value.phone = value.prefix.substring(plus+1)+ '-' + value.phone
+        value.phone = value.prefix.substring(plus + 1) + '-' + value.phone
       }
       if (!value.agree) {
         message.error('please agree to the Terms of Service and privacy Policy first')
         return;
       }
-
       delete value.prefix
       delete value.agree
       // console.log('value', value)
-      message.loading({ content: 'loading', duration: 10, key: 'loading' })
+      message.loading({content: 'loading', duration: 10, key: 'loading'})
       const res = await register(value)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success({
           content: 'sign up successfully!',
-          onClose: () => { router.push('/login') }
+          onClose: () => {
+            router.push('/login')
+          }
         });
       } else {
-        message.error({ content: res.message })
+        message.error({content: res.message})
       }
     }
   }
 
+    const handleSearch = (value: string) => {
+      setSearchValue(value);
+      const filtered = selectOptions.filter((option) =>
+          option.value.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    };
 
-
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{ width: 100 }}
-        dropdownStyle={{ minWidth: '100vpx' }}
-        options={selectOptions}
-        showSearch
-        placeholder="CN +86"
-
-      />
-    </Form.Item>
+    const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+        <Select
+            style={{width: 100}}
+            dropdownStyle={{ minWidth: 250,minHeight: 250 }}
+            dropdownRender={(menu) => (
+                <div>
+                  <Input
+                      style={{margin: '8px', width: 'calc(100% - 16px)'}}
+                      placeholder="Search"
+                      value={searchValue}
+                      onChange={(e) => handleSearch(e.target.value)}
+                  />
+                  {menu}
+                </div>
+            )}
+            filterOption={false}
+            placeholder="CN +86"
+            options={filteredOptions}
+            optionRender={(option) => (
+                <Space>
+                  {option.data.customLabel}
+                </Space>
+            )}
+        >
+      </Select>
+        </Form.Item>
   );
 
 
@@ -129,7 +153,7 @@ const Signup = () => {
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
                 labelAlign='left'
-                initialValues={{ prefix: '+86' }}
+                initialValues={{ prefix: 'CN +86' }}
                 onFinish={onFinish}
             >
               <Form.Item
