@@ -17,11 +17,11 @@ export const getPlanByContactCapacity = async (capacity: number) => {
   return res;
 }
 
-export const getPlanById = async (id: number) => {
-  const res = await clientFetch({
-    url: `/api/plan/price/getPlanById`,
-    method: 'GET',
-    data: { id }
-  })
-  return res;
-}
+// export const getPlanById = async (id: number) => {
+//   const res = await clientFetch({
+//     url: `/api/plan/price/getPlanById`,
+//     method: 'GET',
+//     data: { id }
+//   })
+//   return res;
+// }

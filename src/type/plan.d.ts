@@ -5,7 +5,9 @@ declare module Plan {
     emailCapacity: number,
     id: number,
     name: string,
-    price: number,
+    priceUSD: number,
+    discountUSD: number,
+    amountUSD: number,
     updateTime: string,
   }
 

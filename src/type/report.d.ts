@@ -7,5 +7,6 @@ declare module Report {
     opened: number,
     clicked: number,
     campaignName: string,
+    groupName: string,
   }
 }

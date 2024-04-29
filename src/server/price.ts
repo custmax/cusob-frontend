@@ -20,3 +20,12 @@ export const getContactCapacityList = async () => {
     })
     return res;
 }
+
+export const getPlanById = async (id: number) => {
+    const res = await clientFetch({
+        url: `/api/price/getPlan`,
+        method: 'GET',
+        data: { id }
+    })
+    return res;
+}

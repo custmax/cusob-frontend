@@ -6,7 +6,6 @@ export const getCampaignPage = async ( page: number, limit: number,query: Record
     method: 'GET',
     data: query,
   })
-  console.log(res.data)
   return res;
 }
 
