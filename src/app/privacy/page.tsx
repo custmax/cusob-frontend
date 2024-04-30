@@ -16,7 +16,7 @@ const Privacy = () => {
       <div className={title}>Privacy</div>
       <div className={contact}>
         <span> Contact Us：</span>
-        <span style={{ color: '#1E1E69' }}>support@Cusob.com</span>
+        <span style={{ color: '#1E1E69' }}>hello@Cusob.com</span>
       </div>
       <div className={content}>
         <section>

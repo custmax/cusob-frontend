@@ -113,7 +113,7 @@ const Signup = () => {
                 </div>
             )}
             filterOption={false}
-            placeholder="CN +86"
+            placeholder="US +1"
             options={filteredOptions}
             optionRender={(option) => (
                 <Space>
