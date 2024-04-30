@@ -12,18 +12,45 @@
     padding-right: 380vpx;
     box-sizing: border-box;
 
-    .title {
-      font-family: PingFangSC, PingFang SC;
-      font-weight: 400;
-      font-size: 20vpx;
-      color: #1E1E69;
-      line-height: 28vpx;
-      height: 90vpx;
+    .containerHeader {
       display: flex;
-      align-items: center;
-      border-bottom: 1px solid #E0E0E0;
+      justify-content: space-between;
+
+      .title {
+        font-family: PingFangSC, PingFang SC;
+        font-weight: 400;
+        font-size: 20vpx;
+        color: #1E1E69;
+        line-height: 28vpx;
+        height: 90vpx;
+        display: flex;
+        align-items: center;
+        //border-bottom: 1px solid #E0E0E0;
+      }
+
+      .addSender{
+        margin-top: auto;
+        margin-bottom: auto;
+
+        .buttonAdd{
+          height: 50vpx;
+          width: 120vpx;
+          background: #000AFF;
+          border-radius: 5vpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: ArialMT;
+          font-size: 18vpx;
+          color: #FFFFFF;
+          cursor: pointer;
+        }
+      }
     }
-  }
+
+    }
+
+
 
   .domainBox{
     width: 320vpx;
