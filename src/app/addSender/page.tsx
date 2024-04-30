@@ -32,7 +32,6 @@ const {
   card,
   active,
   radio,
-  vertifyIcon,
     err,
   formControls
 } = styles;
@@ -54,6 +53,7 @@ const AddSender = () => {
   const onVertifyOk = () => {
     setShowVertify(false);
   };
+  let isSubmitting = false;
 
   function validateEmail(email:string) {
     // 正则表达式用于验证邮箱格式
@@ -66,15 +66,20 @@ const AddSender = () => {
   };
 
   const onManualOk = async () => {
+    if(isSubmitting){
+      return;
+    }
+    isSubmitting = true
     const {
-      serverType,
       email,
       password,
       imapPort,
-      imapServer ,
+      popPort,
       smtpPort ,
-      smtpServer,
     } = form2.getFieldsValue();
+    const smtpServerValue = form2.getFieldValue('smtpServer') === 'on' ? 'on' : null;
+    const imapServerValue = form2.getFieldValue('imapServer') === 'on' ? 'on' : null;
+    const popServerValue = form2.getFieldValue('popServer') === 'on' ? 'on' : null;
     const smtpEncryption = checked ? "STARTTLS" : sslsmtpchecked ? "SSL" : "NO" ;
     const imapEncryption = select==="POP3" ? undefined : sslimapchecked ? "SSL" : "NO";
     const popEncryption = select==="IMAP" ? undefined : sslpopchecked ? "SSL" : "NO";
@@ -84,16 +89,20 @@ const AddSender = () => {
       email,
       password,
       imapPort,
-      imapServer ,
+      popPort,
       smtpPort ,
-      smtpServer,
+     smtpServerValue,
+      imapServerValue,
+      popServerValue,
       smtpEncryption,
       imapEncryption,
       popEncryption
     }
 
     if(validateEmail(email)){
+      message.loading({ content: 'loading', duration: 10, key: 'loading' })
       const res = await saveSender(data)
+      message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
       } else {
@@ -103,21 +112,39 @@ const AddSender = () => {
       setError('请输入有效的邮箱地址');
       return;
     }
+    isSubmitting = false;
     setShowBinder(false);
     setShowManual(false);
+    form1.resetFields;
+    form2.resetFields;
   }
 
   const onBinderOk = async () => {
+    if(isSubmitting){
+      return
+    }
+    isSubmitting = true
+    const smtpEncryption = checked ? "STARTTLS" : sslsmtpchecked ? "SSL" : "NO" ;
+    const imapEncryption = select==="POP3" ? undefined : sslimapchecked ? "SSL" : "NO";
+    const popEncryption = select==="IMAP" ? undefined : sslpopchecked ? "SSL" : "NO";
     const {
       email,
       password,
+
     } = form1.getFieldsValue();
     const data = {
       email,
       password,
+      serverType: "POP3",
+      smtpEncryption,
+      imapEncryption,
+      popEncryption
     }
     if(validateEmail(email)){
+      message.loading({ content: 'loading', duration: 10, key: 'loading' })
       const res = await saveSender(data)
+
+      message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
       } else {
@@ -127,7 +154,9 @@ const AddSender = () => {
       setError('请输入有效的邮箱地址');
       return;
     }
+    isSubmitting = false;
     setShowBinder(false);
+    form1.resetFields;
   };
 
   const onBinderCancel = () => {
