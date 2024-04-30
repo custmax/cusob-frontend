@@ -2,19 +2,24 @@
 import styles from './page.module.scss';
 import EnteredHeader from "@/component/EnteredHeader";
 import SideBar from "@/component/SideBar";
-import {Space, Table, TableProps} from "antd";
+import {Button, Space, Table, TableProps} from "antd";
 import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {getDomainList} from "@/server/domain";
 import {SUCCESS_CODE} from "@/constant/common";
 import classNames from "classnames";
+import {useRouter} from "next/navigation";
+import {getSenderList} from "@/server/sender";
 
 
 const {
     emailListContainer,
     main,
+    containerHeader,
     title,
+    addSender,
+    buttonAdd,
     content,
     domainBox,
     domainTitle,
@@ -26,12 +31,15 @@ const {
 type DataType = {
     key: string;
     email: string;
+    domain: string;
 }
 
 const EmailList = () => {
 
+    const router = useRouter()
     const [domainList, setDomainList] = useState<{domain:string, id:number}[]>([]);
     const [activeDomainId, setActiveDomainId] = useState<number>(-1);
+    const [emailList, setEmailList] = useState<{email:string, key:string, domain:string}[]>([]);
 
     const initDomainList = async () => {
         const res = await getDomainList();
@@ -40,13 +48,27 @@ const EmailList = () => {
         }
     }
 
+    const initEmailList = async () => {
+        const res = await getSenderList()
+        if (res.code === SUCCESS_CODE && res.data){
+            setEmailList(res.data.map((item: { id: number, email: string }) => (
+                { ...item, key: item.id, domain: item.email.substring(item.email.lastIndexOf('@')+1) })) || []
+            )
+        }
+    }
+
     const onDomainItemClick = (domainItem: {domain:string, id:number}) => {
         setActiveDomainId(domainItem.id)
+    }
+
+    const pushToAddSender = () => {
+        router.push("/addSender")
     }
 
 
     useEffect(() => {
         initDomainList()
+        initEmailList()
     }, []);
 
     const columns: TableProps<DataType>['columns'] = [
@@ -55,6 +77,14 @@ const EmailList = () => {
             dataIndex: 'email',
             key: 'email',
             render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Domain',
+            dataIndex: 'domain',
+            key: 'domain',
+            render: (domain) => (
+                <Link href="/senderList">{domain}</Link>
+            ),
         },
         {
             title: 'Action',
@@ -67,26 +97,34 @@ const EmailList = () => {
         },
     ];
 
-    const emailList: DataType[] = [
-        {
-            key: '1',
-            email: 'ming@daybreakhust.top',
-        },
-        {
-            key: '2',
-            email: 'daybreak@chtrak.com',
-        },
-    ];
+    // const emailList: DataType[] = [
+    //     {
+    //         key: '1',
+    //         email: 'ming@daybreakhust.top',
+    //         domain: 'daybreakhust.top',
+    //     },
+    //     {
+    //         key: '2',
+    //         email: 'daybreak@chtrak.com',
+    //         domain: 'chtrak.com',
+    //     },
+    // ];
 
     return <div className={emailListContainer}>
         <EnteredHeader/>
         <SideBar/>
         <div className={main}>
-            <div className={title}>
-                <span>Sender</span>
-                <span style={{margin: '0 0.5em', color: '#666'}}>/</span>
-                <span style={{color: '#999999'}}> All Senders</span>
+            <div className={containerHeader}>
+                <div className={title}>
+                    <span>Sender</span>
+                    <span style={{margin: '0 0.5em', color: '#666'}}>/</span>
+                    <span style={{color: '#999999'}}> All Senders</span>
+                </div>
+                <div className={addSender}>
+                    <Button onClick={pushToAddSender} className={buttonAdd}>Add Sender</Button>
+                </div>
             </div>
+
             <div className={content}>
                 <Table<DataType>
                     columns={columns}
