@@ -159,8 +159,8 @@ const CampaignEditor = () => {
   const initSender = useCallback(async () => {
     const res = await getSenderList()
     if (res.code === SUCCESS_CODE && res.data) {
-      const newSenderList = res.data.map((item: { userId: number, email: string }) => ({
-        value: item.userId,
+      const newSenderList = res.data.map((item: { id: number, email: string }) => ({
+        value: item.id,
         label: item.email
       }))
       senderListRef.current = newSenderList
