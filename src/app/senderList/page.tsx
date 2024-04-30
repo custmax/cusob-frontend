@@ -121,9 +121,9 @@ const SenderList = () => {
             <div className={addSender}>
                 <Button onClick={pushToAddSender} className={buttonAdd}>Add Sender</Button>
             </div>
-            <div className={verifyNotice}>
-                <div className={noticeTxt}>Your domain has not been verified</div>
-            </div>
+            {/*<div className={verifyNotice}>*/}
+            {/*    <div className={noticeTxt}>Your domain has not been verified</div>*/}
+            {/*</div>*/}
             <div className={tableDomain}>
                 <Table columns={columns} dataSource={domainList}></Table>
             </div>
