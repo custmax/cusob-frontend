@@ -67,23 +67,22 @@ const PriceList = () => {
   const [currency, setCurrency] = useState(0)
   const [capacityList, setCapacityList] = useState<{value: number, label:number}[]>([])
 
-  const initPriceList = useCallback(async () => {
+  const initPriceList = async () => {
     message.loading({ content: 'loading', duration: 10, key: 'loading' })
     const res = await getPriceList(contactCapacity, months, currency)
     message.destroy('loading')
     if (res.code === SUCCESS_CODE && res.data && res.data.length) {
       setPlans(res.data)
     }
+  }
 
-  }, [contactCapacity, months, currency])
-
-  const initContactCapacity = useCallback(async () =>{
+  const initContactCapacity = async () =>{
     const res = await getContactCapacityList()
     if (res.code === SUCCESS_CODE && res.data && res.data.length){
       const newOptions = res.data.map((item: number) => ({value: item, label: item}))
       setCapacityList(newOptions)
     }
-  }, [])
+  }
 
   const initPayCancel = useCallback(async () => {
     if (type === 'cancelPay') {
@@ -100,21 +99,35 @@ const PriceList = () => {
     initContactCapacity()
     initPayCancel()
     initPriceList()
-  }, [initContactCapacity, initPayCancel, initPriceList])
+  }, [initPayCancel])
 
   // capacity
-  const onNumSelect = (value: number) => {
+  const onNumSelect = async (value: number) => {
     setContactCapacity(value)
-    initPriceList()
+    message.loading({ content: 'loading', duration: 10, key: 'loading' })
+    const res = await getPriceList(value, months, currency)
+    if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+      setPlans(res.data)
+    }
+    message.destroy('loading')
   };
 
-  const onMonthsChange = (value: string) => {
+  const onMonthsChange = async (value: string) => {
+    message.loading({ content: 'loading', duration: 10, key: 'loading' })
     if (value === 'Monthly'){
       setMonths(1)
+      const res = await getPriceList(contactCapacity, 1, currency)
+      if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+        setPlans(res.data)
+      }
     }else {
       setMonths(12)
+      const res = await getPriceList(contactCapacity, 12, currency)
+      if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+        setPlans(res.data)
+      }
     }
-    initPriceList()
+    message.destroy('loading')
   }
 
   const onBuyClick = (value: number) => {
