@@ -11,7 +11,6 @@ export const sendCodeForSender = async (email: string) => {
 }
 
 export const saveSender = async (data: Omit<Sender.SaveSender, 'id'>) => {
-  console.log(data)
   const res = await clientFetch({
     url: `/api/sender/save`,
     method: 'POST',
@@ -19,6 +18,7 @@ export const saveSender = async (data: Omit<Sender.SaveSender, 'id'>) => {
   })
   return res;
 }
+
 
 export const getSenderList = async () => {
   const res = await clientFetch({
