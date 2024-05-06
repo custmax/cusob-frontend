@@ -5,7 +5,7 @@ import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
 import {Checkbox, Form, Input, Modal, Radio, message, Button, Dropdown, Space, MenuProps, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { saveSender, sendCodeForSender} from '@/server/sender';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
@@ -45,11 +45,14 @@ const AddSender = () => {
   const [verifyEmail, setVerifyEmail] = useState('');
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-  const [sslsmtpchecked, setSslsmtpChecked] = useState(false)
-  const [sslimapchecked, setSslimapChecked] = useState(false)
-  const [sslpopchecked, setSslpopChecked] = useState(false)
+  const [sslsmtpchecked, setSslsmtpChecked] = useState(true)
+  const [sslimapchecked, setSslimapChecked] = useState(true)
+  const [sslpopchecked, setSslpopChecked] = useState(true)
+
   const [error, setError] = useState('');
-  const [select, setSelect] = useState('POP3');
+  const [select, setSelect] = useState('IMAP');
+
+
   const onVertifyOk = () => {
     setShowVertify(false);
   };
@@ -74,12 +77,13 @@ const AddSender = () => {
       email,
       password,
       imapPort,
+      smtpServer,
+      imapServer,
+      popServer,
       popPort,
       smtpPort ,
     } = form2.getFieldsValue();
-    const smtpServerValue = form2.getFieldValue('smtpServer') === 'on' ? 'on' : null;
-    const imapServerValue = form2.getFieldValue('imapServer') === 'on' ? 'on' : null;
-    const popServerValue = form2.getFieldValue('popServer') === 'on' ? 'on' : null;
+
     const smtpEncryption = checked ? "STARTTLS" : sslsmtpchecked ? "SSL" : "NO" ;
     const imapEncryption = select==="POP3" ? undefined : sslimapchecked ? "SSL" : "NO";
     const popEncryption = select==="IMAP" ? undefined : sslpopchecked ? "SSL" : "NO";
@@ -91,9 +95,9 @@ const AddSender = () => {
       imapPort,
       popPort,
       smtpPort ,
-     smtpServerValue,
-      imapServerValue,
-      popServerValue,
+      smtpServer,
+      imapServer,
+      popServer,
       smtpEncryption,
       imapEncryption,
       popEncryption
@@ -101,6 +105,8 @@ const AddSender = () => {
 
     if(validateEmail(email)){
       message.loading({ content: 'loading', duration: 10, key: 'loading' })
+
+      console.log(data)
       const res = await saveSender(data)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
@@ -135,7 +141,7 @@ const AddSender = () => {
     const data = {
       email,
       password,
-      serverType: "POP3",
+      serverType: "IMAP",
       smtpEncryption,
       imapEncryption,
       popEncryption
@@ -174,6 +180,7 @@ const AddSender = () => {
     setChecked(prev => !prev)
   };
 
+
   const onSSLsmtpUseChange = () => {
     if(!sslsmtpchecked){
       form2.setFieldValue("smtpPort",emailsettings.SMTP_PORT_SSL)
@@ -181,6 +188,7 @@ const AddSender = () => {
       form2.setFieldValue("smtpPort",emailsettings.SMTP_PORT)
     }
     setSslsmtpChecked(prev => !prev)
+
   };
 
   const onSSLimapUseChange = () => {
@@ -189,6 +197,7 @@ const AddSender = () => {
     }else {
       form2.setFieldValue("imapPort",emailsettings.IMAP_PORT)
     }
+    console.log(form2.getFieldValue("imapServer"))
     setSslimapChecked(prev => !prev)
   };
 
@@ -361,9 +370,9 @@ const AddSender = () => {
             labelAlign='right'
             colon={false}
             initialValues={{
-              smtpPort: emailsettings.SMTP_PORT,
-              imapPort: emailsettings.IMAP_PORT,
-              popPort: emailsettings.POP_PORT
+              smtpPort: emailsettings.SMTP_PORT_SSL,
+              imapPort: emailsettings.IMAP_PORT_SSL,
+              popPort: emailsettings.POP_PORT_SSL
             }}
 
         >
@@ -372,8 +381,7 @@ const AddSender = () => {
           >
             <Select
                 options={selectOptions}
-                defaultValue="POP3"
-                placeholder="POP3"
+                defaultValue="IMAP"
                 onChange={handleSelectChange}
             />
           </Form.Item>
@@ -394,75 +402,77 @@ const AddSender = () => {
           >
             <Input type='password' />
           </Form.Item>
-          {select!=='POP3' ? <Form.Item
-              label="IMAP Server"
-              name='imapServer'
-          >
-            <div style={{ display: 'flex' }}>
-              <Input style={{ marginRight: '10px' }} />
-              <div style={{ marginTop: '5px' }}>
-                <Checkbox
-                    checked={sslimapchecked}
-                    onChange={onSSLimapUseChange}
-                >
-                  SSL
-                </Checkbox>
-              </div>
-              <Form.Item
-                  label="Port"
-                  name='imapPort'
-                  style={{ marginBottom: 0 }}
-              >
-                <Input/>
-              </Form.Item>
-            </div>
-          </Form.Item> : <Form.Item
-              label="POP Server"
-              name='popServer'
-          >
-            <div style={{ display: 'flex' }}>
-              <Input style={{ marginRight: '10px' }} />
-              <div style={{ marginTop: '5px' }}>
-                <Checkbox
-                    checked={sslpopchecked}
-                    onChange={onSSLpopUseChange}
-                >
-                  SSL
-                </Checkbox>
-              </div>
-              <Form.Item
-                  label="Port"
-                  name='popPort'
-                  style={{ marginBottom: 0 }}
-              >
-                <Input/>
-              </Form.Item>
-            </div>
-          </Form.Item>
+          {select!=='POP3' ? <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <Form.Item label="IMAP Server"
+                       name='imapServer'
+                       style={{  marginBottom: 0,marginLeft:'20px' }}
+                       labelCol={{ span: 8 }}
+                       rules={[{ required: true, message: 'Please input your imapServer!' }]}
+            >
+              <Input style={{marginLeft:'3px' ,width:'170px' ,marginRight:'23px'}}/>
+            </Form.Item>
+            <Checkbox
+                checked={sslimapchecked}
+                onChange={onSSLimapUseChange}
+            >
+              SSL
+            </Checkbox>
+            <Form.Item label="Port"
+                       name='imapPort'
+                       style={{ marginBottom: 0 ,width: '85px'}}
+                       labelCol={{ span: 7 }}
+
+            >
+              <Input style={{marginLeft:'10px'}} />
+            </Form.Item>
+          </div> : <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <Form.Item label="POP Server"
+                       name='popServer'
+                       style={{  marginBottom: 0,marginLeft:'20px' }}
+                       labelCol={{ span: 8 }}
+                       rules={[{ required: true, message: 'Please input your popServer!' }]}
+            >
+              <Input style={{marginLeft:'3px' ,width:'170px' ,marginRight:'23px'}} />
+            </Form.Item>
+            <Checkbox
+                checked={sslpopchecked}
+                onChange={onSSLpopUseChange}
+            >
+              SSL
+            </Checkbox>
+            <Form.Item label="Port"
+                       name='popPort'
+                       style={{ marginBottom: 0 ,width: '85px'}}
+                       labelCol={{ span: 7 }}
+
+            >
+              <Input style={{marginLeft:'10px'}} />
+            </Form.Item>
+          </div>
           }
 
-          <Form.Item label="SMTP Server" name='smtpServer' >
-            <div style={{ display: 'flex' }}>
-              <Input style={{ marginRight: '10px' }} />
-              <div style={{ marginTop: '5px' }}>
-                <Checkbox
-                    checked={sslsmtpchecked}
-                    onChange={onSSLsmtpUseChange}
-                >
-                  SSL
-                </Checkbox>
-              </div>
-              <Form.Item
-                  label="Port"
-                  name='smtpPort'
-                  style={{ marginBottom: 0 }}
-              >
-                <Input />
-              </Form.Item>
-            </div>
-          </Form.Item>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            <Form.Item label="SMTP Server"
+                       name='smtpServer'
+                       style={{  marginBottom: 0,marginLeft:'20px' }}
+                       labelCol={{ span: 8 }}
+                       rules={[{ required: true, message: 'Please input your smtpServer!' }]}
+            >
+              <Input style={{marginLeft:'3px' ,width:'170px' ,marginRight:'15px'}} />
+            </Form.Item>
+            <Checkbox
+                checked={sslsmtpchecked}
+                onChange={onSSLsmtpUseChange}
+            >
+              SSL
+            </Checkbox>
+            <Form.Item label="Port" name='smtpPort' style={{ marginBottom: 0 ,width: '85px'}} labelCol={{ span: 7 }}>
+              <Input style={{marginLeft:'10px'}} />
+            </Form.Item>
+          </div>
         </Form>
       </div>
+
       <div className={checkboxWrapper}>
         <Checkbox
             checked={checked}
