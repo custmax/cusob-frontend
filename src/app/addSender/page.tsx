@@ -270,7 +270,7 @@ const AddSender = () => {
     <div className={main}>
       <div className={title}>
         <div className={titleLeft}>
-          <span>Contacts</span>
+          <span>Senders</span>
           <span style={{ margin: '0 0.5em', color: '#666' }}>/</span>
           <span style={{ color: '#999999' }}>Add a sender</span>
         </div>
