@@ -12,6 +12,7 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { setLocalUser } from '@/util/storage';
 import ChangePwModal from '@/component/ChangePwModal';
 import {countryOptionss} from "@/constant/country";
+import PrefixSelector from "@/component/PrefixSelector";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -45,8 +46,6 @@ const Account = () => {
   const [userId, setUserId] = useState(-1);
   const [showChangePw, setShowChangePw] = useState<boolean>(false);
   const [originUser, setOriginUser] = useState<User.UserShown | null>(null)
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState(selectOptions);
 
   useEffect(() => {
     initUserInfo()
@@ -184,42 +183,7 @@ const Account = () => {
       })
     }
   }
-  const handleSearch = (value: string) => {
-    setSearchValue(value);
-    const filtered = selectOptions.filter((option) =>
-        option.value.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-  };
 
-  const prefixSelector = (
-      <Form.Item name="prefix" noStyle>
-        <Select
-            style={{width: 120}}
-            dropdownStyle={{ minWidth: 250,minHeight: 250 }}
-            dropdownRender={(menu) => (
-                <div>
-                  <Input
-                      style={{margin: '8px', width: 'calc(100% - 16px)'}}
-                      placeholder="Search"
-                      value={searchValue}
-                      onChange={(e) => handleSearch(e.target.value)}
-                  />
-                  {menu}
-                </div>
-            )}
-            filterOption={false}
-            placeholder="CN +86"
-            options={filteredOptions}
-            optionRender={(option) => (
-                <Space>
-                  {option.data.customLabel}
-                </Space>
-            )}
-        >
-        </Select>
-      </Form.Item>
-  );
   const countrySelector = (
       <Form.Item name="country" noStyle>
         <Select
@@ -303,7 +267,7 @@ const Account = () => {
             name='phone'
           >
             <Input
-              addonBefore={prefixSelector}
+              addonBefore={<PrefixSelector/>}
             />
           </Form.Item>
           <Form.Item

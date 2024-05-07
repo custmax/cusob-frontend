@@ -3,7 +3,7 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import { DatePicker, Form, GetProp, Input, Select, Upload, UploadProps, message } from 'antd';
+import {DatePicker, Form, GetProp, Input, Select, Upload, UploadProps, message, Space} from 'antd';
 import { Suspense, useEffect, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ImgWrapper from '@/component/ImgWrapper';
@@ -14,6 +14,7 @@ import { addContact } from '@/server/contact';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getGroupList } from '@/server/group';
 import dayjs from 'dayjs'
+import PrefixSelector from "@/component/PrefixSelector";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -106,6 +107,7 @@ const ContactEditor = () => {
     }
   }
 
+
   const beforeUpload = (file: FileType) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -145,14 +147,6 @@ const ContactEditor = () => {
     </button>
   );
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select
-        style={{ width: 'auto' }}
-        options={selectOptions}
-      />
-    </Form.Item>
-  );
 
   const onSave = async () => {
     const values = form.getFieldsValue()
@@ -305,7 +299,7 @@ const ContactEditor = () => {
             label="Telephone"
             name='phone'
           >
-            <Input addonBefore={prefixSelector} />
+            <Input addonBefore={<PrefixSelector />} />
           </Form.Item>
           <Form.Item label="Company" style={{ marginBottom: 0 }}>
             <Form.Item name='company' style={{ display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)' }}>
