@@ -3,9 +3,9 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import classNames from 'classnames';
-import {Checkbox, Form, Input, Modal, Radio, message, Button, Dropdown, Space, MenuProps, Select} from 'antd';
+import {Checkbox, Form, Input, Modal, Radio, message, Button, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import React, {useRef, useState} from 'react';
+import React, { useState} from 'react';
 import { saveSender, sendCodeForSender} from '@/server/sender';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
@@ -146,8 +146,10 @@ const AddSender = () => {
       imapEncryption,
       popEncryption
     }
+
     if(validateEmail(email)){
       message.loading({ content: 'loading', duration: 10, key: 'loading' })
+      console.log(data)
       const res = await saveSender(data)
 
       message.destroy('loading')
