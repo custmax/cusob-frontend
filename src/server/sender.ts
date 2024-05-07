@@ -28,3 +28,11 @@ export const getSenderList = async () => {
   return res;
 }
 
+export const removeSender = async (id: number) => {
+  const res = await clientFetch({
+    url: `/api/sender/remove?id=${id}`,
+    method: 'DELETE',
+  })
+  return res;
+}
+
