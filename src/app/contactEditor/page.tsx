@@ -287,7 +287,7 @@ const ContactEditor = () => {
           initialValues={{ prefix: '+86' }}
           colon={false}
         >
-          <Form.Item label=" " style={{ marginBottom: 0 }}>
+          <Form.Item label="Name" style={{ marginBottom: 0 }}>
             <Form.Item name='firstName' style={{ display: 'inline-block', marginRight: '16px', width: 'calc(50% - 8px)' }}>
               <Input placeholder="First name" />
             </Form.Item>
@@ -315,7 +315,7 @@ const ContactEditor = () => {
               <Input placeholder="Dept" />
             </Form.Item>
             <Form.Item name='title' style={{ display: 'inline-block', width: 'calc(20%)' }}>
-              <Input placeholder="title" />
+              <Input placeholder="Title" />
             </Form.Item>
           </Form.Item>
           <Form.Item
@@ -331,7 +331,7 @@ const ContactEditor = () => {
             {
               groupList.length
                 ? <Select
-                  placeholder="Use commas to separate multiple words or phrases"
+                  placeholder="Groups"
                   options={groupList.map((item, index) => ({
                     value: item.groupName,
                     label: item.groupName

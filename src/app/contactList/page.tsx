@@ -108,6 +108,8 @@ const ContactList = () => {
     if (groupName) {
       const res = await addGroup(groupName)
       if (res.code === SUCCESS_CODE) {
+        initGroupList()
+        initGroupNum()
         message.success(res.message)
       } else {
         message.error(res.message)
@@ -226,8 +228,10 @@ const ContactList = () => {
     if (selectedRowKeys.length) {
       const res = await removeContact(selectedRowKeys.map(item => Number(item)))
       if (res.code === SUCCESS_CODE) {
-        message.success(res.message)
         initList();
+        initGroupList()
+        initGroupNum()
+        message.success(res.message)
       } else {
         message.error(res.message)
       }

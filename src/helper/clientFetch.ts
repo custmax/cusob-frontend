@@ -6,6 +6,7 @@ type RequestOptions = {
   method: string,
   data?: any,
   contentType?: string,
+  authorization?: string,
 }
 
 const request = async (options: RequestOptions) => {
@@ -13,23 +14,28 @@ const request = async (options: RequestOptions) => {
     url,
     data,
     method = 'GET',
-    contentType = 'application/json;charset=UTF-8'
+    contentType = 'application/json;charset=UTF-8',
+    authorization ,
   } = options;
   const parsedMethod = method.toLocaleUpperCase();
   let fetchUrl = url;
   let fetchOpt: RequestInit = {}
+  let headers = {}
+  if ( authorization != null && authorization.length > 0){
+    headers = { ...headers, authorization }
+  }
   if (parsedMethod === 'GET') {
     if (data) {
       const parsedData = new URLSearchParams(data).toString()
       fetchUrl = `${fetchUrl}?${parsedData}`
     }
     const token = getToken() || ''
-    const headers = { token }
+    headers = { ...headers, token }
     fetchOpt = { ...fetchOpt, method: parsedMethod, headers }
   }
   if (parsedMethod === 'POST' || parsedMethod === 'PUT' || parsedMethod === 'DELETE') {
     const token = getToken() || ''
-    const headers = { 'Content-Type': contentType, token }
+    headers = { ...headers, 'Content-Type': contentType, token }
     let body = '';
     if (contentType.includes('application/json')) {
       body = JSON.stringify(data)
