@@ -16,6 +16,7 @@ import {AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, R
 } from "react";
 import classNames from "classnames";
 import Image from "next/image";
+import PrefixSelector from "@/component/PrefixSelector";
 
 const selectOptions = countryOptions;
 
@@ -41,8 +42,7 @@ const Signup = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [captchaCode, setCaptchaCode] = useState('')
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState(selectOptions);
+
   const setCode = (code: string) => {
     setCaptchaCode(code)
   }
@@ -87,44 +87,6 @@ const Signup = () => {
       }
     }
   }
-
-    const handleSearch = (value: string) => {
-      setSearchValue(value);
-      const filtered = selectOptions.filter((option) =>
-          option.value.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredOptions(filtered);
-    };
-
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-        <Select
-            style={{width: 100}}
-            dropdownStyle={{ minWidth: 250,minHeight: 250 }}
-            dropdownRender={(menu) => (
-                <div>
-                  <Input
-                      style={{margin: '8px', width: 'calc(100% - 16px)'}}
-                      placeholder="Search"
-                      value={searchValue}
-                      onChange={(e) => handleSearch(e.target.value)}
-                  />
-                  {menu}
-                </div>
-            )}
-            filterOption={false}
-            placeholder="US +1"
-            options={filteredOptions}
-            optionRender={(option) => (
-                <Space>
-                  {option.data.customLabel}
-                </Space>
-            )}
-        >
-      </Select>
-        </Form.Item>
-  );
-
 
   return <div>
         <div className={signupWrapper}>
@@ -186,7 +148,7 @@ const Signup = () => {
                   rules={[{ message: 'Please input your phone number!' }]}
               >
                 <Input
-                    addonBefore={prefixSelector}
+                    addonBefore={<PrefixSelector/>}
                     placeholder="Please input your phone number"
                 />
                 {/*{country && <span className="hint-text">{country}</span>}*/}
