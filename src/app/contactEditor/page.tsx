@@ -93,7 +93,7 @@ const ContactEditor = () => {
           lastName,
           email,
           phone: phone.split('-').length > 1 ? phone.split('-')[1] : '',
-          prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : '+86',
+          prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'us +1',
           country,
           company,
           dept,
@@ -160,7 +160,7 @@ const ContactEditor = () => {
       lastName,
       note,
       phone = '',
-      prefix = '+86',
+      prefix = 'US +1',
       title,
     } = values;
     const data = {
@@ -173,9 +173,10 @@ const ContactEditor = () => {
       firstName,
       lastName,
       groupName: groups,
-      mobile: prefix.replace('+', '') + '-' + phone,
+
+      mobile: prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
       note,
-      phone: prefix.replace('+', '') + '-' + phone,
+      phone: prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
       title,
       id: contactId,
     }
@@ -225,7 +226,7 @@ const ContactEditor = () => {
         lastName,
         email,
         phone: phone.split('-').length > 1 ? phone.split('-')[1] : '',
-        prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : '+86',
+        prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
         country,
         company,
         dept,
@@ -278,7 +279,7 @@ const ContactEditor = () => {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
           labelAlign='right'
-          initialValues={{ prefix: '+86' }}
+          initialValues={{ prefix: 'US +1' }}
           colon={false}
         >
           <Form.Item label="Name" style={{ marginBottom: 0 }}>

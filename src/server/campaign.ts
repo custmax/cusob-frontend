@@ -35,6 +35,14 @@ export const updateCampaign = async (data: Partial<Campaign.CampaignNew>) => {
   return res;
 }
 
+export const getEmailList = async (togroup:number)=>{
+  const res = await clientFetch({
+    url: `/api/campaign/emailList/${togroup}`,
+    method: 'GET',
+  })
+  return res;
+}
+
 export const sendEmail = async (data: Campaign.CampaignNew) => {
   const res = await clientFetch({
     url: `/api/campaign/sendEmail`,

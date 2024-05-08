@@ -9,7 +9,9 @@ import {Checkbox, Input, Select, message, Table, PaginationProps} from 'antd';
 import Link from 'next/link';
 import { getCampaignPage } from '@/server/campaign';
 import { SUCCESS_CODE } from '@/constant/common';
+import EmailStatistics from "@/server/emailStatistics";
 import {getOrderHistory} from "@/server/orderHistory";
+import SenderStatistics from "@/server/emailStatistics";
 
 const {
   campaignContainer,
@@ -57,6 +59,8 @@ const Campaign = () => {
     const query = { status, name: searchVal, order: order }
     const res = await getCampaignPage(currentPage, pageSize, query)
     message.destroy('listLoading')
+    const messages = await SenderStatistics('941563132@qq.com');
+    console.log(messages)
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
       setTotal(res.data?.total || 0)

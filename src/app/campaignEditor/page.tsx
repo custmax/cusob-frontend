@@ -11,8 +11,9 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { getGroupList } from '@/server/group';
 import { SUCCESS_CODE } from '@/constant/common';
-import { getCampaign, saveDraft, sendEmail, updateCampaign } from '@/server/campaign';
+import {getCampaign, getEmailList, saveDraft, sendEmail, updateCampaign} from '@/server/campaign';
 import { getSenderList } from '@/server/sender';
+import {send} from "@/server/mailgunsend";
 
 const {
   campaignEditorContainer,
@@ -390,6 +391,11 @@ const CampaignEditor = () => {
     if (!senderName || !chosenFrom) return message.error('please set senderName');
     if (!subject || !chosenSubject) return message.error('please set subject');
     if (!toGroup || !chosenTo) return message.error('please set toGroup');
+
+
+    const emailList = await getEmailList(toGroup);
+    const emails = emailList.data.map((item: { email: string; }) => item.email).join(',');
+    console.log(emails)
     const data = {
       campaignName,
       content: richContent,
@@ -404,14 +410,22 @@ const CampaignEditor = () => {
       trackOpens,
       trackTextClicks
     }
-    const res = await sendEmail(data)
-    if (res.code === SUCCESS_CODE) {
-      message.success(res.message, () => {
-        router.back()
-      })
-    } else {
-      message.error(res.message)
-    }
+    const res = await send(senderName,emails,subject,data.content,data.sendTime)
+    console.log(res)
+    if(res.message.includes('Queued')){
+        message.success('Send successfully!', () => {
+          router.back()
+    })
+      } else {
+        message.error('Failed to send!')
+      }
+    // if (res.message === SUCCESS_CODE) {
+    //   message.success(res.message, () => {
+    //     router.back()
+    //   })
+    // } else {
+    //   message.error(res.message)
+    // }
   }
 
   const onDraft = async () => {
