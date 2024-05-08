@@ -7,6 +7,7 @@ import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
 import {SUCCESS_CODE} from "@/constant/common";
 import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from "@/server/sendcloud/domain";
+import {getApiUserList} from "@/server/sendcloud/apiUser";
 
 const {
     sendCloudContainer,
@@ -52,11 +53,15 @@ const SendCloud = () => {
         const res = await deleteDomain('daybreakhust.top')
     }
 
+    const findApiUserList = async () => {
+        const res = await getApiUserList('')
+    }
+
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={verifyDomain}>Send</Button>
+            <Button className={btnSend} onClick={findApiUserList}>Send</Button>
 
         </div>
     </div>
