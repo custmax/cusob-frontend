@@ -6,7 +6,7 @@ import styles from './page.module.scss';
 import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
 import {SUCCESS_CODE} from "@/constant/common";
-import {getDomainList, addDomain} from "@/server/sendcloud/domain";
+import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from "@/server/sendcloud/domain";
 
 const {
     sendCloudContainer,
@@ -39,11 +39,24 @@ const SendCloud = () => {
         console.log(res)
     }
 
+    const editDomain = async () => {
+        const res = await updateDomain('dlgems.com', 'email-marketing-hub.com')
+        console.log(res)
+    }
+
+    const verifyDomain = async () => {
+        const res = await checkDomain('mail.email-marketing-hub.com')
+    }
+
+    const removeDomain = async () => {
+        const res = await deleteDomain('daybreakhust.top')
+    }
+
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={saveDomain}>Send</Button>
+            <Button className={btnSend} onClick={verifyDomain}>Send</Button>
 
         </div>
     </div>

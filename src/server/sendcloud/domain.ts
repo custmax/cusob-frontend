@@ -26,3 +26,45 @@ export const addDomain = async (name: string) => {
     return res;
 }
 
+export const updateDomain = async (name: string, newName: string) => {
+    const res = await clientFetch({
+        url: `/api2/domain/update`,
+        method: 'GET',
+        data: {
+            apiUser: API_USER,
+            apiKey: API_KEY,
+            name: name,
+            newName: newName,
+        }
+    })
+    return res;
+}
+
+export const checkDomain = async (name: string) => {
+    const res = await clientFetch({
+        url: `/api2/domain/checkConfig`,
+        method: 'GET',
+        data: {
+            apiUser: API_USER,
+            apiKey: API_KEY,
+            name: name,
+        }
+    })
+    return res;
+}
+
+export const deleteDomain = async (name: string) => {
+    const res = await clientFetch({
+        url: `/api2/domain/delete`,
+        method: 'GET',
+        data: {
+            apiUser: API_USER,
+            apiKey: API_KEY,
+            name: name,
+        }
+    })
+    return res;
+}
+
+
+
