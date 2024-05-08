@@ -9,3 +9,4 @@ export const sendTemplate = async (data: sendTemplate.sendModel) => {
     })
     return res;
 }
+
