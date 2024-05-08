@@ -194,7 +194,6 @@ const ContentModal: FC<Props> = (props) => {
 
 
   const onAIChange = () => {};
-
   return <Modal
     title="Content"
     open={visible}
