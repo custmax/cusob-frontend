@@ -18,6 +18,7 @@ export const SenderStatistics = async (senderAddress: string) => {
 
     const data = await resp.text();
     console.log(data);
+
 }
 
 export default SenderStatistics;
