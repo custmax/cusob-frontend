@@ -29,15 +29,24 @@ export const addApiUser = async (name: string,  domainName: string) => {
     return res;
 }
 
-export const updateApiUser = async (name: string) => {
+export const updateApiUser = async (name: string, newName?: string, domainName?: string,
+                                   trackDomainName?: string, open?: number, click?: number, unsubscribe?: number) => {
     const res = await clientFetch({
         url: `/api2/apiuser/update`,
         method: 'POST',
         data: {
+            // todo
             apiUser: API_USER,
             apiKey: API_KEY,
             name: name,
-        }
+            newName: newName,
+            // domainName: domainName,
+            // trackDomainName: trackDomainName,
+            // open: open,
+            // click: click,
+            // unsubscribe: unsubscribe
+        },
+        contentType: 'application/x-www-form-urlencoded'
     })
     return res;
 }

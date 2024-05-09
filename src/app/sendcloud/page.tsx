@@ -7,7 +7,7 @@ import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
 import {SUCCESS_CODE} from "@/constant/common";
 import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from "@/server/sendcloud/domain";
-import {getApiUserList, addApiUser} from "@/server/sendcloud/apiUser";
+import {getApiUserList, addApiUser, updateApiUser} from "@/server/sendcloud/apiUser";
 import {getTemplateList, getTemplateDetail, addTemplate, removeTemplate, updateTemplate} from "@/server/sendcloud/template";
 
 const {
@@ -60,6 +60,10 @@ const SendCloud = () => {
 
     const saveApiUser = async () => {
         const res = await addApiUser('cusob_batch02', 'mail.dlgems.com')
+    }
+
+    const editApiUser = async () => {
+        const res = await updateApiUser('cusob_batch02', 'dlgems', 'mail.dlgems.com')
     }
 
     const findTemplateList = async () => {
@@ -135,7 +139,7 @@ const SendCloud = () => {
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={editTemplate}>Send</Button>
+            <Button className={btnSend} onClick={editApiUser}>Send</Button>
 
         </div>
     </div>
