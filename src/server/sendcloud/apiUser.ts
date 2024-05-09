@@ -13,3 +13,31 @@ export const getApiUserList = async (domainName?: string) => {
     })
     return res;
 }
+
+export const addApiUser = async (name: string,  domainName: string) => {
+    const res = await clientFetch({
+        url: `/api2/apiuser/add`,
+        method: 'GET',
+        data: {
+            apiUser: API_USER,
+            apiKey: API_KEY,
+            name: name,
+            emailType: 1,
+            domainName: domainName
+        }
+    })
+    return res;
+}
+
+export const updateApiUser = async (name: string) => {
+    const res = await clientFetch({
+        url: `/api2/apiuser/update`,
+        method: 'POST',
+        data: {
+            apiUser: API_USER,
+            apiKey: API_KEY,
+            name: name,
+        }
+    })
+    return res;
+}

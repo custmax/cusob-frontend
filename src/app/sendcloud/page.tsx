@@ -7,7 +7,7 @@ import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
 import {SUCCESS_CODE} from "@/constant/common";
 import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from "@/server/sendcloud/domain";
-import {getApiUserList} from "@/server/sendcloud/apiUser";
+import {getApiUserList, addApiUser} from "@/server/sendcloud/apiUser";
 
 const {
     sendCloudContainer,
@@ -57,11 +57,15 @@ const SendCloud = () => {
         const res = await getApiUserList('')
     }
 
+    const saveApiUser = async () => {
+        const res = await addApiUser('cusob_batch02', 'mail.dlgems.com')
+    }
+
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={findApiUserList}>Send</Button>
+            <Button className={btnSend} onClick={saveApiUser}>Send</Button>
 
         </div>
     </div>
