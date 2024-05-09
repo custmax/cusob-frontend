@@ -188,7 +188,8 @@ const ContentModal: FC<Props> = (props) => {
       const editor = richEditorRef.current.getEditor();
       const range = editor.getSelection();
       const position = range ? range.index : 0;
-      editor.insertText(position, birthDate);
+      editor.insertText(position, new Date(birthDate).toDateString());
+
     }
   }
 
