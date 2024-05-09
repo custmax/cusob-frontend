@@ -8,7 +8,7 @@ export const send = async (from:string,to:string,subject:string,html:string,deli
     const senderTag = `campaign:sender:${from}`;
     form.append('o:tag', senderTag);
     console.log(senderTag)
-    const domainName = 'chtrak.com';
+    const domainName = 'email-marketing-hub.com';
     const resp = await fetch(
         `https://api.mailgun.net/v3/${domainName}/messages`,
         {

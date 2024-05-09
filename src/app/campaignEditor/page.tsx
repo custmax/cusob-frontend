@@ -395,7 +395,7 @@ const CampaignEditor = () => {
 
     const emailList = await getEmailList(toGroup);
     const emails = emailList.data.map((item: { email: string; }) => item.email).join(',');
-    console.log(emails)
+
     const data = {
       campaignName,
       content: richContent,

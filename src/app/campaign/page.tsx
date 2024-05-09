@@ -59,7 +59,7 @@ const Campaign = () => {
     const query = { status, name: searchVal, order: order }
     const res = await getCampaignPage(currentPage, pageSize, query)
     message.destroy('listLoading')
-    const messages = await SenderStatistics('941563132@qq.com');
+    const messages = await SenderStatistics('tim@email-marketing-hub.com');
     console.log(messages)
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
