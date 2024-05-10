@@ -1,5 +1,5 @@
 async function Tracking() {
-    const name = 'chtrak.com';
+    const name = 'email-marketing-hub.com';
     const resp = await fetch(
         `https://api.mailgun.net/v3/domains/${name}/tracking`,
         {

@@ -62,8 +62,7 @@ const Campaign = () => {
     message.destroy('listLoading')
     const messages = await SenderStatistics('tim@email-marketing-hub.com');
     console.log(messages)
-    const mm = await unsubscribe;
-    console.log(mm)
+
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
       setTotal(res.data?.total || 0)
