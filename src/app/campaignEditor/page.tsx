@@ -394,8 +394,8 @@ const CampaignEditor = () => {
 
 
     const emailList = await getEmailList(toGroup);
-    const emails = emailList.data.map((item: { email: string; }) => item.email).join(',');
-
+    const emails = emailList.data.map((item: { email: string; }) => item.email);
+    const ids = emailList.data.map((item: { id: number; }) => item.id)
     const data = {
       campaignName,
       content: richContent,
@@ -410,7 +410,7 @@ const CampaignEditor = () => {
       trackOpens,
       trackTextClicks
     }
-    const res = await send(senderName,emails,subject,data.content,data.sendTime)
+    const res = await send(senderName,emails,subject,data.content,data.sendTime,ids)
     console.log(res)
     if(res.message.includes('Queued')){
         message.success('Send successfully!', () => {
@@ -419,13 +419,6 @@ const CampaignEditor = () => {
       } else {
         message.error('Failed to send!')
       }
-    // if (res.message === SUCCESS_CODE) {
-    //   message.success(res.message, () => {
-    //     router.back()
-    //   })
-    // } else {
-    //   message.error(res.message)
-    // }
   }
 
   const onDraft = async () => {

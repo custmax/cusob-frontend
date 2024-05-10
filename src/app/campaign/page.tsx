@@ -12,6 +12,7 @@ import { SUCCESS_CODE } from '@/constant/common';
 import EmailStatistics from "@/server/emailStatistics";
 import {getOrderHistory} from "@/server/orderHistory";
 import SenderStatistics from "@/server/emailStatistics";
+import unsubscribe from "@/server/unsubscribe";
 
 const {
   campaignContainer,
@@ -61,6 +62,8 @@ const Campaign = () => {
     message.destroy('listLoading')
     const messages = await SenderStatistics('tim@email-marketing-hub.com');
     console.log(messages)
+    const mm = await unsubscribe;
+    console.log(mm)
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
       setTotal(res.data?.total || 0)

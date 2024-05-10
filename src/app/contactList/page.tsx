@@ -96,6 +96,7 @@ const ContactList = () => {
     const res = await getList(currentPage, pageSize)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
+      console.log(res.data)
       setContactList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total || 0)
     }
