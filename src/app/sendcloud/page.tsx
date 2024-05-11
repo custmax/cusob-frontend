@@ -9,6 +9,7 @@ import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from 
 import {getApiUserList, addApiUser, updateApiUser} from "@/server/sendcloud/apiUser";
 import {getTemplateList, getTemplateDetail, addTemplate, removeTemplate, updateTemplate} from "@/server/sendcloud/template";
 import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} from "@/server/sendcloud/senders";
+import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
 
 const {
     sendCloudContainer,
@@ -153,13 +154,32 @@ const SendCloud = () => {
         const res = await removeSender(senderId)
     }
 
+    const findTagList = async () => {
+        const res = await getTagList(0, 10)
+    }
+
+    const addTag = async () => {
+        const res = saveTag("USA")
+    }
+
+    const editTag = async () => {
+        const res = await updateTag("663eda95c421831717c8dbb2", "ENG")
+    }
+
+    const removeTag = async () => {
+        const res = await deleteTag("663eda95c421831717c8dbb2")
+    }
+
+    const findTagMember = async () => {
+        const res = await getTagMember("663b787b3babae67b1118c0d", 0, 10)
+    }
 
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={() => deleteSender(835)}>Send</Button>
+            <Button className={btnSend} onClick={findTagMember}>Send</Button>
         </div>
     </div>
 }
