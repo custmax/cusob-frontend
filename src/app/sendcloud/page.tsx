@@ -10,6 +10,7 @@ import {getApiUserList, addApiUser, updateApiUser} from "@/server/sendcloud/apiU
 import {getTemplateList, getTemplateDetail, addTemplate, removeTemplate, updateTemplate} from "@/server/sendcloud/template";
 import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} from "@/server/sendcloud/senders";
 import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
+import {getContactList, getContactDetail, updateContact, removeContact, saveContact} from "@/server/sendcloud/contact";
 
 const {
     sendCloudContainer,
@@ -174,12 +175,54 @@ const SendCloud = () => {
         const res = await getTagMember("663b787b3babae67b1118c0d", 0, 10)
     }
 
+    const findContactList = async () => {
+        const res = await getContactList(0, 10)
+    }
+
+    const getContactById = async () => {
+        const res = await getContactDetail("663b77aa0ff9434a55c997d8")
+    }
+
+    const editContact = async () => {
+        const contact = {
+            email: '2218098884@qq.com',
+            phone: '18270567095',
+            name: 'ming',
+            fields: {
+                Age: 23
+            },
+            tags: ['hust']
+        }
+        const res = await updateContact('663b77aa0ff9434a55c997d8', contact)
+    }
+
+    const deleteContact = async () => {
+        const res = await removeContact('663b77aa0ff9434a55c997d8')
+    }
+
+    const addContact = async () => {
+        const contact = {
+            members: [
+                {
+                    email: '2218098884@qq.com',
+                    phone: '18270567095',
+                    name: 'ming',
+                    fields: {},
+                    tags: ['hust']
+                }
+            ],
+            tagFlag: 1,
+            updateExisting: true
+        }
+        const res = await saveContact(contact)
+    }
+
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={findTagMember}>Send</Button>
+            <Button className={btnSend} onClick={addContact}>Send</Button>
         </div>
     </div>
 }
