@@ -6,19 +6,24 @@ type RequestOptions = {
   data?: any,
   contentType?: string,
   token?: string,
+  Authorization?: string,
 }
 
 const sendCloudServerFetch = async (options: RequestOptions) => {
-  const { url, method, data, contentType, token } = options;
+  const { url, method, data, contentType, token, Authorization } = options;
   let fetchUrl = `${SENDCLOUD_API}${url}`;
   let fetchOpt: RequestInit = {}
+  let headers = {}
+  if ( Authorization != null && Authorization.length > 0){
+    headers = { ...headers, Authorization }
+  }
   if (method === 'GET') {
     if (data) fetchUrl = `${fetchUrl}?${data}`;
-    const headers = { token } as HeadersInit
+    headers = { ...headers, token }
     fetchOpt = { ...fetchOpt, method, headers }
   }
   if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
-    const headers = { 'Content-Type': contentType, token } as HeadersInit
+    headers = { ...headers, 'Content-Type': contentType, token }
     fetchOpt = { ...fetchOpt, headers, body: data, method }
   }
   return fetch(fetchUrl, fetchOpt)

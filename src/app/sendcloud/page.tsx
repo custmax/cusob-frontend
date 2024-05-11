@@ -3,12 +3,12 @@
 import EnteredHeader from "@/component/EnteredHeader";
 import SideBar from "@/component/SideBar";
 import styles from './page.module.scss';
-import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
 import {SUCCESS_CODE} from "@/constant/common";
 import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain} from "@/server/sendcloud/domain";
 import {getApiUserList, addApiUser, updateApiUser} from "@/server/sendcloud/apiUser";
 import {getTemplateList, getTemplateDetail, addTemplate, removeTemplate, updateTemplate} from "@/server/sendcloud/template";
+import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} from "@/server/sendcloud/senders";
 
 const {
     sendCloudContainer,
@@ -17,19 +17,6 @@ const {
 } = styles
 
 const SendCloud = () => {
-
-    const onSend = async () => {
-        const data = {
-            from: 'ming@mail.daybreakhust.top',
-            to: '2218098884@qq.com',
-            body: {
-                subject: 'Thanks',
-                template_invoke_name: 'First_Welcome_Email_20240426_KlRwkZGJ'
-            }
-        }
-        const res = await sendTemplate(data)
-        console.log(res)
-    }
 
     const getDomain = async () => {
         const res = await getDomainList()
@@ -134,13 +121,45 @@ const SendCloud = () => {
         const res = await updateTemplate('template01', 'template01', html)
     }
 
+    const findSenderList = async () => {
+        const res = await getSenderList(0, 10)
+    }
+
+    const getSenderById = async (senderId: number) => {
+        const res = await getSenderDetail(senderId)
+    }
+
+    const addSender = async () => {
+        const sender = {
+            fromName: 'cusob',
+            email: 'cusob@mail.dlgems.com',
+            domainName: 'mail.dlgems.com',
+            apiUserName: 'dlgems'
+        }
+        const res = await saveSender(sender)
+    }
+
+    const editSender = async (senderId: number) => {
+        const sender = {
+            fromName: 'CusOb Team',
+            email: 'cusob@mail.dlgems.com',
+            domainName: 'mail.dlgems.com',
+            apiUserName: 'dlgems'
+        }
+        const res = await updateSender(senderId, sender)
+    }
+
+    const deleteSender = async (senderId: number) => {
+        const res = await removeSender(senderId)
+    }
+
+
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={editApiUser}>Send</Button>
-
+            <Button className={btnSend} onClick={() => deleteSender(835)}>Send</Button>
         </div>
     </div>
 }
