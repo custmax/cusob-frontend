@@ -193,7 +193,6 @@ const ContactEditor = () => {
           setSubmit(false)
         }
       } else {
-        console.log(data)
         const res = await addContact(data);
         if (res.code === SUCCESS_CODE) {
           message.success(res.message, () => {
