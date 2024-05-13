@@ -55,7 +55,6 @@ const ImportWay = () => {
   }
 
   const onSampleClick = () => {
-    console.log('onSampleClick')
     const a = document.createElement('a');
     a.download = 'Sample File';
     a.href = CONTACT_TEMPLATE;
