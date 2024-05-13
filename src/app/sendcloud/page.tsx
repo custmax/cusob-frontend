@@ -11,6 +11,7 @@ import {getTemplateList, getTemplateDetail, addTemplate, removeTemplate, updateT
 import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} from "@/server/sendcloud/senders";
 import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
 import {getContactList, getContactDetail, updateContact, removeContact, saveContact} from "@/server/sendcloud/contact";
+import {getCampaignList, getCampaignDetail, saveCampaign, removeCampaign, updateCampaign} from "@/server/sendcloud/campaigins";
 
 const {
     sendCloudContainer,
@@ -217,12 +218,58 @@ const SendCloud = () => {
         const res = await saveContact(contact)
     }
 
+    const findCampaignList = async () => {
+        const res = await getCampaignList(0, 10)
+    }
+
+    const getCampaignById = async () => {
+        const res = await getCampaignDetail('57953')
+    }
+
+    const createCampaign = async () => {
+        let formData = new FormData()
+        const campaign = {
+            taskType: 2,
+            name: 'test04',
+            to: "663f0a4b3babae67b1118c78",
+            sendListType: "2",
+            senderId: "829",
+            replyTo: "2218098884@qq.com",
+            templateInvokeName: "template01",
+            runTime: "2024-05-12 16:30:00",
+            timeZone: 8
+        }
+        formData.append('campaignJson', JSON.stringify(campaign))
+        const res = await saveCampaign(formData)
+    }
+
+    const deleteCampaign = async () => {
+        const res = await removeCampaign('58094')
+    }
+
+    const editCampaign = async () => {
+        let formData = new FormData()
+        const campaign = {
+            taskType: 2,
+            name: 'test04',
+            to: "663f0a4b3babae67b1118c78",
+            sendListType: "2",
+            senderId: "829",
+            replyTo: "2218098884@qq.com",
+            templateInvokeName: "template01",
+            runTime: "2024-05-12 15:30:00",
+            timeZone: 8
+        }
+        formData.append('campaignJson', JSON.stringify(campaign))
+        const res = await updateCampaign('58095', formData)
+    }
+
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={addContact}>Send</Button>
+            <Button className={btnSend} onClick={editCampaign}>Send</Button>
         </div>
     </div>
 }
