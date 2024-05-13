@@ -421,6 +421,7 @@ const CampaignEditor = () => {
     const chosenSubject = process.find(item => item.title === 'Subject')?.checked
     const chosenContent = process.find(item => item.title === 'Content')?.checked
     const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
+    if (!campaignName) return message.error('please set campaignName');
     const data = {
       campaignName,
       content: chosenContent ? richContent : '',
