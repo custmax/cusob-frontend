@@ -115,7 +115,7 @@ const Signup = () => {
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
                 labelAlign='left'
-                initialValues={{ prefix: 'CN +86' }}
+                initialValues={{ prefix: 'US +1' }}
                 onFinish={onFinish}
             >
               <Form.Item
