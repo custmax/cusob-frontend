@@ -74,6 +74,7 @@ const CampaignEditor = () => {
   const [showSend, setShowSend] = useState<boolean>(false)
   const [showContent, setShowContent] = useState<boolean>(false)
   const [showFrom, setShowFrom] = useState<boolean>(false)
+  const [submit,setSubmit]= useState<boolean>(false)
   const router = useRouter()
   const [groupList, setGroupList] = useState<{ value: number, label: string }[]>([]);
   const [toGroup, setToGroup] = useState<number | undefined>()
@@ -374,44 +375,85 @@ const CampaignEditor = () => {
   };
 
   const onSend = async () => {
-    const senderName = senderListRef.current.find(item => item.value === senderId)?.label
-    const chosenTo = process.find(item => item.title === 'To')?.checked
-    const chosenFrom = process.find(item => item.title === 'From')?.checked
-    const chosenSubject = process.find(item => item.title === 'Subject')?.checked
-    const chosenContent = process.find(item => item.title === 'Content')?.checked
-    const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
-    if (!campaignName) return message.error('please set campaignName');
-    if (!content || !chosenContent) return message.error('please set content');
-    if (!preText || !chosenSubject) return message.error('please set preText');
-    if (!sendDate || !chosenSendTime) return message.error('please set sendDate');
-    if (!sendMinute || !chosenSendTime) return message.error('please set sendMinute');
-    // if (!senderEmail || !chosenFrom) return message.error('please set senderEmail');
-    if (!senderId || !chosenFrom) return message.error('please set senderEmail');
-    if (!senderName || !chosenFrom) return message.error('please set senderName');
-    if (!subject || !chosenSubject) return message.error('please set subject');
-    if (!toGroup || !chosenTo) return message.error('please set toGroup');
-    const data = {
-      campaignName,
-      content: richContent,
-      preText,
-      sendTime:  `${sendDate} ${sendMinute}`,
-      senderName,
-      senderId,
-      subject,
-      toGroup,
-      trackClicks,
-      trackLink,
-      trackOpens,
-      trackTextClicks
+    if(!submit){
+      setSubmit(true)
+      const senderName = senderListRef.current.find(item => item.value === senderId)?.label
+      const chosenTo = process.find(item => item.title === 'To')?.checked
+      const chosenFrom = process.find(item => item.title === 'From')?.checked
+      const chosenSubject = process.find(item => item.title === 'Subject')?.checked
+      const chosenContent = process.find(item => item.title === 'Content')?.checked
+      const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
+      if (!campaignName) {
+        message.error('please set campaignName');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!content || !chosenContent) {
+        message.error('please set content');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!preText || !chosenSubject) {
+        message.error('please set preText');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!sendDate || !chosenSendTime) {
+        message.error('please set sendDate');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!sendMinute || !chosenSendTime) {
+        message.error('please set sendMinute');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+
+      if (!senderId || !chosenFrom) {
+        message.error('please set senderEmail');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!senderName || !chosenFrom) {
+        message.error('please set senderName');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!subject || !chosenSubject) {
+        message.error('please set subject');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!toGroup || !chosenTo) {
+        message.error('please set toGroup');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      const data = {
+        campaignName,
+        content: richContent,
+        preText,
+        sendTime:  `${sendDate} ${sendMinute}`,
+        senderName,
+        senderId,
+        subject,
+        toGroup,
+        trackClicks,
+        trackLink,
+        trackOpens,
+        trackTextClicks
+      }
+      const res = await sendEmail(data)
+      if (res.code === SUCCESS_CODE) {
+        message.success(res.message, () => {
+          router.back()
+        })
+      } else {
+        setSubmit(false)
+        message.error(res.message)
+      }
     }
-    const res = await sendEmail(data)
-    if (res.code === SUCCESS_CODE) {
-      message.success(res.message, () => {
-        router.back()
-      })
-    } else {
-      message.error(res.message)
-    }
+
   }
 
   const onDraft = async () => {
@@ -438,6 +480,7 @@ const CampaignEditor = () => {
       trackTextClicks
     }
     if (campaignId) {
+
       const res = await updateCampaign({ ...data, id: +campaignId })
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)

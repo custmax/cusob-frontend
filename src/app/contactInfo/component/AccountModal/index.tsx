@@ -3,8 +3,9 @@ import { Form, Input, Modal, Select, Space } from 'antd';
 import styles from './index.module.scss';
 import { FC, useCallback, useEffect } from 'react';
 import { countryOptions } from '@/constant/phone';
+import PrefixSelector from "@/component/PrefixSelector";
 
-const selectOptions = countryOptions;
+
 
 
 type Props = {
@@ -45,6 +46,7 @@ const AccountModal: FC<Props> = (props) => {
         taxId: accountTaxId,
         zipCode: accountZipCode,
       } = values;
+      console.log(values)
       accountForm.setFieldsValue({
         accountAddressLine1: addressLine1,
         accountAddressLine2: addressLine2,
@@ -54,16 +56,17 @@ const AccountModal: FC<Props> = (props) => {
         accountTaxId,
         accountFirstName,
         accountLastName,
-        accountPhone: phone.split('-').length > 1 ? phone.split('-')[1] : '',
-        accountPrefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : '+86',
+        accountPhone: phone===undefined ? '' : phone.split('-').length > 1 ? phone.split('-')[1] : '',
+        prefix: phone===undefined ? '':phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
       })
+
       accountExtraForm.setFieldsValue({ 
         accountCountry: country,
         accountState,
         accountZipCode,
       })
     } else {
-      accountForm.setFieldsValue({ accountPrefix: '+86' })
+      accountForm.setFieldsValue({ prefix: 'US +1' })
     }
   }, [values])
 
@@ -72,15 +75,6 @@ const AccountModal: FC<Props> = (props) => {
       initForm(values)  
     }
   }, [values, visible])
-
-  const prefixSelector1 = (
-    <Form.Item name="accountPrefix" noStyle>
-      <Select
-        style={{ width: '80px' }}
-        options={selectOptions}
-      />
-    </Form.Item>
-  );
 
   const _onOk = () => {
     const {
@@ -93,8 +87,9 @@ const AccountModal: FC<Props> = (props) => {
       accountFirstName,
       accountLastName,
       accountPhone,
-      accountPrefix,
+      prefix,
     } = accountForm.getFieldsValue();
+    console.log(prefix)
     const { 
       accountCountry,
       accountState,
@@ -109,7 +104,7 @@ const AccountModal: FC<Props> = (props) => {
       email: accountEmail,
       firstName: accountFirstName,
       lastName: accountLastName,
-      phone: accountPrefix.replace('+', '') + '-' + accountPhone,
+      phone: accountPhone==='' ? '' :prefix.substring(prefix.indexOf("+") + 1) + '-' + accountPhone,
       state: accountState,
       taxId: accountTaxId,
       zipCode: accountZipCode,
@@ -187,8 +182,9 @@ const AccountModal: FC<Props> = (props) => {
           <Form.Item
             label="Phone Number"
             name='accountPhone'
+            labelCol={{ span: '1px' }}
           >
-            <Input addonBefore={prefixSelector1} />
+            <Input style={{marginLeft: '5px' }} addonBefore={<PrefixSelector/>} />
           </Form.Item>
         </Form>
         <Form

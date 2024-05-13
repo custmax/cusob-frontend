@@ -16,7 +16,7 @@ import PrefixSelector from "@/component/PrefixSelector";
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
-const selectOptions = countryOptions;
+
 const CountryOptions = countryOptionss;
 const {
   accountContainer,
@@ -78,7 +78,7 @@ const Account = () => {
         password: '*******',
         email,
         phone: phone.split('-').length > 1 ? phone.split('-')[1] : '',
-        prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : '+86',
+        prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
         country,
         company,
       })
@@ -136,8 +136,9 @@ const Account = () => {
       firstName = '',
       lastName = '',
       phone = '',
-      prefix = '+86'
+      prefix = 'US +1'
     } = values
+
     const data = {
       avatar: avatar || avatarStr,
       company,
@@ -146,8 +147,9 @@ const Account = () => {
       firstName,
       lastName,
       id: userId,
-      phone: prefix.replace('+', '') + '-' + phone
+      phone: phone==='' ? '' : prefix.substring(prefix.indexOf("+") + 1) + '-' + phone
     }
+    console.log(data.phone)
     const updateRes = await updateUser(data)
     if (updateRes.code === SUCCESS_CODE) {
       setLocalUser({ avatar: avatar || avatarStr })
@@ -176,8 +178,8 @@ const Account = () => {
         lastName,
         password: '*******',
         email,
-        phone: phone.split('-').length > 1 ? phone.split('-')[1] : '',
-        prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : '+86',
+        phone: phone===undefined ? '' : phone.split('-').length > 1 ? phone.split('-')[1] : '',
+        prefix: phone===undefined ? 'US +1':phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
         country,
         company,
       })
@@ -231,7 +233,7 @@ const Account = () => {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 19 }}
           labelAlign='right'
-          initialValues={{ prefix: 'CN +86', password: '*******' }}
+          initialValues={{ prefix: 'US +1', password: '*******' }}
           colon={false}
         >
           <Form.Item
