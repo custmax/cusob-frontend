@@ -44,6 +44,7 @@ const ContactEditor = () => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false);
   const [previewAvatar, setPreviewAvatar] = useState<string>('');
+  const [submit, setSubmit] = useState<boolean>(false);
   const [avatarStr, setAvatarStr] = useState<string>('');
   const [groupList, setGroupList] = useState<{ groupName: string, id: number }[]>([]);
   const router = useRouter();
@@ -149,54 +150,58 @@ const ContactEditor = () => {
 
 
   const onSave = async () => {
-    const values = form.getFieldsValue()
-    const {
-      birthdate,
-      company,
-      dept,
-      email,
-      firstName,
-      groups,
-      lastName,
-      note,
-      phone = '',
-      prefix = 'US +1',
-      title,
-    } = values;
-    const data = {
-      avatar: avatarStr,
-      birthDate: birthdate ? dayjs(birthdate).format('YYYY-MM-DD') : '',
-      company,
-      country: '',
-      dept,
-      email,
-      firstName,
-      lastName,
-      groupName: groups,
-      mobile: prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
-      note,
-      phone: phone==='' ? '' : prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
-      title,
-      id: contactId,
-    }
-    if (contactId) {
-      const res = await updateContact(data);
-      if (res.code === SUCCESS_CODE) {
-        message.success(res.message, () => {
-          router.back()
-        })
-      } else {
-        message.error(res.message)
+    if(!submit){
+      setSubmit(true)
+      const values = form.getFieldsValue()
+      const {
+        birthdate,
+        company,
+        dept,
+        email,
+        firstName,
+        groups,
+        lastName,
+        note,
+        phone = '',
+        prefix = 'US +1',
+        title,
+      } = values;
+      const data = {
+        avatar: avatarStr,
+        birthDate: birthdate ? dayjs(birthdate).format('YYYY-MM-DD') : '',
+        company,
+        country: '',
+        dept,
+        email,
+        firstName,
+        lastName,
+        groupName: groups,
+        mobile: prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
+        note,
+        phone: phone==='' ? '' : prefix.substring(prefix.indexOf("+") + 1) + '-' + phone,
+        title,
+        id: contactId,
       }
-    } else {
-      console.log(data)
-      const res = await addContact(data);
-      if (res.code === SUCCESS_CODE) {
-        message.success(res.message, () => {
-          router.back()
-        })
+      if (contactId) {
+        const res = await updateContact(data);
+        if (res.code === SUCCESS_CODE) {
+          message.success(res.message, () => {
+            router.back()
+          })
+        } else {
+          message.error(res.message)
+          setSubmit(false)
+        }
       } else {
-        message.error(res.message)
+        const res = await addContact(data);
+        if (res.code === SUCCESS_CODE) {
+          message.success(res.message, () => {
+            router.back()
+          })
+        } else {
+          message.error(res.message)
+          setSubmit(false)
+        }
       }
     }
   }
