@@ -3,16 +3,18 @@
 import EnteredHeader from "@/component/EnteredHeader";
 import SideBar from "@/component/SideBar";
 import styles from './page.module.scss';
-import {sendTemplate} from "@/server/engagelab/sendTemplate";
+import {sendTemplate} from "@/server/sendcloud/sendTemplate";
 import {Button} from "antd";
+import {SUCCESS_CODE} from "@/constant/common";
+import {getDomainList, addDomain} from "@/server/sendcloud/domain";
 
 const {
-    engageLabContainer,
+    sendCloudContainer,
     main,
     btnSend,
 } = styles
 
-const EngageLab = () => {
+const SendCloud = () => {
 
     const onSend = async () => {
         const data = {
@@ -27,14 +29,24 @@ const EngageLab = () => {
         console.log(res)
     }
 
-    return <div className={engageLabContainer}>
+    const getDomain = async () => {
+        const res = await getDomainList()
+        console.log(res)
+    }
+
+    const saveDomain = async () => {
+        const res = await addDomain('dlgems.com')
+        console.log(res)
+    }
+
+    return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={onSend}>Send</Button>
+            <Button className={btnSend} onClick={saveDomain}>Send</Button>
 
         </div>
     </div>
 }
 
-export default EngageLab;
+export default SendCloud;
