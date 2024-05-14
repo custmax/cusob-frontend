@@ -23,6 +23,7 @@ import { getList, removeContact } from '@/server/contact';
 import { addGroup, getGroupList, getGroupsAndContactCount, removeGroup, updateGroup } from '@/server/group';
 import { SUCCESS_CODE } from '@/constant/common';
 import classNames from 'classnames';
+import {set} from "immutable";
 
 type DataType = {
   key: string,
@@ -73,6 +74,7 @@ const ContactList = () => {
   const [contactList, setContactList] = useState([])
   const [searchVal, setSearchVal] = useState('');
   const [total, setTotal] = useState(0)
+  const [totalCount, setTotalCount] = useState(0);
 
   const initGroupList = async () => {
     const res = await getGroupList()
@@ -96,6 +98,7 @@ const ContactList = () => {
       console.log(res.data)
       setContactList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total || 0)
+      setTotalCount(res.data?.total || 0)
     }
   }, [currentPage, pageSize])
   
@@ -129,7 +132,9 @@ const ContactList = () => {
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
         setShowEditGroup(false)
+        initList()
         initGroupList()
+        initGroupNum()
       } else {
         message.error(res.message)
       }
@@ -253,6 +258,7 @@ const ContactList = () => {
       message.destroy('listLoading')
       if (res.code === SUCCESS_CODE) {
         setContactList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
+        setTotal(res.data?.total)
         setCurrentPage(1)
       }
     }
@@ -337,7 +343,7 @@ const ContactList = () => {
         className={classNames(groupItem, { [active]: activeGroupId === -1 })}
         onClick={onAllContactClick}
       >
-        All Contacts（{total}）
+        All Contacts（{totalCount}）
       </div>
       {
         groupList.map((item, index) => <div
