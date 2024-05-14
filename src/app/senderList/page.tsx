@@ -53,47 +53,53 @@ const SenderList = () => {
 
     const columns: TableProps<DataType>['columns'] = [
         {
-            title: 'Sender Domain',
+            title: 'Status',
             dataIndex: 'domain',
             key: 'domain',
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'SPF',
-            dataIndex: 'spf',
-            key: 'spf',
-            render: (_, record) => (
-                <Space size="middle">
-                    {record.spf &&
-                        <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
-                                       onPointerLeaveCapture={undefined}/>
-                    }
-                    {!record.spf &&
-                        <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
-                                       onPointerLeaveCapture={undefined}/>
-                    }
-                </Space>
-            )
+            title: 'Sender Domain',
+            dataIndex: 'domain',
+            key: 'domain',
+            render: (text) => <a>{text}</a>,
         },
+        // {
+        //     title: 'SPF',
+        //     dataIndex: 'spf',
+        //     key: 'spf',
+        //     render: (_, record) => (
+        //         <Space size="middle">
+        //             {record.spf &&
+        //                 <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
+        //                                onPointerLeaveCapture={undefined}/>
+        //             }
+        //             {!record.spf &&
+        //                 <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
+        //                                onPointerLeaveCapture={undefined}/>
+        //             }
+        //         </Space>
+        //     )
+        // },
+        // {
+        //     title: 'DKIM',
+        //     dataIndex: 'dkim',
+        //     key: 'dkim',
+        //     render: (_, record) => (
+        //         <Space size="middle">
+        //             {record.dkim &&
+        //                 <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
+        //                                onPointerLeaveCapture={undefined}/>
+        //             }
+        //             {!record.dkim &&
+        //                 <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
+        //                                onPointerLeaveCapture={undefined}/>
+        //             }
+        //         </Space>
+        //     )
+        // },
         {
-            title: 'DKIM',
-            dataIndex: 'dkim',
-            key: 'dkim',
-            render: (_, record) => (
-                <Space size="middle">
-                    {record.dkim &&
-                        <CheckOutlined className={iconTrue} onPointerEnterCapture={undefined}
-                                       onPointerLeaveCapture={undefined}/>
-                    }
-                    {!record.dkim &&
-                        <CloseOutlined className={iconFalse} onPointerEnterCapture={undefined}
-                                       onPointerLeaveCapture={undefined}/>
-                    }
-                </Space>
-            )
-        },
-        {
-            title: 'SPF/DKIM',
+            title: 'IP Type',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
@@ -108,6 +114,8 @@ const SenderList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
+                    <a>Setting</a>
+                    <a>Update</a>
                     <a>Delete</a>
                 </Space>
             ),

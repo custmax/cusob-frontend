@@ -124,14 +124,48 @@ const DomainCertify = () => {
             }}>Copy
             </div>
           </div>
-          <div className={spfTip}>If you have an existing SPF record for your domain, add include:zcsend.net after
-            v=spF1. Example: v=spf1include:zcsend.net.
-          </div>
+          {/*<div className={spfTip}>If you have an existing SPF record for your domain, add include:zcsend.net after*/}
+          {/*  v=spF1. Example: v=spf1include:zcsend.net.*/}
+          {/*</div>*/}
         </div>
       </div>
       <div className={addressWrapper}>
         <div className={DKIMBox}>
           <div className={DKIMTitle}>Copy the DKlM record shown below and pubish it in your domain DNS</div>
+          <div className={hostName}>
+            <span className={label}>Host Name to add</span>
+            <span className={domainBind}>{selector}._domainkey.{domain}</span>
+          </div>
+          <div className={txtRecord}>
+            <div className={label}>TXT Record to add</div>
+            <Input className={txtInput} value={dkimValue}/>
+            <div className={copyBtn} onClick={() => {
+              handleCopy(dkimValue)
+            }}>Copy
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={addressWrapper}>
+        <div className={DKIMBox}>
+          <div className={DKIMTitle}>Copy the DMARC record shown below and pubish it in your domain DNS</div>
+          <div className={hostName}>
+            <span className={label}>Host Name to add</span>
+            <span className={domainBind}>{selector}._domainkey.{domain}</span>
+          </div>
+          <div className={txtRecord}>
+            <div className={label}>TXT Record to add</div>
+            <Input className={txtInput} value={dkimValue}/>
+            <div className={copyBtn} onClick={() => {
+              handleCopy(dkimValue)
+            }}>Copy
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={addressWrapper}>
+        <div className={DKIMBox}>
+          <div className={DKIMTitle}>Copy the MX record shown below and pubish it in your domain DNS</div>
           <div className={hostName}>
             <span className={label}>Host Name to add</span>
             <span className={domainBind}>{selector}._domainkey.{domain}</span>
