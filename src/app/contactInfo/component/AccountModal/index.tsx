@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import { FC, useCallback, useEffect } from 'react';
 import { countryOptions } from '@/constant/phone';
 import PrefixSelector from "@/component/PrefixSelector";
+import {countryOptionss} from "@/constant/country";
 
 
 
@@ -14,7 +15,7 @@ type Props = {
   onCancel: () => void,
   values: Info.AccountInfo | null
 }
-
+const CountryOptions = countryOptionss;
 const {
   accountModal,
   main,
@@ -200,24 +201,21 @@ const AccountModal: FC<Props> = (props) => {
             >
               <Select
                 placeholder="Select a country"
-                options={[
-                  {value: 'USA', label: 'USA' },
-                  { value: 'UK', label: 'UK' },
-                  { value: 'China', label: 'China' },
-                ]}
+                options={CountryOptions}
               />
             </Form.Item>
-            <Form.Item
-              name="accountState"
-              label="State"
-            >
-              <Select
-                placeholder="Please select a state"
-                options={[
-                  { value: 'Hubei', label: 'Hubei' },
-                ]}
-              />
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*  name="accountState"*/}
+            {/*  label="State"*/}
+            {/*  */}
+            {/*>*/}
+            {/*  <Select*/}
+            {/*    placeholder="Please select a state"*/}
+            {/*    options={[*/}
+            {/*      { value: 'Hubei', label: 'Hubei' },*/}
+            {/*    ]}*/}
+            {/*  />*/}
+            {/*</Form.Item>*/}
             <Form.Item
               label="Zip code"
               name='accountZipCode'
