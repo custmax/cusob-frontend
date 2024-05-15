@@ -179,7 +179,7 @@ const Account = () => {
         password: '*******',
         email,
         phone: phone===undefined ? '' : phone.split('-').length > 1 ? phone.split('-')[1] : '',
-        prefix: phone===undefined ? 'US +1':phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
+        prefix: phone===undefined ? '':phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
         country,
         company,
       })
