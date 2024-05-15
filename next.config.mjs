@@ -34,6 +34,14 @@ const nextConfig = {
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api3/:path*',
+        destination: 'https://api2.sendcloud.net/:path*'
+      }
+    ]
+  }
 };
 
 export default nextConfig;

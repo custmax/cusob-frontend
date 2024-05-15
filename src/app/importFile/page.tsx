@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { batchImport } from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
+import {CONTACT_TEMPLATE} from '@/constant/cusob'
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -63,10 +64,9 @@ const ImportFile = () => {
   }
 
   const onSampleClick = () => {
-    console.log('onSampleClick')
     const a = document.createElement('a');
     a.download = 'Sample File';
-    a.href = 'http://69.164.202.126:9001/template/contact.xlsx';
+    a.href = CONTACT_TEMPLATE;
     a.click();
   }
 
