@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import saveDomain from "@/app/sendcloud/page";
-import {getDomainList} from "@/server/domain";
-import {checkDomain} from "@/server/sendcloud/domain";
+import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain,getDomain} from "@/server/sendcloud/domain";
+
 
 
 interface DataType {
@@ -137,8 +137,8 @@ const App = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await checkDomain('mail.szpost.com');
-            console.log(res)
+            const res = await getDomain('mail.email-marketing-hub.com');
+            const data = res.info.dataList[0]
             // 根据返回的 res 数据构建表格数据
             const tableData: DataType[] = [];
             // 将 res 中的数据转换成表格需要的格式，并存储到 tableData 中
