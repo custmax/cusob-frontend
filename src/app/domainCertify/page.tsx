@@ -2,7 +2,7 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import {Input, message, Select} from 'antd';
+import {Button, Input, message, Select} from 'antd';
 import {useCallback, useEffect, useRef, useState} from "react";
 import {SUCCESS_CODE} from "@/constant/common";
 import copy from 'copy-to-clipboard';
@@ -19,6 +19,7 @@ const {
   main,
   title,
   tab,
+  check,
 
 } = styles;
 
@@ -70,7 +71,10 @@ const DomainCertify = () => {
     <EnteredHeader/>
     <SideBar/>
     <div className={main}>
-      <div className={title}>Domain Auth For {domain}</div>
+      <div className={title}>Domain Auth For {domain}
+        <div className={check}><Button type="primary">Check Status</Button></div>
+      </div>
+
     <div className={tab}>
           <Table />
     </div>

@@ -3,6 +3,8 @@ import { Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
 import saveDomain from "@/app/sendcloud/page";
 import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain,getDomain} from "@/server/sendcloud/domain";
+import {CopyOutlined} from "@ant-design/icons";
+import copy from "copy-to-clipboard";
 
 
 
@@ -15,6 +17,10 @@ interface DataType {
     hostname: string;
     Enter_this_value: string;
 
+}
+
+function handleCopy(value: string) {
+    copy(value);
 }
 
 const columns: TableProps<DataType>['columns'] = [
@@ -74,9 +80,16 @@ const columns: TableProps<DataType>['columns'] = [
         dataIndex: 'Enter_this_value',
         key: 'Enter_this_value',
         width: '30%',
+        render: (value:string) => (
+            <div style={{ whiteSpace: 'normal' }}>
+                <span style={{ marginRight: '5px' }}>{value}</span>
+                <CopyOutlined style={{cursor: 'pointer'}} onClick={() => handleCopy(value)}
+                              onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+            </div>
+        ),
         ellipsis: true, // 添加这行来启用省略号
-    },
 
+    },
 ];
 
 
@@ -87,7 +100,27 @@ const App = () => {
         const fetchData = async () => {
             const res = await getDomain('mail.email-marketing-hub.com');
             const data = res.info.dataList[0]
-            // const [false]
+            const status = {'spf_status': false,
+                'dkim_status':false,
+                'mx_status':false,
+                'dmarc_status':false}
+            if (data.verify & 1 ) {
+                status.dkim_status = true;
+            }
+            if (data.verify & 2 ) {
+                status.spf_status = true;
+            }
+            if (data.verify & 4 ) {
+                status.mx_status = true;
+            }
+            if (data.verify & 16 ) {
+                status.dmarc_status = true;
+            }
+            console.log(data.verify & 2)
+            const spf_status = status.spf_status ? 'Verified' : 'Unverified';
+            const dkim_status = status.dkim_status ? 'Verified' : 'Unverified';
+            const mx_status = status.mx_status ? 'Verified' : 'Unverified';
+            const dmarc_status = status.dmarc_status ? 'Verified' : 'Unverified';
             const dotsCount = (data['spf.domain'].match(/\./g) || []).length; // 获取`.`的数量
 
             let SPFdomainRecords;
@@ -106,7 +139,7 @@ const App = () => {
                 {
                     key: '1',
                     name: 'SPF',
-                    status: 'Unverified', // 示例状态值
+                    status: spf_status , // 示例状态值
                     type: 'TXT',
                     hostRecords: SPFdomainRecords,
                     hostname: domainName,
@@ -116,7 +149,7 @@ const App = () => {
                 {
                     key: '2',
                     name: 'DKIM',
-                    status: 'Unverified', // 示例状态值
+                    status: dkim_status, // 示例状态值
                     type: 'TXT',
                     hostRecords: data['dkim.domain'],
                     hostname: domainName,
@@ -126,7 +159,7 @@ const App = () => {
                 {
                     key: '3',
                     name: 'MX',
-                    status: 'Unverified', // 示例状态值
+                    status: mx_status, // 示例状态值
                     type: 'MX',
                     hostRecords: data['mx.domain'],
                     hostname: domainName,
@@ -136,7 +169,7 @@ const App = () => {
                 {
                     key: '4',
                     name: 'DMARC',
-                    status: 'Unverified', // 示例状态值
+                    status: dmarc_status, // 示例状态值
                     type: 'TXT',
                     hostRecords: data['dmarc.domain'],
                     hostname: domainName,
