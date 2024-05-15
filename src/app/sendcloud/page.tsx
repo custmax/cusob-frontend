@@ -12,6 +12,9 @@ import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} 
 import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
 import {getContactList, getContactDetail, updateContact, removeContact, saveContact} from "@/server/sendcloud/contact";
 import {getCampaignList, getCampaignDetail, saveCampaign, removeCampaign, updateCampaign} from "@/server/sendcloud/campaigins";
+import {sendEmail} from "@/server/sendcloud/mail";
+import {getAddressList} from "@/server/sendcloud/addresslist";
+import {async} from "rxjs";
 
 const {
     sendCloudContainer,
@@ -22,7 +25,8 @@ const {
 const SendCloud = () => {
 
     const getDomain = async () => {
-        const res = await getDomainList()
+        const domain = 'chtrak.com'
+        const res = await getDomainList(domain)
         console.log(res)
     }
 
@@ -264,12 +268,30 @@ const SendCloud = () => {
         const res = await updateCampaign('58095', formData)
     }
 
+    const emailSend = async () => {
+        const send = {
+            apiUser: 'cusob_batch01',
+            apiKey: '306994509423de368b8a338ecc14e750',
+            from: 'cusob@mail.email-marketing-hub.com',
+            to: 'daybreak@chtrak.com',
+            subject: 'Thanks',
+            html: 'Nice to meet you',
+            contentSummary: 'Nice to meet you',
+            fromName: 'cusob',
+        }
+        const res = await sendEmail(send)
+    }
+
+    const findAddressList = async () => {
+        const res = await getAddressList()
+    }
+
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={editCampaign}>Send</Button>
+            <Button className={btnSend} onClick={getDomain}>Send</Button>
         </div>
     </div>
 }
