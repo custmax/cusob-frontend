@@ -103,9 +103,7 @@ const SenderList = () => {
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Link href={{pathname: "/domainCertify", query: {domain: record.domain}}}>
-                        Settings
-                    </Link>
+                    Shared IP
                 </Space>
             ),
         },
