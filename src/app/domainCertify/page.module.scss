@@ -23,6 +23,16 @@
       border-bottom: 1px solid #E0E0E0;
     }
 
+    .tab{
+
+      font-weight: 400;
+      font-size: 20vpx;
+      width: 1600vpx;
+      margin-left: 170vpx;
+
+
+    }
+
     .addressWrapper {
       padding-bottom: 50vpx;
       padding-top: 50vpx;
@@ -109,7 +119,7 @@
           line-height: 23vpx;
           margin-right: 30vpx;
           padding-bottom: 30vpx;
-  
+
           .label {
             width: 178vpx;
           }
@@ -124,7 +134,7 @@
           display: flex;
           align-items: center;
           padding-bottom: 30vpx;
-  
+
           .label {
             font-family: Arial, Arial;
             font-weight: normal;
@@ -134,7 +144,7 @@
             margin-right: 30vpx;
             width: 178vpx;
           }
-  
+
           .txtInput {
             width: 605vpx;
             height: 50vpx;

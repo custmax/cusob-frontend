@@ -1,13 +1,20 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, {useEffect, useState} from 'react';
+import { Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
+import saveDomain from "@/app/sendcloud/page";
+import {getDomainList} from "@/server/domain";
+import {checkDomain} from "@/server/sendcloud/domain";
+
 
 interface DataType {
     key: string;
     name: string;
-    age: number;
-    address: string;
-    tags: string[];
+    status: string; // 改为 string 类型以匹配状态值
+    type: string;
+    hostRecords: string;
+    hostname: string;
+    Enter_this_value: string;
+    currentValue: string;
 }
 
 const columns: TableProps<DataType>['columns'] = [
@@ -15,74 +22,137 @@ const columns: TableProps<DataType>['columns'] = [
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        render: (text) => <a>{text}</a>,
+        width: '20%',
+        render: (_, { name }, index) => {
+            if (index < 2) { // 只在前两行添加星号
+                return (
+                    <>
+                        <span style={{ color: 'red' }}>*</span>
+                        {name}
+                    </>
+                );
+            }
+            return name;
+        },
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        width: 300, // 设置列宽
+        render: (_, { status }) => {
+            let color = status === 'Verified' ? 'green' : 'red';
+            return (
+                <Tag color={color} key={status}>
+                    {status}
+                </Tag>
+            );
+        },
     },
     {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
+        title: 'Type',
+        dataIndex: 'type',
+        key: 'type',
+        width: '15%',
+
     },
     {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
+        title: 'HostRecords',
+        dataIndex: 'hostRecords',
+        key: 'hostRecords',
+        width: '15%',
+        render: (value) => <div style={{ wordWrap: 'break-word' }}>{value}</div>,
     },
     {
-        title: 'Action',
-        key: 'action',
-        render: (_, record) => (
-            <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
-            </Space>
-        ),
+        title: 'Hostname',
+        dataIndex: 'hostname',
+        key: 'hostname',
+        width: '15%',
+        render: (value) => <div style={{ wordWrap: 'break-word' }}>{value}</div>,
+    },
+    {
+        title: 'Enter this value',
+        dataIndex: 'Enter_this_value',
+        key: 'Enter_this_value',
+        width: '15%',
+
+        ellipsis: true,
+    },
+    {
+        title: 'Current value',
+        dataIndex: 'currentValue',
+        key: 'currentValue',
+        width: '10%',
+        render: (value) => <div style={{ wordWrap: 'break-word' }}>{value}</div>,
     },
 ];
 
 const data: DataType[] = [
     {
         key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
+        name: 'SPF',
+        status: 'Unverified', // 示例状态值
+        type: 'TXT',
+        hostRecords: 'TXT',
+        hostname: 'AAAA',
+        Enter_this_value: 'BBB',
+        currentValue: 'CCC',
+
     },
     {
         key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
+        name: 'DKIM',
+        status: 'Unverified', // 示例状态值
+        type: 'TXT',
+        hostRecords: 'TXT',
+        hostname: 'AAAA',
+        Enter_this_value: 'BBB',
+        currentValue: 'CCC',
+
     },
     {
         key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
+        name: 'DMARC',
+        status: 'Unverified', // 示例状态值
+        type: 'TXT',
+        hostRecords: 'TXTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',
+        hostname: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        Enter_this_value: 'BBB',
+        currentValue: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
+    },
+    {
+        key: '4',
+        name: 'CNAME',
+        status: 'Unverified', // 示例状态值
+        type: 'CNAME',
+        hostRecords: '',
+        hostname: 'AAAA',
+        Enter_this_value: 'BBB',
+        currentValue: 'CCC'
     },
 ];
 
-const App: React.FC = () => <Table columns={columns} dataSource={data} />;
+const App = () => {
+    const [domainData, setDomainData] = useState<DataType[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await checkDomain('mail.szpost.com');
+            console.log(res)
+            // 根据返回的 res 数据构建表格数据
+            const tableData: DataType[] = [];
+            // 将 res 中的数据转换成表格需要的格式，并存储到 tableData 中
+            setDomainData(tableData);
+        };
+
+        fetchData();
+
+    }, []);
+    return <Table columns={columns}
+           dataSource={data}
+           pagination={false}
+
+    />
+};
 
 export default App;

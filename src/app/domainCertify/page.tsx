@@ -18,6 +18,7 @@ const {
   domainCertifyContainer,
   main,
   title,
+  tab,
 
 } = styles;
 
@@ -39,7 +40,9 @@ const DomainCertify = () => {
 
   const initDkim = useCallback(async (domain: string) => {
     const res = await getDkim(domain)
+    console.log(res)
     if (res.code === SUCCESS_CODE && res.data) {
+
       setDkimValue(res.data.publicKey)
       setSelector(res.data.selector)
     }
@@ -68,7 +71,9 @@ const DomainCertify = () => {
     <SideBar/>
     <div className={main}>
       <div className={title}>Domain Auth For {domain}</div>
-          <Table/>
+    <div className={tab}>
+          <Table />
+    </div>
     </div>
   </div>
 };
