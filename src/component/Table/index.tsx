@@ -14,7 +14,7 @@ interface DataType {
     hostRecords: string;
     hostname: string;
     Enter_this_value: string;
-    currentValue: string;
+
 }
 
 const columns: TableProps<DataType>['columns'] = [
@@ -22,9 +22,9 @@ const columns: TableProps<DataType>['columns'] = [
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        width: '20%',
+        width: '10%',
         render: (_, { name }, index) => {
-            if (index < 2) { // 只在前两行添加星号
+            if (index < 3) { // 只在前两行添加星号
                 return (
                     <>
                         <span style={{ color: 'red' }}>*</span>
@@ -38,8 +38,7 @@ const columns: TableProps<DataType>['columns'] = [
     {
         title: 'Status',
         dataIndex: 'status',
-        key: 'status',
-        width: 300, // 设置列宽
+        width: '10%',
         render: (_, { status }) => {
             let color = status === 'Verified' ? 'green' : 'red';
             return (
@@ -53,7 +52,7 @@ const columns: TableProps<DataType>['columns'] = [
         title: 'Type',
         dataIndex: 'type',
         key: 'type',
-        width: '15%',
+        width: '10%',
 
     },
     {
@@ -67,70 +66,19 @@ const columns: TableProps<DataType>['columns'] = [
         title: 'Hostname',
         dataIndex: 'hostname',
         key: 'hostname',
-        width: '15%',
+        width: '20%',
         render: (value) => <div style={{ wordWrap: 'break-word' }}>{value}</div>,
     },
     {
         title: 'Enter this value',
         dataIndex: 'Enter_this_value',
         key: 'Enter_this_value',
-        width: '15%',
+        width: '30%',
+        ellipsis: true, // 添加这行来启用省略号
+    },
 
-        ellipsis: true,
-    },
-    {
-        title: 'Current value',
-        dataIndex: 'currentValue',
-        key: 'currentValue',
-        width: '10%',
-        render: (value) => <div style={{ wordWrap: 'break-word' }}>{value}</div>,
-    },
 ];
 
-const data: DataType[] = [
-    {
-        key: '1',
-        name: 'SPF',
-        status: 'Unverified', // 示例状态值
-        type: 'TXT',
-        hostRecords: 'TXT',
-        hostname: 'AAAA',
-        Enter_this_value: 'BBB',
-        currentValue: 'CCC',
-
-    },
-    {
-        key: '2',
-        name: 'DKIM',
-        status: 'Unverified', // 示例状态值
-        type: 'TXT',
-        hostRecords: 'TXT',
-        hostname: 'AAAA',
-        Enter_this_value: 'BBB',
-        currentValue: 'CCC',
-
-    },
-    {
-        key: '3',
-        name: 'DMARC',
-        status: 'Unverified', // 示例状态值
-        type: 'TXT',
-        hostRecords: 'TXTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',
-        hostname: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        Enter_this_value: 'BBB',
-        currentValue: 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
-    },
-    {
-        key: '4',
-        name: 'CNAME',
-        status: 'Unverified', // 示例状态值
-        type: 'CNAME',
-        hostRecords: '',
-        hostname: 'AAAA',
-        Enter_this_value: 'BBB',
-        currentValue: 'CCC'
-    },
-];
 
 const App = () => {
     const [domainData, setDomainData] = useState<DataType[]>([]);
@@ -139,8 +87,63 @@ const App = () => {
         const fetchData = async () => {
             const res = await getDomain('mail.email-marketing-hub.com');
             const data = res.info.dataList[0]
-            // 根据返回的 res 数据构建表格数据
-            const tableData: DataType[] = [];
+            // const [false]
+            const dotsCount = (data['spf.domain'].match(/\./g) || []).length; // 获取`.`的数量
+
+            let SPFdomainRecords;
+            let domainName;
+            if (dotsCount === 2) {
+                // 获取第一个`.`之前的部分
+                SPFdomainRecords = data['spf.domain'].substring(0, data['spf.domain'].indexOf('.'));
+                domainName =  data['spf.domain'].substring(data['spf.domain'].indexOf('.')+1)
+            } else {
+                // 如果`.`的数量不是2，则为 @
+                SPFdomainRecords = '@';
+                domainName = data['spf.domain'];
+            }
+            console.log(data)
+            const tableData: DataType[] = [
+                {
+                    key: '1',
+                    name: 'SPF',
+                    status: 'Unverified', // 示例状态值
+                    type: 'TXT',
+                    hostRecords: SPFdomainRecords,
+                    hostname: domainName,
+                    Enter_this_value: data['spf.value'],
+
+                },
+                {
+                    key: '2',
+                    name: 'DKIM',
+                    status: 'Unverified', // 示例状态值
+                    type: 'TXT',
+                    hostRecords: data['dkim.domain'],
+                    hostname: domainName,
+                    Enter_this_value: data['dkim.value'],
+
+                },
+                {
+                    key: '3',
+                    name: 'MX',
+                    status: 'Unverified', // 示例状态值
+                    type: 'MX',
+                    hostRecords: data['mx.domain'],
+                    hostname: domainName,
+                    Enter_this_value: data['mx.value'],
+
+                },
+                {
+                    key: '4',
+                    name: 'DMARC',
+                    status: 'Unverified', // 示例状态值
+                    type: 'TXT',
+                    hostRecords: data['dmarc.domain'],
+                    hostname: domainName,
+                    Enter_this_value: data['dmarc.value'],
+                },
+
+            ];
             // 将 res 中的数据转换成表格需要的格式，并存储到 tableData 中
             setDomainData(tableData);
         };
@@ -149,7 +152,7 @@ const App = () => {
 
     }, []);
     return <Table columns={columns}
-           dataSource={data}
+           dataSource={domainData}
            pagination={false}
 
     />
