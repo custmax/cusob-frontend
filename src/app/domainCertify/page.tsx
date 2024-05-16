@@ -31,6 +31,7 @@ interface DataType {
 
 }
 
+
 const {
   domainCertifyContainer,
   main,
@@ -40,8 +41,9 @@ const {
 
 } = styles;
 
-function handleCopy(value: string) {
-  copy(value);
+const handleCopy = (value: string) => {
+  copy(value)
+  message.success("Copy Success")
 }
 
 const columns: TableProps<DataType>['columns'] = [
@@ -139,11 +141,6 @@ const DomainCertify = () => {
     }
   }, [])
 
-  const handleCopy = (value: string) => {
-    copy(value)
-    message.success("Copy Success")
-  }
-
   const handleDomainVerify = async (domain: string) => {
     message.loading({content: 'loading', duration: 10, key: 'listLoading'})
     const res = await domainVerify(domain)
@@ -154,7 +151,7 @@ const DomainCertify = () => {
   }
 
   const fetchData = async () => {
-    const res = await getDomain('mail.email-marketing-hub.com');
+    const res = await getDomain(domainValue);
     const data = res.info.dataList[0]
     const status = {'spf_status': false,
       'dkim_status':false,
