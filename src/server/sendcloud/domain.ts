@@ -13,6 +13,18 @@ export const getDomainList = async () => {
     return res;
 }
 
+// export const getUsermessages= async () => {
+//     const res = await clientFetch({
+//         url: `/api2/apiuser/list`,
+//         method: 'GET',
+//         data: {
+//             apiUser: API_USER,
+//             apiKey: API_KEY,
+//         }
+//     })
+//     return res;
+// }
+
 export const getDomain = async (name: string | null) => {
     const res = await clientFetch({
         url: `/api2/domain/list`,
