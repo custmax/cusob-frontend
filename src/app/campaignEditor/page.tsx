@@ -13,6 +13,7 @@ import { getGroupList } from '@/server/group';
 import { SUCCESS_CODE } from '@/constant/common';
 import { getCampaign, saveDraft, sendEmail, updateCampaign } from '@/server/campaign';
 import { getSenderList } from '@/server/sender';
+import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 
 const {
   campaignEditorContainer,
@@ -443,15 +444,26 @@ const CampaignEditor = () => {
         trackOpens,
         trackTextClicks
       }
-      const res = await sendEmail(data)
-      if (res.code === SUCCESS_CODE) {
-        message.success(res.message, () => {
-          router.back()
-        })
-      } else {
-        setSubmit(false)
-        message.error(res.message)
+      // const res = await sendEmail(data)
+      const sendCloudData = {
+        apiUser: 'cusob_batch01',
+        apiKey: '306994509423de368b8a338ecc14e750',
+        from: 'cusob@mail.email-marketing-hub.com',
+        to: '2218098884@qq.com',
+        subject: subject,
+        html: richContent,
+        contentSummary: preText,
+        fromName: senderName,
       }
+      const res = await sendEmailBySendCloud(sendCloudData)
+      // if (res.code === SUCCESS_CODE) {
+      //   message.success(res.message, () => {
+      //     router.back()
+      //   })
+      // } else {
+      //   setSubmit(false)
+      //   message.error(res.message)
+      // }
     }
 
   }

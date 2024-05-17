@@ -12,10 +12,9 @@ import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} 
 import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
 import {getContactList, getContactDetail, updateContact, removeContact, saveContact} from "@/server/sendcloud/contact";
 import {getCampaignList, getCampaignDetail, saveCampaign, removeCampaign, updateCampaign} from "@/server/sendcloud/campaigins";
-import {sendEmail} from "@/server/sendcloud/mail";
+import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getAddressList, addAddressList, updateAddressList, removeAddressList} from "@/server/sendcloud/addressList";
 import {getMemberList, getMember, addMember, updateMember, removeMember} from "@/server/sendcloud/addressMember";
-import {async} from "rxjs";
 
 
 const {
@@ -281,7 +280,7 @@ const SendCloud = () => {
             contentSummary: 'Nice to meet you',
             fromName: 'cusob',
         }
-        const res = await sendEmail(send)
+        const res = await sendEmailBySendCloud(send)
     }
 
     const findAddressList = async () => {
@@ -331,7 +330,7 @@ const SendCloud = () => {
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={deleteMember}>Send</Button>
+            <Button className={btnSend} onClick={getDomain}>Send</Button>
         </div>
     </div>
 }
