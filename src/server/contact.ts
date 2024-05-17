@@ -85,4 +85,12 @@ export const batchImport = async (data: FormData) => {
   return res;
 }
 
+export const getEmailsByGroupId = async (groupId: number) => {
+  const res = await clientFetch({
+    url: `/api/contact/getAll/${groupId}`,
+    method: 'GET'
+  })
+  return res;
+}
+
 

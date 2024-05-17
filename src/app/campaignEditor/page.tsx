@@ -14,6 +14,8 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { getCampaign, saveDraft, sendEmail, updateCampaign } from '@/server/campaign';
 import { getSenderList } from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
+import {getEmailsByGroupId} from "@/server/contact";
+import {API_USER, API_KEY, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
 
 const {
   campaignEditorContainer,
@@ -89,6 +91,7 @@ const CampaignEditor = () => {
   const [zone, setZone] = useState('beiJing')
   const [timeType, setTimeType] = useState()
   const [senderId, setSenderId] = useState<number>()
+  const [contactList, setContactList] = useState('')
 
   const [trackClicks, setTrackClicks] = useState<boolean>(false)
   const [trackLink, setTrackLink] = useState<boolean>(false)
@@ -444,28 +447,42 @@ const CampaignEditor = () => {
         trackOpens,
         trackTextClicks
       }
-      // const res = await sendEmail(data)
-      const sendCloudData = {
-        apiUser: 'cusob_batch01',
-        apiKey: '306994509423de368b8a338ecc14e750',
-        from: 'cusob@mail.email-marketing-hub.com',
-        to: '2218098884@qq.com',
-        subject: subject,
-        html: richContent,
-        contentSummary: preText,
-        fromName: senderName,
+      // sendBySendCloud()
+      const res = await sendEmail(data)
+      if (res.code === SUCCESS_CODE) {
+        message.success(res.message, () => {
+          router.back()
+        })
+      } else {
+        setSubmit(false)
+        message.error(res.message)
       }
-      const res = await sendEmailBySendCloud(sendCloudData)
-      // if (res.code === SUCCESS_CODE) {
-      //   message.success(res.message, () => {
-      //     router.back()
-      //   })
-      // } else {
-      //   setSubmit(false)
-      //   message.error(res.message)
-      // }
     }
 
+  }
+
+  const onGroupChange = (value: number) => {
+    setToGroup(value)
+  }
+  
+  const sendBySendCloud = async () => {
+    if (toGroup !== undefined){
+      const emailRes = await getEmailsByGroupId(toGroup)
+      console.log(emailRes.data)
+      if (emailRes.code == SUCCESS_CODE) {
+        const sendCloudData = {
+          apiUser: API_USER,
+          apiKey: API_KEY,
+          from: SENDER_EMAIL,
+          to: emailRes.data.join(";"),
+          subject: subject,
+          html: richContent,
+          contentSummary: preText,
+          fromName: SENDER_NAME,
+        }
+        const res = await sendEmailBySendCloud(sendCloudData)
+      }
+    }
   }
 
   const onDraft = async () => {
@@ -594,7 +611,7 @@ const CampaignEditor = () => {
         <div className={value}>
           <Select
             value={toGroup}
-            onChange={val => setToGroup(val)}
+            onChange={onGroupChange}
             options={groupList}
           />
           <span>All subscribers in audience</span>
