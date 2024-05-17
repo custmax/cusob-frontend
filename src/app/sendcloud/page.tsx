@@ -25,11 +25,11 @@ const {
 
 const SendCloud = () => {
 
-    const getDomain = async () => {
-        const domain = 'chtrak.com'
-        const res = await getDomainList(domain)
-        console.log(res)
-    }
+    // const getDomain = async () => {
+    //     const domain = 'chtrak.com'
+    //     const res = await getDomainList(domain)
+    //     console.log(res)
+    // }
 
     const saveDomain = async () => {
         const res = await addDomain('dlgems.com')
@@ -330,7 +330,7 @@ const SendCloud = () => {
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={getDomain}>Send</Button>
+            <Button className={btnSend}>Send</Button>
         </div>
     </div>
 }
