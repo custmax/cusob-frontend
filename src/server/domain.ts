@@ -1,4 +1,5 @@
 import clientFetch from '@/helper/clientFetch';
+import {getDomain} from "@/server/sendcloud/domain";
 
 export const domainVerify = async (domain: string) => {
     const res = await clientFetch({
@@ -16,4 +17,15 @@ export const getDomainList = async () =>{
         method: 'GET',
     })
     return res;
+}
+
+export const saveDomain = async (data:Apidomain.NewApidomain) =>{
+    console.log(data)
+    const res = await clientFetch({
+        url: `/api/apiDomain/save`,
+        method: 'POST',
+        data: data
+    })
+    return res;
+
 }

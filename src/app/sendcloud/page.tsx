@@ -12,6 +12,10 @@ import {getSenderList, getSenderDetail, saveSender, updateSender, removeSender} 
 import {getTagList, saveTag, updateTag, deleteTag, getTagMember} from "@/server/sendcloud/tags";
 import {getContactList, getContactDetail, updateContact, removeContact, saveContact} from "@/server/sendcloud/contact";
 import {getCampaignList, getCampaignDetail, saveCampaign, removeCampaign, updateCampaign} from "@/server/sendcloud/campaigins";
+import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
+import {getAddressList, addAddressList, updateAddressList, removeAddressList} from "@/server/sendcloud/addressList";
+import {getMemberList, getMember, addMember, updateMember, removeMember} from "@/server/sendcloud/addressMember";
+
 
 const {
     sendCloudContainer,
@@ -21,10 +25,11 @@ const {
 
 const SendCloud = () => {
 
-    const getDomain = async () => {
-        const res = await getDomainList()
-        console.log(res)
-    }
+    // const getDomain = async () => {
+    //     const domain = 'chtrak.com'
+    //     const res = await getDomainList(domain)
+    //     console.log(res)
+    // }
 
     const saveDomain = async () => {
         const res = await addDomain('dlgems.com')
@@ -264,12 +269,68 @@ const SendCloud = () => {
         const res = await updateCampaign('58095', formData)
     }
 
+    const emailSend = async () => {
+        const send = {
+            apiUser: 'cusob_batch01',
+            apiKey: '306994509423de368b8a338ecc14e750',
+            from: 'cusob@mail.email-marketing-hub.com',
+            to: 'daybreak@chtrak.com',
+            subject: 'Thanks',
+            html: 'Nice to meet you',
+            contentSummary: 'Nice to meet you',
+            fromName: 'cusob',
+        }
+        const res = await sendEmailBySendCloud(send)
+    }
+
+    const findAddressList = async () => {
+        const res = await getAddressList()
+    }
+
+    const saveAddressList = async () => {
+        const address = 'friend@maillist.sendcloud.org'
+        const name = 'friend'
+        const res = await addAddressList(address, name)
+    }
+
+    const editAddressList = async () => {
+        const address = 'friend@maillist.sendcloud.org'
+        const newAddress = 'friend1@maillist.sendcloud.org'
+        const name = 'friend'
+        const res = await updateAddressList(address, newAddress, name)
+    }
+
+    const deleteAddressList = async () => {
+        const res = await removeAddressList('friend1@maillist.sendcloud.org')
+    }
+
+    const findMemberList = async () => {
+        const res = await getMemberList('hust@maillist.sendcloud.org', 0, 10)
+    }
+
+    const findMember = async () => {
+        const res = await getMember('hust@maillist.sendcloud.org', '2218098884@qq.com')
+    }
+
+    const saveMember = async () => {
+        const res = await addMember('hust@maillist.sendcloud.org', 'daybreak@chtrak.com', 'daybreak')
+    }
+
+    const editMember = async () => {
+        const res = await updateMember('hust@maillist.sendcloud.org',
+            'daybreak@chtrak.com', 'daybreak@chtrak.com', '黎明')
+    }
+
+    const deleteMember = async () => {
+        const res = await removeMember('hust@maillist.sendcloud.org', 'daybreak@chtrak.com')
+    }
+
 
     return <div className={sendCloudContainer}>
         <EnteredHeader />
         <SideBar />
         <div className={main}>
-            <Button className={btnSend} onClick={editCampaign}>Send</Button>
+            <Button className={btnSend}>Send</Button>
         </div>
     </div>
 }
