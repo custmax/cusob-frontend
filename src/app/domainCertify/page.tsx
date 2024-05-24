@@ -6,18 +6,18 @@ import {Button, Input, message, Select, Table, Tag} from 'antd';
 
 import {SUCCESS_CODE} from "@/constant/common";
 
-import {getDkim} from "@/server/dkim";
-import {domainVerify} from "@/server/domain";
-import {SPF_VALUE} from "@/constant/cusob"
+
+import {domainVerify, saveDkim, saveDomain, SavedomainSender} from "@/server/domain";
+
 import {useRouter, useSearchParams} from "next/navigation";
 
 import React, {useCallback,useEffect, useState} from 'react';
 
 import type { TableProps } from 'antd';
-import saveDomain from "@/app/sendcloud/page";
-import {getDomainList, addDomain, updateDomain, checkDomain, deleteDomain,getDomain} from "@/server/sendcloud/domain";
 import {CopyOutlined} from "@ant-design/icons";
 import copy from "copy-to-clipboard";
+import {createdomain, generateDkim, getdomain} from "@/server/mailu/Domain";
+import {createUser, getUser} from "@/server/mailu/user";
 
 
 interface DataType {
@@ -38,13 +38,14 @@ const {
   title,
   tab,
   check,
-
+  ver,
 } = styles;
 
 const handleCopy = (value: string) => {
   copy(value)
   message.success("Copy Success")
 }
+
 
 const columns: TableProps<DataType>['columns'] = [
   {
@@ -53,7 +54,7 @@ const columns: TableProps<DataType>['columns'] = [
     key: 'name',
     width: '10%',
     render: (_, { name }, index) => {
-      if (index < 3) { // 只在前两行添加星号
+      if (index < 2) { // 只在前两行添加星号
         return (
             <>
               <span style={{ color: 'red' }}>*</span>
@@ -120,26 +121,41 @@ const DomainCertify = () => {
   const [dkimValue, setDkimValue] = useState<string>('')
   const [selector, setSelector] = useState('')
   const searchParams = useSearchParams()
-  const domainValue = searchParams.get("domain")
+  const email = searchParams.get("email")
+  // @ts-ignore
+  const domainValue = email.split('@')[1];
 
   const router = useRouter();
 
-  const initDomain = useCallback(() => {
-    if (domainValue) {
-      setDomain(domainValue)
-      initDkim(domainValue)
+  const generatePassword = () =>{ //生成8位包含数字和字母的密码
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let generatedPassword = '';
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      generatedPassword += chars[randomIndex];
     }
-  }, [domainValue])
+    return generatedPassword;
+  }
 
-  const initDkim = useCallback(async (domain: string) => {
-    const res = await getDkim(domain)
-    console.log(res)
-    if (res.code === SUCCESS_CODE && res.data) {
-
-      setDkimValue(res.data.publicKey)
-      setSelector(res.data.selector)
+  const handleVerify = async () => {
+    const verify = await domainVerify(domainValue);
+    if(verify.data.spf && verify.data.dkim){
+      const find = await getUser(email);
+      if(!find){
+        const password = generatePassword();
+        console.log(password)
+        await createUser(email, password);
+        const res = await SavedomainSender(email, password)
+        if(res.code === SUCCESS_CODE){
+          message.success('Verified!')
+          router.push('/emailList')
+        }
+      }else {
+        message.error('This email has been used')
+        return
+      }
     }
-  }, [])
+  }
 
   const handleDomainVerify = async (domain: string) => {
     message.loading({content: 'loading', duration: 10, key: 'listLoading'})
@@ -150,53 +166,65 @@ const DomainCertify = () => {
     }
   }
 
+  const getmessage = async (domain: string | null) => {
+    const r = await getdomain(domainValue)
+    const data = {
+      dkimDomain: 'dkim._domainkey.' + domainValue,
+      dkimValue: r.dns_dkim.split('TXT "')[1].replaceAll('\"', ''),
+      dmarcDomain: '_dmarc.' + domainValue,
+      dmarcValue: r.dns_dmarc.split('TXT "')[1].replaceAll('\"', ''),
+      mxDomain: domainValue,
+      mxValue: r.dns_mx.split('MX ')[1].split(' ')[1],
+      domain: domainValue,
+      spfDomain: domainValue,
+      spfValue: r.dns_spf.split('TXT "')[1].replaceAll('\"', ''),
+    };
+    console.log(data)
+    return data;
+  }
+
   const fetchData = async () => {
-    const res = await getDomain(domainValue);
-    const data = res.info.dataList[0]
-    const status = {'spf_status': false,
-      'dkim_status':false,
-      'mx_status':false,
-      'dmarc_status':false}
-    if (data.verify & 1 ) {
-      status.dkim_status = true;
+    message.loading({content: 'loading', duration: 10, key: 'listLoading'})
+    const res = await createdomain(domainValue);
+    console.log(res)
+    if(res.code === SUCCESS_CODE){
+        const res = await generateDkim(domainValue);
+        if(res.code === SUCCESS_CODE){ //如果为第一次创建
+          const data = await getmessage(domainValue);  //获取DNS数据
+          await saveDomain(data); // 保存domain至数据库
+        }
     }
-    if (data.verify & 2 ) {
-      status.spf_status = true;
+    // @ts-ignore
+    const dotCount = (domainValue.match(/\./g) || []).length;
+    const verify = await domainVerify(domainValue);
+    message.destroy('listLoading')
+    let host = '@';
+    let hostname = domainValue;
+    if(dotCount === 2){
+      // @ts-ignore
+      host = domainValue.split('.')[0];
+      // @ts-ignore
+      hostname = domainValue.split('.')[1]
     }
-    if (data.verify & 4 ) {
-      status.mx_status = true;
-    }
-    if (data.verify & 16 ) {
-      status.dmarc_status = true;
-    }
-    console.log(data.verify & 2)
+    const data = await getmessage(domainValue);
+    const status = {'spf_status': verify.data.spf,
+      'dkim_status':verify.data.dkim,
+      'mx_status':verify.data.mx,
+      'dmarc_status':verify.data.dmarc}
+
     const spf_status = status.spf_status ? 'Verified' : 'Unverified';
     const dkim_status = status.dkim_status ? 'Verified' : 'Unverified';
     const mx_status = status.mx_status ? 'Verified' : 'Unverified';
     const dmarc_status = status.dmarc_status ? 'Verified' : 'Unverified';
-    const dotsCount = (data['spf.domain'].match(/\./g) || []).length; // 获取`.`的数量
-
-    let SPFdomainRecords;
-    let domainName;
-    if (dotsCount === 2) {
-      // 获取第一个`.`之前的部分
-      SPFdomainRecords = data['spf.domain'].substring(0, data['spf.domain'].indexOf('.'));
-      domainName =  data['spf.domain'].substring(data['spf.domain'].indexOf('.')+1)
-    } else {
-      // 如果`.`的数量不是2，则为 @
-      SPFdomainRecords = '@';
-      domainName = data['spf.domain'];
-    }
-    console.log(data)
     const tableData: DataType[] = [
       {
         key: '1',
         name: 'SPF',
         status: spf_status , // 示例状态值
         type: 'TXT',
-        hostRecords: SPFdomainRecords,
-        hostname: domainName,
-        Enter_this_value: data['spf.value'],
+        hostRecords: host,
+        hostname: hostname || '',
+        Enter_this_value: data.spfValue,
 
       },
       {
@@ -204,30 +232,30 @@ const DomainCertify = () => {
         name: 'DKIM',
         status: dkim_status, // 示例状态值
         type: 'TXT',
-        hostRecords: data['dkim.domain'],
-        hostname: domainName,
-        Enter_this_value: data['dkim.value'],
+        hostRecords: data.dkimDomain,
+        hostname:hostname || '',
+        Enter_this_value: data.dkimValue,
 
       },
-      {
-        key: '3',
-        name: 'MX',
-        status: mx_status, // 示例状态值
-        type: 'MX',
-        hostRecords: data['mx.domain'],
-        hostname: domainName,
-        Enter_this_value: data['mx.value'],
-
-      },
-      {
-        key: '4',
-        name: 'DMARC',
-        status: dmarc_status, // 示例状态值
-        type: 'TXT',
-        hostRecords: data['dmarc.domain'],
-        hostname: domainName,
-        Enter_this_value: data['dmarc.value'],
-      },
+      // {
+      //   key: '3',
+      //   name: 'MX',
+      //   status: mx_status, // 示例状态值
+      //   type: 'MX',
+      //   hostRecords: domainValue || '',
+      //   hostname: hostname || '',
+      //   Enter_this_value: data.mxValue,
+      //
+      // },
+      // {
+      //   key: '4',
+      //   name: 'DMARC',
+      //   status: dmarc_status, // 示例状态值
+      //   type: 'TXT',
+      //   hostRecords: data.dmarcDomain,
+      //   hostname: hostname || '',
+      //   Enter_this_value: data.dmarcValue,
+      // },
 
     ];
     // 将 res 中的数据转换成表格需要的格式，并存储到 tableData 中
@@ -260,6 +288,7 @@ const DomainCertify = () => {
              pagination={false}
       />
     </div>
+      <div className={ver}><Button type="primary" onClick={handleVerify} >Verify Email</Button></div>
     </div>
   </div>
 };

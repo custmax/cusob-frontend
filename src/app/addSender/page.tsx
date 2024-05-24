@@ -6,10 +6,11 @@ import classNames from 'classnames';
 import {Checkbox, Form, Input, Modal, Radio, message, Button, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import React, { useState} from 'react';
-import { saveSender, sendCodeForSender} from '@/server/sender';
-import { SUCCESS_CODE } from '@/constant/common';
+import {saveSender, sendCodeForSender} from '@/server/sender';
+import {FAILUE_CODE, SUCCESS_CODE} from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {emailsettings} from "@/constant/email";
+
 
 const {
   addSenderContainer,
@@ -36,11 +37,15 @@ const {
   formControls
 } = styles;
 
+
+
 const AddSender = () => {
   const [form1] = Form.useForm()
   const [form2] = Form.useForm()
+  const [form3] = Form.useForm()
   const [showVertify, setShowVertify] = useState<boolean>(false);
   const [showBinder, setShowBinder] = useState<boolean>(false);
+  const [showdomainBinder, setDomainshowBinder] = useState<boolean>(false);
   const [showManual, setShowManual] = useState<boolean>(false);
   const [verifyEmail, setVerifyEmail] = useState('');
   const router = useRouter()
@@ -66,6 +71,14 @@ const AddSender = () => {
   const onVertifyCancel = () => {
 
     setShowVertify(false);
+  };
+
+  async function onDomainBinderOk() {
+    const {
+      email
+    } = form3.getFieldsValue();
+      router.push(`/domainCertify?email=${email}`);
+      return;
   };
 
   const onManualOk = async () => {
@@ -115,7 +128,7 @@ const AddSender = () => {
         message.error(res.message)
       }
     }else {
-      setError('请输入有效的邮箱地址');
+      setError('Please input valid mail address');
       return;
     }
     isSubmitting = false;
@@ -150,6 +163,7 @@ const AddSender = () => {
     if(validateEmail(email)){
       message.loading({ content: 'loading', duration: 10, key: 'loading' })
       console.log(data)
+
       const res = await saveSender(data)
 
       message.destroy('loading')
@@ -159,7 +173,7 @@ const AddSender = () => {
         message.error(res.message)
       }
     }else {
-      setError('请输入有效的邮箱地址');
+      setError('Please input valid mail address');
       return;
     }
     isSubmitting = false;
@@ -172,6 +186,10 @@ const AddSender = () => {
     form2.resetFields(); // 重置表单数据
     setError('')
     setShowBinder(false);
+  };
+
+  const onDomainBinderCancel = () => {
+    setDomainshowBinder(false);
   };
 
   const onManualCancel=()=>{
@@ -288,6 +306,10 @@ const AddSender = () => {
           <Radio checked={showBinder} className={radio} />
           <span>Bind your Email Account</span>
         </div>
+        <div className={classNames(card, { [active]: showdomainBinder })} onClick={() => setDomainshowBinder(true)}>
+          <Radio checked={showdomainBinder} className={radio} />
+          <span>Domain Authentication</span>
+        </div>
         {/*<div className={card} onClick={jumpToDomainCertify}>*/}
         {/*  <Radio className={radio} />*/}
         {/*  <span>Domain Authentication</span>*/}
@@ -353,6 +375,36 @@ const AddSender = () => {
 
       </div>
 
+    </Modal>
+    <Modal
+        title="Domain Authentication"
+        open={showdomainBinder}
+        onOk={onDomainBinderOk}
+        onCancel={onDomainBinderCancel}
+        okText='Done'
+        wrapClassName={binderModal}
+    >
+      <div className={formWrapper}>
+        <Form
+            form={form3}
+            className={binderForm}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            labelAlign='right'
+            colon={false}
+        >
+          {error && <div className={err}>{error}</div>}
+          <Form.Item
+              label="E-mail"
+              name='email'
+              rules={[{required:true,message: "Please input your email!"}]}
+          >
+            <Input />
+          </Form.Item>
+
+        </Form>
+
+      </div>
     </Modal>
     <Modal
         title="Manual Settings"

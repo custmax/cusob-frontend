@@ -11,6 +11,5 @@ declare module Apidomain {
         domain: string;
         spfDomain: string;
         spfValue: string;
-        verify: number;
     }
 }

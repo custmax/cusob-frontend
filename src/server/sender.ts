@@ -19,7 +19,6 @@ export const saveSender = async (data: Omit<Sender.SaveSender, 'id'>) => {
   return res;
 }
 
-
 export const getSenderList = async () => {
   const res = await clientFetch({
     url: `/api/sender/getList`,

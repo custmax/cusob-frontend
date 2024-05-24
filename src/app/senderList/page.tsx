@@ -8,6 +8,7 @@ import React, {useEffect, useState} from "react";
 import {SUCCESS_CODE} from "@/constant/common";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
+import {createdomain, getdomain} from "@/server/mailu/Domain";
 import boolean from "async-validator/dist-types/validator/boolean";
 import {getDomain} from "@/server/sendcloud/domain";
 
@@ -66,25 +67,25 @@ const SenderList = () => {
     }
 
     const save = async () => {
-        const r = await getDomain(domainName);
-        const data = {
-            dkimDomain: r.info.dataList[0]['dkim.domain'],
-            dkimValue: r.info.dataList[0]['dkim.value'],
-            dmarcDomain: r.info.dataList[0]['dmarc.domain'],
-            dmarcValue: r.info.dataList[0]['dmarc.value'],
-            mxDomain: r.info.dataList[0]['mx.domain'],
-            mxValue: r.info.dataList[0]['mx.value'],
-            domain: r.info.dataList[0]['name'],
-            spfDomain: r.info.dataList[0]['spf.domain'],
-            spfValue: r.info.dataList[0]['spf.value'],
-            verify: r.info.dataList[0]['verify']
-        };
-        const res = await saveDomain(data);
-        if(res.code === SUCCESS_CODE){
-            message.success("Add successfully!")
-        }else {
-            message.error(res.message)
-        }
+        const r = await getdomain(domainName);
+        // const data = {
+        //     dkimDomain: r.info.dataList[0]['dkim.domain'],
+        //     dkimValue: r.info.dataList[0]['dkim.value'],
+        //     dmarcDomain: r.info.dataList[0]['dmarc.domain'],
+        //     dmarcValue: r.info.dataList[0]['dmarc.value'],
+        //     mxDomain: r.info.dataList[0]['mx.domain'],
+        //     mxValue: r.info.dataList[0]['mx.value'],
+        //     domain: r.info.dataList[0]['name'],
+        //     spfDomain: r.info.dataList[0]['spf.domain'],
+        //     spfValue: r.info.dataList[0]['spf.value'],
+        //     verify: r.info.dataList[0]['verify']
+        // };
+        // const res = await saveDomain(data);
+        // if(res.code === SUCCESS_CODE){
+        //     message.success("Add successfully!")
+        // }else {
+        //     message.error(res.message)
+        // }
         setShow(false);
     }
 

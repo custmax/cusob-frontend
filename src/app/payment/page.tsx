@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { countryOptions } from '@/constant/phone';
 import { submitOrder } from '@/server/orderInfo';
 import {getPlanById} from "@/server/price";
+import PrefixSelector from "@/component/PrefixSelector";
 
 
 const selectOptions = countryOptions;
@@ -297,7 +298,7 @@ const Payment = () => {
             label="Phone Number"
             name='accountPhone'
           >
-            <Input addonBefore={prefixSelector1} />
+            <Input addonBefore=<PrefixSelector/> />
           </Form.Item>
         </Form>
         <Form
