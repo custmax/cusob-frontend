@@ -6,19 +6,12 @@ import Link from 'next/link';
 import {sendVerifyCode, register, sendPhoneCode} from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
-import {getCaptcha} from '@/server/captcha';
-import Captcha from "@/component/Captcha";
 
-
-
-import {AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal,
-  useState
-} from "react";
+import {useState} from "react";
 import classNames from "classnames";
 import Image from "next/image";
 import PrefixSelector from "@/component/PrefixSelector";
-
-const selectOptions = countryOptions;
+import Turnstile from "@/component/Turnstile";
 
 const {
   signupWrapper,
@@ -41,11 +34,11 @@ const {
 const Signup = () => {
   const [form] = Form.useForm();
   const router = useRouter();
-  const [captchaCode, setCaptchaCode] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('');
 
-  const setCode = (code: string) => {
-    setCaptchaCode(code)
-  }
+  const onTurnstileVerify = (token: string) => {
+    setTurnstileToken(token);
+  };
 
 
   const onVerify = async () => {
@@ -57,23 +50,19 @@ const Signup = () => {
     }
   }
 
-  const onFinish = async (value: User.UserSign & { prefix?: 'string', agree?: string, captcha?: string; }) => {
-    if (value.captcha !== captchaCode) {
-      message.warning("Captcha is wrong!")
-    } else {
+  const onFinish = async (value: User.UserSign & { prefix?: 'string' }) => {
+    if (!turnstileToken) {
+      message.error('Please complete the Turnstile verification.');
+      return;
+    }
       if (value.phone && value.prefix) {
         var plus = value.prefix.indexOf("+");
         value.phone = value.prefix.substring(plus + 1) + '-' + value.phone
       }
-      if (!value.agree) {
-        message.error('please agree to the Terms of Service and privacy Policy first')
-        return;
-      }
       delete value.prefix
-      delete value.agree
       // console.log('value', value)
       message.loading({content: 'loading', duration: 10, key: 'loading'})
-      const res = await register(value)
+      const res = await register(value,turnstileToken)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success({
@@ -85,7 +74,7 @@ const Signup = () => {
       } else {
         message.error({content: res.message})
       }
-    }
+
   }
 
   return <div>
@@ -125,16 +114,9 @@ const Signup = () => {
               >
                 <div className={emailWrapper}>
                   <Input placeholder="Please input your email" />
-                  <div className={verifyBtn} onClick={onVerify}>Verify</div>
                 </div>
               </Form.Item>
-              <Form.Item
-                  label="Verify Code *"
-                  name='verifyCode'
-                  rules={[{ message: 'Please input your email!' }]}
-              >
-                <Input />
-              </Form.Item>
+
               <Form.Item
                   label="Password *"
                   name='password'
@@ -153,21 +135,10 @@ const Signup = () => {
                 />
                 {/*{country && <span className="hint-text">{country}</span>}*/}
               </Form.Item>
-
-              <Form.Item label="Captcha">
-                <Space className={captchaBox}>
-                  <Form.Item
-                      name="captcha"
-                      rules={[{ required: true, message: 'Please input captcha!' }]}
-                  >
-                    <Input/>
-                  </Form.Item>
-                  <Captcha setCode={setCode.bind(this)}></Captcha>
-                </Space>
-              </Form.Item>
-
-              <Form.Item label="" name="agree" valuePropName="checked">
-                <Checkbox>I agree to the Terms of Service and privacy Policy.</Checkbox>
+              <Form.Item
+                  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              >
+                <Turnstile onVerify={onTurnstileVerify}/>
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType='submit'>

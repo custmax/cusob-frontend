@@ -8,3 +8,11 @@ export const getReportList = async (page: number, limit: number, keyword?: strin
   })
   return res;
 }
+
+export const getSenderName = async (campaignName:string)=>{
+  const res = await clientFetch({
+    url: `/api/campaign/getSenderName/${campaignName}`,
+    method: 'GET',
+  })
+  return res.data;
+}

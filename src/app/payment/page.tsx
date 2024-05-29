@@ -12,8 +12,13 @@ import { submitOrder } from '@/server/orderInfo';
 import {getPlanById} from "@/server/price";
 import PrefixSelector from "@/component/PrefixSelector";
 
+import {countryOptionss} from "@/constant/country";
+
+
+
 
 const selectOptions = countryOptions;
+const CountryOptions = countryOptionss
 
 const {
   paymentContainer,
@@ -69,8 +74,8 @@ const Payment = () => {
   }, [planId])
 
   const initForm = useCallback(() => {
-    accountForm.setFieldValue('accountPrefix', '+86')
-    billForm.setFieldValue('billingPrefix', '+86')
+    accountForm.setFieldValue('prefix', 'US +1')
+    billForm.setFieldValue('billingPrefix', 'US +1')
   }, [accountForm, billForm])
 
   useEffect(() => {
@@ -130,31 +135,7 @@ const Payment = () => {
   const onAgreeChange = (e: { target: { checked: boolean } }) => {
     setAgreed(e.target.checked)
   };
-
-  const prefixSelector1 = (
-    <Form.Item name="accountPrefix" noStyle>
-      <Select
-          style={{ width: 100 }}
-          dropdownStyle={{ minWidth: '100vpx' }}
-          options={selectOptions}
-          showSearch
-          placeholder="+86"
-      />
-    </Form.Item>
-  );
-
-  const prefixSelector2 = (
-    <Form.Item name="billingPrefix" noStyle>
-      <Select
-          style={{ width: 100 }}
-          dropdownStyle={{ minWidth: '100vpx' }}
-          options={selectOptions}
-          showSearch
-          placeholder="+86"
-
-      />
-    </Form.Item>
-  );
+  
 
   const onPay = async () => {
     if (!agreed) {
@@ -170,8 +151,9 @@ const Payment = () => {
       accountFirstName,
       accountLastName,
       accountPhone,
-      accountPrefix,
+      prefix,
     } = accountForm.getFieldsValue();
+    console.log(accountPhone)
     const { 
       accountCountry,
       accountState,
@@ -201,7 +183,7 @@ const Payment = () => {
       accountEmail,
       accountFirstName,
       accountLastName,
-      accountPhone: accountPrefix.replace('+', '') + '-' + accountPhone,
+      accountPhone: accountPhone==='' || accountPhone===undefined ? '': prefix.replace('+', '') + '-' + accountPhone,
       accountCountry,
       accountState,
       accountZipCode,
@@ -265,6 +247,7 @@ const Payment = () => {
               name='accountLastName'
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
+
             >
               <Input placeholder="Please input your last name" />
             </Form.Item>
@@ -285,6 +268,9 @@ const Payment = () => {
               </Form.Item>
             </Space.Compact>
           </Form.Item>
+          <Form.Item label="State" name='accountState'>
+            <Input placeholder="State" />
+          </Form.Item>
           <Form.Item label="City" name='accountCity'>
             <Input placeholder="City" />
           </Form.Item>
@@ -297,6 +283,8 @@ const Payment = () => {
           <Form.Item
             label="Phone Number"
             name='accountPhone'
+            labelCol={{ span: 5 }} // 标签占据的列数
+            wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距
           >
             <Input addonBefore=<PrefixSelector/> />
           </Form.Item>
@@ -309,31 +297,15 @@ const Payment = () => {
         >
           <Space.Compact block size='large' className={countryBox}>
             <Form.Item
-              name="accountCountry"
-              label="Country"
+                name="accountCountry"
+                label="Country"
             >
               <Select
-                placeholder="Select a country"
-                onChange={onCountryChange}
-                options={[
-                  {value: 'USA', label: 'USA' },
-                  { value: 'UK', label: 'UK' },
-                  { value: 'China', label: 'China' },
-                ]}
+                  placeholder="Select a country"
+                  options={CountryOptions}
               />
             </Form.Item>
-            <Form.Item
-              name="accountState"
-              label="State"
-            >
-              <Select
-                placeholder="Please select a state"
-                onChange={onStateChange}
-                options={[
-                  { value: 'Hubei', label: 'Hubei' },
-                ]}
-              />
-            </Form.Item>
+
             <Form.Item
               label="Zip code"
               name='accountZipCode'
@@ -390,6 +362,9 @@ const Payment = () => {
                     </Form.Item>
                   </Space.Compact>
                 </Form.Item>
+                <Form.Item label="State" name='billingState'>
+                  <Input placeholder="State" />
+                </Form.Item>
                 <Form.Item label="City" name='billingCity'>
                   <Input placeholder="City" />
                 </Form.Item>
@@ -402,8 +377,10 @@ const Payment = () => {
                 <Form.Item
                     label="Phone Number"
                     name='billingPhone'
+                    labelCol={{ span: 5 }} // 标签占据的列数
+                    wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距
                 >
-                  <Input addonBefore={prefixSelector2} />
+                  <Input addonBefore=<PrefixSelector/> />
                 </Form.Item>
               </Form>
               <Form
@@ -419,24 +396,7 @@ const Payment = () => {
                   >
                     <Select
                         placeholder="Select a country"
-                        onChange={onCountryChange}
-                        options={[
-                          {value: 'USA', label: 'USA' },
-                          { value: 'UK', label: 'UK' },
-                          { value: 'China', label: 'China' },
-                        ]}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                      name="billingState"
-                      label="State"
-                  >
-                    <Select
-                        placeholder="Please select a state"
-                        onChange={onStateChange}
-                        options={[
-                          { value: 'Hubei', label: 'Hubei' },
-                        ]}
+                        options={CountryOptions}
                     />
                   </Form.Item>
                   <Form.Item

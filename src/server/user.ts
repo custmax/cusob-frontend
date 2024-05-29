@@ -1,5 +1,6 @@
 import clientFetch from '@/helper/clientFetch';
 import { getToken } from '@/util/storage';
+import {SetStateAction} from "react";
 
 
 export const sendVerifyCode = async (email: string) => {
@@ -22,12 +23,14 @@ export const sendPhoneCode = async (prefix: string)=>{
   return res;
 }
 
-export const register = async (info: User.UserSign) => {
+export const register = async (info: User.UserSign,turnstileToken:string) => {
+  console.log({...info,turnstileToken})
   const res = await clientFetch({
     url: '/api/user/register',
     method: 'POST',
-    data: info
+    data: {...info,turnstileToken}
   })
+
   return res;
 }
 

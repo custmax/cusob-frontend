@@ -94,7 +94,7 @@ const ContactEditor = () => {
           lastName,
           email,
           phone: phone===undefined ? '' : phone.split('-').length > 1 ? phone.split('-')[1] : '',
-          prefix: phone===undefined ? '':phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
+          prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
           country,
           company,
           dept,
@@ -190,7 +190,7 @@ const ContactEditor = () => {
           })
         } else {
           message.error(res.message)
-          setSubmit(false)
+          setSubmit(false);
         }
       } else {
         const res = await addContact(data);
@@ -200,7 +200,7 @@ const ContactEditor = () => {
           })
         } else {
           message.error(res.message)
-          setSubmit(false)
+          setSubmit(false);
         }
       }
     }
