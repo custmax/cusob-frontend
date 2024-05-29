@@ -23,7 +23,11 @@ import { getList, removeContact } from '@/server/contact';
 import { addGroup, getGroupList, getGroupsAndContactCount, removeGroup, updateGroup } from '@/server/group';
 import { SUCCESS_CODE } from '@/constant/common';
 import classNames from 'classnames';
+
+import Tracking from "@/server/tracking";
+
 import {set} from "immutable";
+
 
 type DataType = {
   key: string,
@@ -92,6 +96,8 @@ const ContactList = () => {
 
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
+    const d = await Tracking();
+    console.log(d)
     const res = await getList(currentPage, pageSize)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {

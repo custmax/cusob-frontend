@@ -9,7 +9,10 @@ import {Checkbox, Input, Select, message, Table, PaginationProps} from 'antd';
 import Link from 'next/link';
 import { getCampaignPage } from '@/server/campaign';
 import { SUCCESS_CODE } from '@/constant/common';
+import {getstatus} from "@/server/mailgun/status";
 import {getOrderHistory} from "@/server/orderHistory";
+
+
 
 const {
   campaignContainer,
@@ -56,6 +59,8 @@ const Campaign = () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const query = { status, name: searchVal, order: order }
     const res = await getCampaignPage(currentPage, pageSize, query)
+    // const m = await valid('941563132@qq.com')
+    const m = await getstatus()
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
       setCampaignList(res.data?.records || [])
@@ -86,7 +91,6 @@ const Campaign = () => {
     const res = await getCampaignPage(pageNumber, pageSize,query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
-      console.log(res.data)
       setCampaignList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
       setTotal(res.data?.total)
     }

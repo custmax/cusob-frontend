@@ -7,7 +7,6 @@ declare module User {
     lastName: string,
     password: string,
     phone: string,
-    verifyCode: string,
     encode?: string,
   }
 

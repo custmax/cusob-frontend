@@ -70,18 +70,6 @@ const ForgotPwModal: FC<Props> = (props) => {
           <div className={addressBtn} onClick={onSend}>Send</div>
         </div>
       </div>
-      <div className={inputItem}>
-        <div className={label}>Verification Code</div>
-        <Input value={verifyCode} onChange={e => setVerifyCode(e.target.value)} className={value} />
-      </div>
-      <div className={inputItem}>
-        <div className={label}>New Password</div>
-        <Input type='password' value={password} onChange={e => setPassword(e.target.value)} className={value} />
-      </div>
-      <div className={inputItem}>
-        <div className={label}>Retype New Password</div>
-        <Input type='password' value={reTypePassword} onChange={e => setReTypePassword(e.target.value)} className={value} />
-      </div>
     </div>
   </Modal>
 };

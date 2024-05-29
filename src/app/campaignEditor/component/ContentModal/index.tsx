@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import { getContact, getList } from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
 import { getTemplate, getTemplateList } from '@/server/template';
+import Quill from 'quill';
 
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 
@@ -14,7 +15,8 @@ type RichEditorProps = {
   value: string,
 }
 
-const NewRichEditor = forwardRef((props: RichEditorProps, ref) => <RichEditor parentRef={ref} {...props} />)
+const NewRichEditor = forwardRef((props: RichEditorProps, ref) =>
+    <RichEditor parentRef={ref} {...props} />)
 NewRichEditor.displayName = 'NewRichEditor'
 
 
@@ -106,6 +108,8 @@ const ContentModal: FC<Props> = (props) => {
     onChange(value)
   }
 
+
+
   const onTamplateChange = async (value: number) => {
     if (typeof value === 'number' && !isNaN(value)) {
       message.loading({ content: 'loading', duration: 10, key: 'templateLoading' })
@@ -132,70 +136,46 @@ const ContentModal: FC<Props> = (props) => {
     }
   }
 
-  const insertFirstName = () => {
+  const insertTextAtCursor = (text:string) => {
     if (richEditorRef.current) {
-      const { firstName = '' } = originContact || {}
       const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, firstName);
+      const position = editor.getSelection()?.index || editor.getLength(); // 获取当前光标位置，如果没有选择范围，则将文本插入到最后
+      editor.insertText(position, text);
     }
-  }
+  };
+
+  const insertFirstName = () => {
+    const { firstName = '#{First Name}' } = originContact || {};
+    insertTextAtCursor(firstName);
+  };
 
   const insertLastName = () => {
-    if (richEditorRef.current) {
-      const { lastName = '' } = originContact || {}
-      const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, lastName);
-    }
-  }
+    const { lastName = '#{Last Name}' } = originContact || {};
+    insertTextAtCursor(lastName);
+  };
 
   const insertCompany = () => {
-    if (richEditorRef.current) {
-      const { company = '' } = originContact || {}
-      const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, company);
-    }
-  }
+    const { company = '#{Company}' } = originContact || {};
+    insertTextAtCursor(company);
+  };
 
   const insertEmail = () => {
-    if (richEditorRef.current) {
-      const { email = '' } = originContact || {}
-      const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, email);
-    }
-  }
+    const { email = '#{Email}' } = originContact || {};
+    insertTextAtCursor(email);
+  };
 
   const insertTitle = () => {
-    if (richEditorRef.current) {
-      const { title = '' } = originContact || {}
-      const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, title);
-    }
-  }
+    const { title = '#{Title}' } = originContact || {};
+    insertTextAtCursor(title);
+  };
 
   const insertBirthDate = () => {
-    if (richEditorRef.current) {
-      const { birthDate = '' } = originContact || {}
-      const editor = richEditorRef.current.getEditor();
-      const range = editor.getSelection();
-      const position = range ? range.index : 0;
-      editor.insertText(position, new Date(birthDate).toDateString());
-
-    }
-  }
+    const { birthDate = '#{BirthDate}' } = originContact || {};
+    insertTextAtCursor(birthDate);
+  };
 
 
   const onAIChange = () => {};
-
   return <Modal
     title="Content"
     open={visible}
@@ -241,12 +221,12 @@ const ContentModal: FC<Props> = (props) => {
         </div>
         <div className={presetWrapper}>
           <div className={presetTitle}>Insert Contact Data</div>
-          {!!originContact?.firstName && <div className={presetItem} onClick={insertFirstName}>*First Name</div>}
-          {!!originContact?.lastName && <div className={presetItem} onClick={insertLastName}>*Last Name</div>}
-          {!!originContact?.company && <div className={presetItem} onClick={insertCompany}>*Company</div>}
-          {!!originContact?.email && <div className={presetItem} onClick={insertEmail}>*Email Address</div>}
-          {!!originContact?.title && <div className={presetItem} onClick={insertTitle}>*Title</div>}
-          {!!originContact?.birthDate && <div className={presetItem} onClick={insertBirthDate}>*Birthday</div>}
+          <div className={presetItem} onClick={insertFirstName}>*First Name</div>
+          <div className={presetItem} onClick={insertLastName}>*Last Name</div>
+          <div className={presetItem} onClick={insertCompany}>*Company</div>
+          <div className={presetItem} onClick={insertEmail}>*Email Address</div>
+          <div className={presetItem} onClick={insertTitle}>*Title</div>
+          <div className={presetItem} onClick={insertBirthDate}>*Birthday</div>
         </div>
       </div>
       <div className={aiWrapper}>

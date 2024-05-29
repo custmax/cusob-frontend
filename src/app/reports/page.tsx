@@ -5,8 +5,9 @@ import SideBar from '@/component/SideBar';
 import {Input, Table, TableProps, message, PaginationProps} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import { useCallback, useEffect, useState } from 'react';
-import { getReportList } from '@/server/report';
+import {getReportList, getSenderName} from '@/server/report';
 import { SUCCESS_CODE } from '@/constant/common';
+import emailStatistics from "@/server/mailgun/emailStatistics";
 
 type DataType = Report.ReportItem & { key: string }
 
@@ -41,8 +42,28 @@ const Reports = () => {
     const res = await getReportList(currentPage, pageSize)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
-      setReportList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
-      setTotal(res.data?.total || 0)
+
+      // Assuming getSenderName is defined elsewhere and returns a Promise
+      const fetchSenderNames = async (records: any[]) => {
+        const updatedRecords = await Promise.all(records.map(async (item) => {
+          const senderName = await getSenderName(item.campaignName); // Adjust this according to the parameter needed by getSenderName
+          const emailStats = await emailStatistics(senderName,item.campaignName)
+          const [delivered, opened, clicked] = emailStats;
+          return { ...item, key: item.id, senderName ,
+            delivered,  // 替换原有 delivered 属性
+            opened,     // 替换原有 opened 属性
+            clicked     // 替换原有 clicked 属性
+          };
+        }));
+        return updatedRecords;
+      };
+
+      fetchSenderNames(res.data.records).then((updatedRecords) => {
+        setReportList(updatedRecords);
+        setTotal(res.data.total || 0);
+      }).catch((error) => {
+        message.error("Failed to fetch sender names:", error);
+      });
     }
   }, [currentPage, pageSize])
 

@@ -448,7 +448,7 @@ const CampaignEditor = () => {
         trackTextClicks
       }
       // sendBySendCloud()
-      const res = await sendEmail(data)
+      const res = await sendEmail(data,campaignId)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message, () => {
           router.back()

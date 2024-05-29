@@ -35,11 +35,24 @@ export const updateCampaign = async (data: Partial<Campaign.CampaignNew>) => {
   return res;
 }
 
-export const sendEmail = async (data: Campaign.CampaignNew) => {
+export const getEmailList = async (togroup:number)=>{
+  const res = await clientFetch({
+    url: `/api/campaign/emailList/${togroup}`,
+    method: 'GET',
+  })
+  return res;
+}
+
+export const sendEmail = async (data: Campaign.CampaignNew, campaignId: string | null) => {
+  let campaignIdNumber = Number(campaignId);
+  // 检查转换是否成功
+  if (isNaN(campaignIdNumber)) {
+    campaignIdNumber = 0
+  }
   const res = await clientFetch({
     url: `/api/campaign/sendEmail`,
     method: 'POST',
-    data: { ...data, id: 0 }
+    data: { ...data,id:campaignIdNumber }
   })
   return res;
 }
