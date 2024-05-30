@@ -120,6 +120,14 @@ export const getUserList = async (page: number, limit: number) => {
   return res;
 }
 
+export const getRegisterStatus = async (uuId: string | null) => {
+  const res = await clientFetch({
+    url: `/api/user/checkUuid/${uuId}`,
+    method: 'GET',
+  })
+  return res;
+}
+
 export const invite = async (email: string) => {
   const res = await clientFetch({
     url: `/api/user/invite`,
