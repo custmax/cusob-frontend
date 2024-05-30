@@ -17,7 +17,7 @@ const {
   signupWrapper,
   header,
   logoBox,
-  left,
+  text,
   right,
   formWrapper,
   emailWrapper,
@@ -66,7 +66,7 @@ const Signup = () => {
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success({
-          content: 'sign up successfully!',
+          content: 'The email has been delivered to your email. Please open the email to activate your account!',
           onClose: () => {
             router.push('/login')
           }
@@ -101,31 +101,28 @@ const Signup = () => {
                 form={form}
                 name="signup"
                 className={signupForm}
-                labelCol={{ span: 5 }}
                 wrapperCol={{ span: 19 }}
-                labelAlign='left'
                 initialValues={{ prefix: 'US +1' }}
                 onFinish={onFinish}
             >
               <Form.Item
-                  label="Email *"
+                  className={text}
                   name='email'
                   rules={[{ message: 'Please input your email!' }]}
               >
-                <div className={emailWrapper}>
-                  <Input placeholder="Please input your email" />
-                </div>
+                  <Input  placeholder="Please input your email" />
+
               </Form.Item>
 
               <Form.Item
-                  label="Password *"
+                  className={text}
                   name='password'
                   rules={[{ message: 'Please input your password!' }]}
               >
                 <Input type='password' placeholder="Please input your password" />
               </Form.Item>
               <Form.Item
-                  label="Phone Number *"
+                  className={text}
                   name='phone'
                   rules={[{ message: 'Please input your phone number!' }]}
               >

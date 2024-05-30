@@ -56,11 +56,14 @@
     justify-content: center;
     padding-top: 80vpx;
     padding-bottom: 104vpx;
+    padding-left: 50vpx;
     background-color: #fff;
 
     .signupForm {
       width: 896vpx;
-
+      .text{
+        padding-left: 120vpx;
+      }
       :global {
         .ant-form-item {
           margin-bottom: 30vpx;
