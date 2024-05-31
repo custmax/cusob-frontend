@@ -1,4 +1,6 @@
 'use client'
+import * as domain from "node:domain";
+
 export type LocalUser = {
   firstName?: string,
   lastName?: string,
@@ -19,6 +21,7 @@ export const getToken = () => {
     return '';
   }
   return tokenData.value;
+
 };
 
 export const setToken = (token: string) => {

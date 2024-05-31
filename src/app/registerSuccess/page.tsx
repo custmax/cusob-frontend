@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
 import Head from 'next/head'; // Import the Head component from next/head
 import styles from './page.module.scss';
 import Link from "next/link";
@@ -11,21 +12,26 @@ const Verified = () => {
     const [status, setStatus] = useState(false);
     const searchParams = useSearchParams();
     const uuId = searchParams.get('uuid');
+    const router = useRouter(); // Use useRouter from next/navigation
 
     const initStatus = async () => {
         const res = await getRegisterStatus(uuId);
         if (res.code === SUCCESS_CODE) {
             setStatus(true);
+        } else {
+            setStatus(false);
         }
     };
 
     useEffect(() => {
         initStatus();
     }, []); // Empty dependency array means this effect runs once on mount
-    console.log(status)
-    // if (!status) {
-    //     return null; // Render nothing if status is false
-    // }
+
+    useEffect(() => {
+        if (status === false) {
+            router.push('/verificationFailed'); // Redirect to the verificationFailed page
+        }
+    }, [status]);
 
     return (
         <div className={styles.container}>
