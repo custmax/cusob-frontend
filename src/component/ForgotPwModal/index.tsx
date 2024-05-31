@@ -1,8 +1,9 @@
 import { ChangeEvent, FC, useState} from 'react';
 import styles from './index.module.scss';
 import {Input, Modal, message} from 'antd';
-import {forgetPassword, sendCodeForPassword} from '@/server/user';
+import {forgetPassword, sendEmailForResetPassword} from '@/server/user';
 import {SUCCESS_CODE} from '@/constant/common';
+import { useRouter } from 'next/navigation';
 import Link from "next/link";
 
 type Props = {
@@ -30,6 +31,7 @@ const ForgotPwModal: FC<Props> = (props) => {
   const [reTypePassword, setReTypePassword] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const [available, setAvailable] = useState(false);
+  const router = useRouter();
 
   function validateEmail(email:string) {
     // 正则表达式用于验证邮箱格式
@@ -41,18 +43,21 @@ const ForgotPwModal: FC<Props> = (props) => {
       message.error('please input the email!');
     } else {
       message.success('send successfully!');
-      const res = await sendCodeForPassword({email})
+      const res = await sendEmailForResetPassword({email})
       if (res.code !== SUCCESS_CODE) {
         message.error(res.message);
       }
+
     }
 
   };
 
-  const emailChange = (e: ChangeEvent<HTMLInputElement>) =>{
-    setEmail(e.target.value)
-    setAvailable(validateEmail(email))
-  }
+  const emailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    setAvailable(validateEmail(newEmail));
+  };
+
 
   const _onOk = async () => {
     if (password !== reTypePassword) {
