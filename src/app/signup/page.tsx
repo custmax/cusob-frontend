@@ -110,7 +110,7 @@ const Signup = () => {
                   name='email'
                   rules={[{ message: 'Please input your email!' }]}
               >
-                  <Input  placeholder="Please input your email" />
+                  <Input  placeholder="Email" />
 
               </Form.Item>
 
@@ -119,7 +119,7 @@ const Signup = () => {
                   name='password'
                   rules={[{ message: 'Please input your password!' }]}
               >
-                <Input type='password' placeholder="Please input your password" />
+                <Input type='password' placeholder="Password" />
               </Form.Item>
               <Form.Item
                   className={text}
@@ -128,7 +128,7 @@ const Signup = () => {
               >
                 <Input
                     addonBefore={<PrefixSelector/>}
-                    placeholder="Please input your phone number"
+                    placeholder="Phone number"
                 />
                 {/*{country && <span className="hint-text">{country}</span>}*/}
               </Form.Item>

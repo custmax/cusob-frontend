@@ -89,14 +89,12 @@ const Login = () => {
             onFinish={onFinish}
         >
           <Form.Item
-              label="Email Address"
               name='email'
               rules={[{required: true, message: 'Please input your Email address!'}]}
           >
             <Input placeholder="Email address"/>
           </Form.Item>
           <Form.Item
-              label="Password"
               name='password'
               rules={[{required: true, message: 'Please input your Password!'}]}
           >
