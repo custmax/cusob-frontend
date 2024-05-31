@@ -24,7 +24,7 @@ const {
 
 const Login = () => {
   const [form] = Form.useForm();
-  const router = useRouter()
+  const router = useRouter();
   const [showForgotPw, setShowForgotPw] = useState<boolean>(false);
 
   useEffect(() => {

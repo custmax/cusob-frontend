@@ -103,6 +103,16 @@ export const sendCodeForPassword = async (data: { email: string }) => {
   return res;
 }
 
+export const sendEmailForResetPassword = async (data: { email: string }) => {
+  const res = await clientFetch({
+    url: '/api/user/sendEmailForResetPassword',
+    method: 'POST',
+    data,
+    contentType: 'application/x-www-form-urlencoded'
+  })
+  return res;
+}
+
 export const forgetPassword = async (data: { email: string, password: string, verifyCode: string }) => {
   const res = await clientFetch({
     url: '/api/user/forgetPassword',
