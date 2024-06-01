@@ -64,11 +64,33 @@ const Payment = () => {
   const [agreed, setAgreed] = useState(false)
   const [isVisible, setIsVisible] = useState<boolean>(false)
 
+  const [contactnum, setContactnum] = useState('')
+  const [emailnum, setEmailnum] = useState('')
+
+
   const initPlan = useCallback(async () => {
     if (planId) {
       const res = await getPlanById(planId)
       if (res.code === SUCCESS_CODE) {
         setPlan(res.data)
+        console.log(plan)
+
+        const contactCapacityString = res.data?.contactCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // @ts-ignore
+        const contactCapacityLength = contactCapacityString.length;
+        const insertPosition = contactCapacityLength - 3;
+        // @ts-ignore
+        setContactnum(`${contactCapacityString.slice(0, insertPosition)}${contactCapacityString.slice(insertPosition)}`)
+// 这里假设您希望倒数第四个位置插入逗号
+        const emailCapacityString = res.data?.emailCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // @ts-ignore
+
+        const emailCapacityLength = emailCapacityString.length;
+        const position = emailCapacityLength - 3;
+        // @ts-ignore
+        setEmailnum(`${emailCapacityString.slice(0, position)}${emailCapacityString.slice(position)}`)
+
+
       }
     }
   }, [planId])
@@ -136,29 +158,9 @@ const Payment = () => {
     setAgreed(e.target.checked)
   };
 
-  const contactCapacityString = plan?.contactCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-
-  // @ts-ignore
-  const contactCapacityLength = contactCapacityString.length;
-  const insertPosition = contactCapacityLength - 3;
-  // @ts-ignore
-  const formattedStringWithComma = `${contactCapacityString.slice(0, insertPosition)}${contactCapacityString.slice(insertPosition)}`;
-
-  const emailCapacityString = plan?.emailCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-// 这里假设您希望倒数第四个位置插入逗号
-  // @ts-ignore
-  const emailCapacityLength = emailCapacityString.length;
-  const position = emailCapacityLength - 3;
-  // @ts-ignore
-  const formattedWithComma = `${emailCapacityString.slice(0, position)}${emailCapacityString.slice(position)}`;
 
   const onPay = async () => {
-    if (!agreed) {
-      message.error('please agree to the Terms of Service and privacy Policy first')
-      return;
-    }
     const {
       accountAddressLine1,
       accountAddressLine2,
@@ -439,11 +441,11 @@ const Payment = () => {
             <span>${plan?.priceUSD.toFixed(2)}</span>
           </div>
           <div className={planItem}>
-            <span>{formattedStringWithComma} contacts*</span>
+            <span>{contactnum} contacts*</span>
             <span>per month</span>
           </div>
           <div className={planItem}>
-            <span>{plan?.name === 'Premium'? 'Unlimited' : formattedWithComma} email sends*</span>
+            <span>{plan?.name === 'Premium'? 'Unlimited' : emailnum} email sends*</span>
           </div>
         </div>
         <div className={discountBox}>
