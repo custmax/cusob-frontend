@@ -145,33 +145,43 @@ const ContentModal: FC<Props> = (props) => {
   };
 
   const insertFirstName = () => {
-    const { firstName = '#{First Name}' } = originContact || {};
+    const { firstName = '#{FIRSTNAME}' } = originContact || {};
     insertTextAtCursor(firstName);
   };
 
   const insertLastName = () => {
-    const { lastName = '#{Last Name}' } = originContact || {};
+    const { lastName = '#{LASTNAME}' } = originContact || {};
     insertTextAtCursor(lastName);
   };
 
   const insertCompany = () => {
-    const { company = '#{Company}' } = originContact || {};
+    const { company = '#{COMPANY}' } = originContact || {};
     insertTextAtCursor(company);
   };
 
   const insertEmail = () => {
-    const { email = '#{Email}' } = originContact || {};
+    const { email = '#{EMAIL}' } = originContact || {};
     insertTextAtCursor(email);
   };
 
   const insertTitle = () => {
-    const { title = '#{Title}' } = originContact || {};
+    const { title = '#{TITLE}' } = originContact || {};
     insertTextAtCursor(title);
   };
 
   const insertBirthDate = () => {
-    const { birthDate = '#{BirthDate}' } = originContact || {};
+    const { birthDate = '#{BIRTHDATE}' } = originContact || {};
     insertTextAtCursor(birthDate);
+  };
+
+  const insertPhone = () => {
+    const { phone = '#{PHONE}' } = originContact || {};
+    insertTextAtCursor(phone);
+  };
+
+  const insertDept = () => {
+    const { dept = '#{DEPT}' } = originContact || {};
+    insertTextAtCursor(dept);
   };
 
 
@@ -195,15 +205,6 @@ const ContentModal: FC<Props> = (props) => {
           colon={false}
         >
           <Form.Item
-            label="Contact"
-            name='contact'
-          >
-            <Select
-              onChange={onContactChange}
-              options={contactList}
-            />
-          </Form.Item>
-          <Form.Item
             label="Template"
             name='template'
           >
@@ -220,26 +221,28 @@ const ContentModal: FC<Props> = (props) => {
           <NewRichEditor ref={richEditorRef} value={innerContent} onChange={_onChange} />
         </div>
         <div className={presetWrapper}>
-          <div className={presetTitle}>Insert Contact Data</div>
-          <div className={presetItem} onClick={insertFirstName}>*First Name</div>
-          <div className={presetItem} onClick={insertLastName}>*Last Name</div>
-          <div className={presetItem} onClick={insertCompany}>*Company</div>
-          <div className={presetItem} onClick={insertEmail}>*Email Address</div>
-          <div className={presetItem} onClick={insertTitle}>*Title</div>
-          <div className={presetItem} onClick={insertBirthDate}>*Birthday</div>
+          <div className={presetTitle}>Contact Fields</div>
+          <div className={presetItem} onClick={insertFirstName}>*FIRSTNAME</div>
+          <div className={presetItem} onClick={insertLastName}>*LASTNAME</div>
+          <div className={presetItem} onClick={insertCompany}>*COMPANY</div>
+          <div className={presetItem} onClick={insertEmail}>*EMAIL</div>
+          <div className={presetItem} onClick={insertTitle}>*TITLE</div>
+          <div className={presetItem} onClick={insertBirthDate}>*DEPT</div>
+          <div className={presetItem} onClick={insertBirthDate}>*PHONE</div>
+          <div className={presetItem} onClick={insertBirthDate}>*BIRTHDAY</div>
         </div>
       </div>
-      <div className={aiWrapper}>
-        <Select
-          defaultValue="a1"
-          onChange={onAIChange}
-          options={[
-            { value: 'a1', label: 'AI A1' },
-          ]}
-        />
-        <Input.TextArea className={aiContent} />
-        <div className={buildBtn}>Build</div>
-      </div>
+      {/*<div className={aiWrapper}>*/}
+      {/*  <Select*/}
+      {/*    defaultValue="a1"*/}
+      {/*    onChange={onAIChange}*/}
+      {/*    options={[*/}
+      {/*      { value: 'a1', label: 'AI A1' },*/}
+      {/*    ]}*/}
+      {/*  />*/}
+      {/*  <Input.TextArea className={aiContent} />*/}
+      {/*  <div className={buildBtn}>Build</div>*/}
+      {/*</div>*/}
     </div>
   </Modal>
 };

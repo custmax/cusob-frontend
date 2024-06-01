@@ -94,7 +94,7 @@ const ContactEditor = () => {
           lastName,
           email,
           phone: phone===undefined ? '' : phone.split('-').length > 1 ? phone.split('-')[1] : '',
-          prefix: phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
+          prefix: phone===undefined ? 'US +1' : phone.split('-').length > 1 ? '+' + phone.split('-')[0] : 'US +1',
           country,
           company,
           dept,
@@ -287,27 +287,27 @@ const ContactEditor = () => {
           initialValues={{ prefix: 'US +1' }}
           colon={false}
         >
-          <Form.Item label="Name" style={{ marginBottom: 0 }}>
+          <Form.Item style={{ marginBottom: 0 }}>
             <Form.Item name='firstName' style={{ display: 'inline-block', marginRight: '16px', width: 'calc(50% - 8px)' }}>
               <Input placeholder="First name" />
             </Form.Item>
             <Form.Item name='lastName' style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}>
-              <Input placeholder="Lastname" />
+              <Input placeholder="Last name" />
             </Form.Item>
           </Form.Item>
           <Form.Item
-            label="Mailbox"
+
             name='email'
           >
-            <Input placeholder="E-Mail Address" />
+            <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
-            label="Telephone"
             name='phone'
+
           >
-            <Input addonBefore={<PrefixSelector />} />
+            <Input placeholder='Phone' addonBefore={<PrefixSelector />} />
           </Form.Item>
-          <Form.Item label="Company" style={{ marginBottom: 0 }}>
+          <Form.Item  style={{ marginBottom: 0 }}>
             <Form.Item name='company' style={{ display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)' }}>
               <Input placeholder="Company" />
             </Form.Item>
@@ -319,13 +319,13 @@ const ContactEditor = () => {
             </Form.Item>
           </Form.Item>
           <Form.Item
-            label="Birthdate"
+
             name='birthdate'
           >
             <DatePicker style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item
-            label="Groups"
+
             name='groups'
           >
             {
@@ -341,10 +341,9 @@ const ContactEditor = () => {
             }
           </Form.Item>
           <Form.Item
-            label="Note"
             name='note'
           >
-            <Input.TextArea placeholder="Use the Notes field to add any additional information not included in the Identification TAB." />
+            <Input.TextArea placeholder="Memo" />
           </Form.Item>
         </Form>
       </div>

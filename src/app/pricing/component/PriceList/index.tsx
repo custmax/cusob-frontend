@@ -139,6 +139,12 @@ const PriceList = () => {
     }
   }
 
+  const contactCapacityString = contactCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const contactCapacityLength = contactCapacityString.length;
+  const insertPosition = contactCapacityLength - 3;
+  // @ts-ignore
+  const formattedStringWithComma = `${contactCapacityString.slice(0, insertPosition)}${contactCapacityString.slice(insertPosition)}`;
+
   return <div className={priceListContainer}>
     <div className={filterBox}>
       <div className={left}>
@@ -186,6 +192,7 @@ const PriceList = () => {
             <div className={value}>{item.amountUSD}</div>
           </div>
           <div className={tip}>{nameMapFunction[item.name]?.userNum} {item.name === 'Premium' ? 'users' : `user${nameMapFunction[item.name]?.userNum === 1 ? '' : 's'}`}</div>
+          <div className={tip}>{formattedStringWithComma+' contacts'}</div>
           <div className={tip}>{item.name === 'Premium' ? 'Unlimited Monthly Email Sends' : `${item.emailCapacity} Monthly Email Sends`}</div>
           <div className={tip}>{nameMapFunction[item.name]?.customerSupport}</div>
           <Button disabled={item.isAvailable === 0} onClick={() => onBuyClick(item.id)} className={item.isAvailable===1?payBtn:btnDisable}>{item.name === 'Free' ? 'Sign Up' : 'Buy Now'}</Button>

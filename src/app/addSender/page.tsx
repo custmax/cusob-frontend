@@ -124,6 +124,7 @@ const AddSender = () => {
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
+        router.push('/emailList')
       } else {
         message.error(res.message)
       }
@@ -169,6 +170,7 @@ const AddSender = () => {
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
+        router.push('/emailList')
       } else {
         message.error(res.message)
       }

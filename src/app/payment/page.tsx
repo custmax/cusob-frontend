@@ -135,7 +135,24 @@ const Payment = () => {
   const onAgreeChange = (e: { target: { checked: boolean } }) => {
     setAgreed(e.target.checked)
   };
-  
+
+  const contactCapacityString = plan?.contactCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
+  // @ts-ignore
+  const contactCapacityLength = contactCapacityString.length;
+  const insertPosition = contactCapacityLength - 3;
+  // @ts-ignore
+  const formattedStringWithComma = `${contactCapacityString.slice(0, insertPosition)}${contactCapacityString.slice(insertPosition)}`;
+
+  const emailCapacityString = plan?.emailCapacity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+// 这里假设您希望倒数第四个位置插入逗号
+  // @ts-ignore
+  const emailCapacityLength = emailCapacityString.length;
+  const position = emailCapacityLength - 3;
+  // @ts-ignore
+  const formattedWithComma = `${emailCapacityString.slice(0, position)}${emailCapacityString.slice(position)}`;
 
   const onPay = async () => {
     if (!agreed) {
@@ -216,199 +233,199 @@ const Payment = () => {
         <div className={title}>Payment Method</div>
         <Radio.Group className={radioGroup} onChange={onRadioChange} value={radioValue}>
           <Radio value={1}>
-            <ImgWrapper className={paymentIcon1} alt='payment icon' src='/img/payment_icon_1.png'/>
-          </Radio>
-          <Radio value={2}>
             <ImgWrapper className={paymentIcon2} alt='payment icon' src='/img/payment_icon_2.png'/>
           </Radio>
+          <Radio value={2}>
+            <ImgWrapper className={paymentIcon1} alt='payment icon' src='/img/payment_icon_1.png'/>
+          </Radio>
         </Radio.Group>
-        <div className={title}>Contact address</div>
-        <Form
-          form={accountForm}
-          name="paymentForm1"
-          className={paymentForm1}
-          labelAlign='left'
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 20 }}
-          colon={false}
-        >
-          <Space.Compact block size='large' className={nameBox}>
-            <Form.Item
-              label="First name"
-              name='accountFirstName'
-              labelCol={{ span: 9 }}
-              wrapperCol={{ span: 15 }}
-              rules={[{ required: true, message: 'Please input your first name!' }]}
-            >
-              <Input placeholder="Please input your first name" />
-            </Form.Item>
-            <Form.Item
-              label="last name"
-              name='accountLastName'
-              labelCol={{ span: 6 }}
-              wrapperCol={{ span: 18 }}
+        {/*<div className={title}>Contact address</div>*/}
+        {/*<Form*/}
+        {/*  form={accountForm}*/}
+        {/*  name="paymentForm1"*/}
+        {/*  className={paymentForm1}*/}
+        {/*  labelAlign='left'*/}
+        {/*  labelCol={{ span: 4 }}*/}
+        {/*  wrapperCol={{ span: 20 }}*/}
+        {/*  colon={false}*/}
+        {/*>*/}
+        {/*  <Space.Compact block size='large' className={nameBox}>*/}
+        {/*    <Form.Item*/}
+        {/*      label="First name"*/}
+        {/*      name='accountFirstName'*/}
+        {/*      labelCol={{ span: 9 }}*/}
+        {/*      wrapperCol={{ span: 15 }}*/}
+        {/*      rules={[{ required: true, message: 'Please input your first name!' }]}*/}
+        {/*    >*/}
+        {/*      <Input placeholder="Please input your first name" />*/}
+        {/*    </Form.Item>*/}
+        {/*    <Form.Item*/}
+        {/*      label="last name"*/}
+        {/*      name='accountLastName'*/}
+        {/*      labelCol={{ span: 6 }}*/}
+        {/*      wrapperCol={{ span: 18 }}*/}
 
-            >
-              <Input placeholder="Please input your last name" />
-            </Form.Item>
-          </Space.Compact>
-          <Form.Item label="Address">
-            <Space.Compact block size='large' direction='vertical'>
-              <Form.Item
-                name='accountAddressLine1'
-                rules={[{ required: true, message: 'first address is required' }]}
-              >
-                <Input placeholder="Enter the street address" />
-              </Form.Item>
-              <Form.Item
-                name='accountAddressLine2'
-                rules={[{ required: true, message: 'second address is required' }]}
-              >
-                <Input placeholder="Apt, unit, suite (optional)" />
-              </Form.Item>
-            </Space.Compact>
-          </Form.Item>
-          <Form.Item label="State" name='accountState'>
-            <Input placeholder="State" />
-          </Form.Item>
-          <Form.Item label="City" name='accountCity'>
-            <Input placeholder="City" />
-          </Form.Item>
-          <Form.Item label="Company" name='accountCompany'>
-            <Input placeholder="Company" />
-          </Form.Item>
-          <Form.Item label="Email" name='accountEmail'>
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            label="Phone Number"
-            name='accountPhone'
-            labelCol={{ span: 5 }} // 标签占据的列数
-            wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距
-          >
-            <Input addonBefore=<PrefixSelector/> />
-          </Form.Item>
-        </Form>
-        <Form
-          form={accountExtraForm}
-          name='paymentFormExtra1'
-          className={paymentFormExtra1}
-          layout='vertical'
-        >
-          <Space.Compact block size='large' className={countryBox}>
-            <Form.Item
-                name="accountCountry"
-                label="Country"
-            >
-              <Select
-                  placeholder="Select a country"
-                  options={CountryOptions}
-              />
-            </Form.Item>
+        {/*    >*/}
+        {/*      <Input placeholder="Please input your last name" />*/}
+        {/*    </Form.Item>*/}
+        {/*  </Space.Compact>*/}
+        {/*  <Form.Item label="Address">*/}
+        {/*    <Space.Compact block size='large' direction='vertical'>*/}
+        {/*      <Form.Item*/}
+        {/*        name='accountAddressLine1'*/}
+        {/*        rules={[{ required: true, message: 'first address is required' }]}*/}
+        {/*      >*/}
+        {/*        <Input placeholder="Enter the street address" />*/}
+        {/*      </Form.Item>*/}
+        {/*      <Form.Item*/}
+        {/*        name='accountAddressLine2'*/}
+        {/*        rules={[{ required: true, message: 'second address is required' }]}*/}
+        {/*      >*/}
+        {/*        <Input placeholder="Apt, unit, suite (optional)" />*/}
+        {/*      </Form.Item>*/}
+        {/*    </Space.Compact>*/}
+        {/*  </Form.Item>*/}
+        {/*  <Form.Item label="State" name='accountState'>*/}
+        {/*    <Input placeholder="State" />*/}
+        {/*  </Form.Item>*/}
+        {/*  <Form.Item label="City" name='accountCity'>*/}
+        {/*    <Input placeholder="City" />*/}
+        {/*  </Form.Item>*/}
+        {/*  <Form.Item label="Company" name='accountCompany'>*/}
+        {/*    <Input placeholder="Company" />*/}
+        {/*  </Form.Item>*/}
+        {/*  <Form.Item label="Email" name='accountEmail'>*/}
+        {/*    <Input placeholder="Email" />*/}
+        {/*  </Form.Item>*/}
+        {/*  <Form.Item*/}
+        {/*    label="Phone Number"*/}
+        {/*    name='accountPhone'*/}
+        {/*    labelCol={{ span: 5 }} // 标签占据的列数*/}
+        {/*    wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距*/}
+        {/*  >*/}
+        {/*    <Input addonBefore=<PrefixSelector/> />*/}
+        {/*  </Form.Item>*/}
+        {/*</Form>*/}
+        {/*<Form*/}
+        {/*  form={accountExtraForm}*/}
+        {/*  name='paymentFormExtra1'*/}
+        {/*  className={paymentFormExtra1}*/}
+        {/*  layout='vertical'*/}
+        {/*>*/}
+        {/*  <Space.Compact block size='large' className={countryBox}>*/}
+        {/*    <Form.Item*/}
+        {/*        name="accountCountry"*/}
+        {/*        label="Country"*/}
+        {/*    >*/}
+        {/*      <Select*/}
+        {/*          placeholder="Select a country"*/}
+        {/*          options={CountryOptions}*/}
+        {/*      />*/}
+        {/*    </Form.Item>*/}
 
-            <Form.Item
-              label="Zip code"
-              name='accountZipCode'
-            >
-              <Input placeholder="Please input your zip code" />
-            </Form.Item>
-          </Space.Compact>
-        </Form>
-        <div className={billingTitle}>Billing address</div>
-        <Checkbox checked={!isVisible} className={checkBox} onChange={onBillAddressChange}>Same as contact address</Checkbox>
-        {isVisible &&
-            <div>
-              <Form
-                  form={billForm}
-                  name="paymentForm2"
-                  className={paymentForm1}
-                  labelAlign='left'
-                  labelCol={{ span: 4 }}
-                  wrapperCol={{ span: 20 }}
-                  colon={false}
-              >
-                <Space.Compact block size='large' className={nameBox}>
-                  <Form.Item
-                      label="First name"
-                      name='billingFirstName'
-                      labelCol={{ span: 9 }}
-                      wrapperCol={{ span: 15 }}
-                      rules={[{ required: true, message: 'Please input your first name!' }]}
-                  >
-                    <Input placeholder="Please input your first name" />
-                  </Form.Item>
-                  <Form.Item
-                      label="last name"
-                      name='billingLastName'
-                      labelCol={{ span: 6 }}
-                      wrapperCol={{ span: 18 }}
-                  >
-                    <Input placeholder="Please input your last name" />
-                  </Form.Item>
-                </Space.Compact>
-                <Form.Item label="Address">
-                  <Space.Compact block size='large' direction='vertical'>
-                    <Form.Item
-                        name='billingAddressLine1'
-                        rules={[{ required: true, message: 'first address is required' }]}
-                    >
-                      <Input placeholder="Enter the street address" />
-                    </Form.Item>
-                    <Form.Item
-                        name='billingAddressLine2'
-                        rules={[{ required: true, message: 'second address is required' }]}
-                    >
-                      <Input placeholder="Apt, unit, suite (optional)" />
-                    </Form.Item>
-                  </Space.Compact>
-                </Form.Item>
-                <Form.Item label="State" name='billingState'>
-                  <Input placeholder="State" />
-                </Form.Item>
-                <Form.Item label="City" name='billingCity'>
-                  <Input placeholder="City" />
-                </Form.Item>
-                <Form.Item label="Company" name='billingCompany'>
-                  <Input placeholder="Company" />
-                </Form.Item>
-                <Form.Item label="Email" name='billingEmail'>
-                  <Input placeholder="Email" />
-                </Form.Item>
-                <Form.Item
-                    label="Phone Number"
-                    name='billingPhone'
-                    labelCol={{ span: 5 }} // 标签占据的列数
-                    wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距
-                >
-                  <Input addonBefore=<PrefixSelector/> />
-                </Form.Item>
-              </Form>
-              <Form
-                  form={billExtraForm}
-                  name='paymentFormExtra2'
-                  className={paymentFormExtra1}
-                  layout='vertical'
-              >
-                <Space.Compact block size='large' className={countryBox}>
-                  <Form.Item
-                      name="billingCountry"
-                      label="Country"
-                  >
-                    <Select
-                        placeholder="Select a country"
-                        options={CountryOptions}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                      label="Zip code"
-                      name='billingZipCode'
-                  >
-                    <Input placeholder="Please input your zip code" />
-                  </Form.Item>
-                </Space.Compact>
-              </Form>
-            </div>
-        }
+        {/*    <Form.Item*/}
+        {/*      label="Zip code"*/}
+        {/*      name='accountZipCode'*/}
+        {/*    >*/}
+        {/*      <Input placeholder="Please input your zip code" />*/}
+        {/*    </Form.Item>*/}
+        {/*  </Space.Compact>*/}
+        {/*</Form>*/}
+        {/*<div className={billingTitle}>Billing address</div>*/}
+        {/*<Checkbox checked={!isVisible} className={checkBox} onChange={onBillAddressChange}>Same as contact address</Checkbox>*/}
+        {/*{isVisible &&*/}
+        {/*    <div>*/}
+        {/*      <Form*/}
+        {/*          form={billForm}*/}
+        {/*          name="paymentForm2"*/}
+        {/*          className={paymentForm1}*/}
+        {/*          labelAlign='left'*/}
+        {/*          labelCol={{ span: 4 }}*/}
+        {/*          wrapperCol={{ span: 20 }}*/}
+        {/*          colon={false}*/}
+        {/*      >*/}
+        {/*        <Space.Compact block size='large' className={nameBox}>*/}
+        {/*          <Form.Item*/}
+        {/*              label="First name"*/}
+        {/*              name='billingFirstName'*/}
+        {/*              labelCol={{ span: 9 }}*/}
+        {/*              wrapperCol={{ span: 15 }}*/}
+        {/*              rules={[{ required: true, message: 'Please input your first name!' }]}*/}
+        {/*          >*/}
+        {/*            <Input placeholder="Please input your first name" />*/}
+        {/*          </Form.Item>*/}
+        {/*          <Form.Item*/}
+        {/*              label="last name"*/}
+        {/*              name='billingLastName'*/}
+        {/*              labelCol={{ span: 6 }}*/}
+        {/*              wrapperCol={{ span: 18 }}*/}
+        {/*          >*/}
+        {/*            <Input placeholder="Please input your last name" />*/}
+        {/*          </Form.Item>*/}
+        {/*        </Space.Compact>*/}
+        {/*        <Form.Item label="Address">*/}
+        {/*          <Space.Compact block size='large' direction='vertical'>*/}
+        {/*            <Form.Item*/}
+        {/*                name='billingAddressLine1'*/}
+        {/*                rules={[{ required: true, message: 'first address is required' }]}*/}
+        {/*            >*/}
+        {/*              <Input placeholder="Enter the street address" />*/}
+        {/*            </Form.Item>*/}
+        {/*            <Form.Item*/}
+        {/*                name='billingAddressLine2'*/}
+        {/*                rules={[{ required: true, message: 'second address is required' }]}*/}
+        {/*            >*/}
+        {/*              <Input placeholder="Apt, unit, suite (optional)" />*/}
+        {/*            </Form.Item>*/}
+        {/*          </Space.Compact>*/}
+        {/*        </Form.Item>*/}
+        {/*        <Form.Item label="State" name='billingState'>*/}
+        {/*          <Input placeholder="State" />*/}
+        {/*        </Form.Item>*/}
+        {/*        <Form.Item label="City" name='billingCity'>*/}
+        {/*          <Input placeholder="City" />*/}
+        {/*        </Form.Item>*/}
+        {/*        <Form.Item label="Company" name='billingCompany'>*/}
+        {/*          <Input placeholder="Company" />*/}
+        {/*        </Form.Item>*/}
+        {/*        <Form.Item label="Email" name='billingEmail'>*/}
+        {/*          <Input placeholder="Email" />*/}
+        {/*        </Form.Item>*/}
+        {/*        <Form.Item*/}
+        {/*            label="Phone Number"*/}
+        {/*            name='billingPhone'*/}
+        {/*            labelCol={{ span: 5 }} // 标签占据的列数*/}
+        {/*            wrapperCol={{ span: 20, offset: 1 }} // 控件占据的列数，并向右偏移2列以产生间距*/}
+        {/*        >*/}
+        {/*          <Input addonBefore=<PrefixSelector/> />*/}
+        {/*        </Form.Item>*/}
+        {/*      </Form>*/}
+        {/*      <Form*/}
+        {/*          form={billExtraForm}*/}
+        {/*          name='paymentFormExtra2'*/}
+        {/*          className={paymentFormExtra1}*/}
+        {/*          layout='vertical'*/}
+        {/*      >*/}
+        {/*        <Space.Compact block size='large' className={countryBox}>*/}
+        {/*          <Form.Item*/}
+        {/*              name="billingCountry"*/}
+        {/*              label="Country"*/}
+        {/*          >*/}
+        {/*            <Select*/}
+        {/*                placeholder="Select a country"*/}
+        {/*                options={CountryOptions}*/}
+        {/*            />*/}
+        {/*          </Form.Item>*/}
+        {/*          <Form.Item*/}
+        {/*              label="Zip code"*/}
+        {/*              name='billingZipCode'*/}
+        {/*          >*/}
+        {/*            <Input placeholder="Please input your zip code" />*/}
+        {/*          </Form.Item>*/}
+        {/*        </Space.Compact>*/}
+        {/*      </Form>*/}
+        {/*    </div>*/}
+        {/*}*/}
       </div>
       <div className={right}>
         <div className={title}>Purchase summary</div>
@@ -422,11 +439,11 @@ const Payment = () => {
             <span>${plan?.priceUSD.toFixed(2)}</span>
           </div>
           <div className={planItem}>
-            <span>{plan?.contactCapacity} contacts*</span>
+            <span>{formattedStringWithComma} contacts*</span>
             <span>per month</span>
           </div>
           <div className={planItem}>
-            <span>{plan?.name === 'Premium'? 'Unlimited' : plan?.emailCapacity} email sends*</span>
+            <span>{plan?.name === 'Premium'? 'Unlimited' : formattedWithComma} email sends*</span>
           </div>
         </div>
         <div className={discountBox}>
@@ -446,22 +463,13 @@ const Payment = () => {
           <span>Total</span>
           <span>${plan?.amountUSD.toFixed(2)}</span>
         </div>
-        <Checkbox className={agreeCheckBox} checked={agreed} onChange={onAgreeChange}>
-          <span>By selecting &#34;Pay now&#34;, l authorize Cusob to charge and clearly define the amount, currency type, and payment method .l agree to the </span>
-          <span>terms</span>
-          <span> and have read and acknowledged </span>
-          <span>Privacy Policy</span>
-        </Checkbox>
         <div className={payNow} onClick={onPay}>
           <ImgWrapper className={payNowIcon} alt='payment icon' src='/img/pay_now_icon.png'/>
           <span>Pay now</span>
           </div>
         {/*<div className={tip}>* When you exceed your limit, you incur additional charges of $6.50/mo per additional 150 contacts (comes with additional1.800 email sends).</div>*/}
         {/*<div className={learnMore}>Learn more</div>*/}
-        <div className={receiptBox}>
-          <span>Your receipt wil be sent to tinka.eryme@gmail.com</span>
-          <span style={{ color: '#6784B5' }}>Edlite</span>
-        </div>
+
       </div>
       
     </div>
