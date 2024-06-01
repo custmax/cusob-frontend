@@ -187,10 +187,11 @@ const Account = () => {
   }
 
   const countrySelector = (
-      <Form.Item name="country" noStyle>
+      <Form.Item  name="country" noStyle>
         <Select
             style={{width: 400}}
             dropdownStyle={{ minWidth: 250,minHeight: 250 }}
+            placeholder="Country"
             showSearch
             options={CountryOptions}
         >
@@ -237,19 +238,16 @@ const Account = () => {
           colon={false}
         >
           <Form.Item
-            label="First name"
             name='firstName'
           >
             <Input placeholder="First name" />
           </Form.Item>
           <Form.Item
-              label="Last name"
             name='lastName'
           >
             <Input placeholder="Lastname" />
           </Form.Item>
           <Form.Item
-            label="Login Password"
           >
             <Space.Compact block size='large'>
               <Form.Item name='password' style={{ width: '100%' }}>
@@ -259,13 +257,12 @@ const Account = () => {
             </Space.Compact>
           </Form.Item>
           <Form.Item
-            label="Email Address"
             name='email'
           >
-            <Input placeholder="E-Mail Address" />
+            <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
-            label="Phone Number"
+
             name='phone'
           >
             <Input
@@ -273,16 +270,15 @@ const Account = () => {
             />
           </Form.Item>
           <Form.Item
-            label="Country"
+
             name='country'
           >
             {countrySelector}
           </Form.Item>
           <Form.Item
-            label="Company"
             name='company'
           >
-            <Input/>
+            <Input placeholder="Company"/>
           </Form.Item>
         </Form>
         <div className={operateBox}>

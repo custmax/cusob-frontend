@@ -7,13 +7,13 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useCallback, useEffect, useState} from 'react';
 import {getCaptcha} from '@/server/captcha';
 import Captcha from "@/component/Captcha";
+import Turnstile from "@/component/Turnstile";
 
 const {
   formContainer,
   formBox,
   formWrapper,
   submitBtn,
-  captchaBox,
 } = styles;
 
 type FieldType = {
@@ -27,17 +27,22 @@ type FieldType = {
 const DemoForm = () => {
   const [form] = Form.useForm()
   const [captchaCode, setCaptchaCode] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('');
 
+  const onTurnstileVerify = (token: string) => {
+    setTurnstileToken(token);
+  };
   const setCode = (code:string) => {
     setCaptchaCode(code)
   }
 
-  const onFinish: FormProps<FieldType>["onFinish"] = async (value: Record<string, string>) => {
-    if (value.captcha !== captchaCode) {
-      message.warning("Captcha is wrong!")
+  const onFinish: FormProps<FieldType>["onFinish"] = async (value: Record<string, string> ) => {
+    if (!turnstileToken) {
+      message.warning("Please complete the Turnstile verification!")
     }else {
       message.loading({ content: 'loading', duration: 10, key: 'loading' })
-      const res = await saveBook(value)
+      console.log(value)
+      const res = await saveBook({...value,turnstileToken})
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success(res.message, () => {
@@ -64,51 +69,40 @@ const DemoForm = () => {
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label="Name"
           name="name"
           rules={[{ required: true, message: 'Please input your name!' }]}
         >
-          <Input />
+          <Input placeholder="Name"/>
         </Form.Item>
         <Form.Item<FieldType>
-          label="Phone Number"
           name="phone"
           rules={[{ required: true, message: 'Please input your phone number!' }]}
         >
-          <Input />
+          <Input placeholder="Phone"/>
         </Form.Item>
         <Form.Item<FieldType>
-          label="Email Address"
           name="email"
           rules={[{ required: true, message: 'Please input your email address!' }]}
         >
-          <Input />
+          <Input placeholder="Email"/>
         </Form.Item>
         <Form.Item<FieldType>
-          label="Message"
           name="message"
           rules={[{ required: true, message: 'Please input your message!' }]}
         >
-          <Input.TextArea />
+          <Input.TextArea placeholder="Message"/>
         </Form.Item>
-
-        <Form.Item label="Captcha">
-          <Space className={captchaBox}>
-            <Form.Item
-              name="captcha"
-              rules={[{ required: true, message: 'Please input captcha!' }]}
-            >
-              <Input />
-            </Form.Item>
-            <Captcha setCode={setCode.bind(this)}></Captcha>
-          </Space>
+        <Form.Item<FieldType>
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'  }}
+        >
+          <Turnstile onVerify={onTurnstileVerify}/>
         </Form.Item>
-
         <Form.Item wrapperCol={{ offset: 12, span: 12 }}>
           <Button className={submitBtn} type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
+
       </Form>
     </div>
   </div>

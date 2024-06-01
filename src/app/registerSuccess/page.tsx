@@ -17,21 +17,31 @@ const Verified = () => {
     const initStatus = async () => {
         const res = await getRegisterStatus(uuId);
         if (res.code === SUCCESS_CODE) {
-            setStatus(true);
+            return (
+                <div className={styles.container}>
+                    <div className={styles.innerContainer}>
+                        <img
+                            src="/img/logo.png"
+                            alt="CusOb Logo"
+                            className={styles.logo}
+                        />
+                        <div className={styles.message}>Your email address has been verified!</div>
+                        <div className={styles.description}>
+                            Welcome to CusOb! CusOb is a marketing automation and email marketing platform.
+                        </div>
+                        <Link href="/login" className={styles.ctaBtn}>Get started now</Link>
+                    </div>
+                </div>
+            );
         } else {
-            setStatus(false);
+            router.push('/verificationFailed')
         }
     };
 
     useEffect(() => {
         initStatus();
-    }, []); // Empty dependency array means this effect runs once on mount
 
-    useEffect(() => {
-        if (status === false) {
-            router.push('/verificationFailed'); // Redirect to the verificationFailed page
-        }
-    }, [status]);
+    }, []); // Empty dependency array means this effect runs once on mount
 
     return (
         <div className={styles.container}>

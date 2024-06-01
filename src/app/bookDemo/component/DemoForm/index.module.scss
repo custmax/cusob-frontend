@@ -11,12 +11,13 @@
 
     .formWrapper {
       max-width: 1064vpx;
-
+      margin-left: 120vpx;
       .submitBtn {
-        width: 207vpx;
+        width: 187vpx;
         height: 60vpx;
         background: #000AFF;
         border-radius: 2vpx;
+
         display: flex;
         align-items: center;
         justify-content: center;

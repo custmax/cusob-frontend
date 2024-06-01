@@ -52,7 +52,7 @@ const Signup = () => {
 
   const onFinish = async (value: User.UserSign & { prefix?: 'string' }) => {
     if (!turnstileToken) {
-      message.error('Please complete the Turnstile verification.');
+      message.warning('Please complete the Turnstile verification.');
       return;
     }
       if (value.phone && value.prefix) {

@@ -16,7 +16,7 @@ const PrefixSelector = () => {
     return (
         <Form.Item name="prefix" noStyle>
             <Select
-                style={{ width: 110 }}
+                style={{ width: 150 }}
                 dropdownStyle={{ minWidth: 250, minHeight: 250 }}
                 dropdownRender={(menu) => (
                     <div>

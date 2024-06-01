@@ -5,7 +5,8 @@ import { TextField, IconButton, Button, Typography, Box, Alert } from '@mui/mate
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import styles from './page.module.scss';
 import { useSearchParams } from 'next/navigation';
-import { forgetPassword } from "@/server/forgetPassword"; // 请根据你的项目目录调整路径
+import { forgetPassword } from "@/server/forgetPassword";
+import {SUCCESS_CODE} from "@/constant/common"; // 请根据你的项目目录调整路径
 
 const ResetPassword: React.FC = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -34,12 +35,14 @@ const ResetPassword: React.FC = () => {
             setMessage({ text: 'Email is not available.', type: 'error' });
             return;
         }
+        console.log(newPassword)
         try {
-            const response = await forgetPassword(email, newPassword);
+            const res = await forgetPassword(email, newPassword);
 
-            if (response.ok) {
+            if (res.code === SUCCESS_CODE) {
                 setMessage({ text: 'Your password has been reset successfully . You can log in with your new password.', type: 'success' });
             } else {
+
                 setMessage({ text: 'Failed to reset password. Please try again.', type: 'error' });
             }
         } catch (error) {
