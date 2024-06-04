@@ -73,6 +73,7 @@ const PriceList = () => {
     message.destroy('loading')
     if (res.code === SUCCESS_CODE && res.data && res.data.length) {
       setPlans(res.data)
+
     }
   }
 

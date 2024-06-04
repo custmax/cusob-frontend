@@ -227,8 +227,8 @@ const ContentModal: FC<Props> = (props) => {
           <div className={presetItem} onClick={insertCompany}>*COMPANY</div>
           <div className={presetItem} onClick={insertEmail}>*EMAIL</div>
           <div className={presetItem} onClick={insertTitle}>*TITLE</div>
-          <div className={presetItem} onClick={insertBirthDate}>*DEPT</div>
-          <div className={presetItem} onClick={insertBirthDate}>*PHONE</div>
+          <div className={presetItem} onClick={insertDept}>*DEPT</div>
+          <div className={presetItem} onClick={insertPhone}>*PHONE</div>
           <div className={presetItem} onClick={insertBirthDate}>*BIRTHDAY</div>
         </div>
       </div>

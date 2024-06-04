@@ -77,6 +77,10 @@ const EditTemplate = () => {
     setRaioValue(e.target.value);
   };
 
+  const onCancel = () =>{
+    router.push('/emailTemplates')
+  }
+
   const onSave = async () => {
     const values = form.getFieldsValue()
     const {
@@ -177,7 +181,7 @@ const EditTemplate = () => {
         </div>
         <div className={operateWrapper}>
           <div className={saveBtn} onClick={onSave}>Save</div>
-          <div className={cancelBtn}>Cancel</div>
+          <div className={cancelBtn} onClick={onCancel}>Cancel</div>
         </div>
       </div>
     </div>
