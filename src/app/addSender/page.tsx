@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import {Checkbox, Form, Input, Modal, Radio, message, Button, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
 import React, { useState} from 'react';
-import {saveSender, sendCodeForSender} from '@/server/sender';
+import {checkEmail, saveSender, sendCodeForSender} from '@/server/sender';
 import {FAILUE_CODE, SUCCESS_CODE} from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {emailsettings} from "@/constant/email";
@@ -77,8 +77,14 @@ const AddSender = () => {
     const {
       email
     } = form3.getFieldsValue();
+    const res = await checkEmail(email)
+    if(res.code===SUCCESS_CODE){
       router.push(`/domainCertify?email=${email}`);
       return;
+    }
+    else {
+      message.error(res.data);
+    }
   };
 
   const onManualOk = async () => {

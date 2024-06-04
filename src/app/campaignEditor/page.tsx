@@ -687,15 +687,15 @@ const CampaignEditor = () => {
           <div className={timeLabel}>Sending time</div>
           <DatePicker value={sendDate ? dayjs(sendDate) : undefined} className={timeInput} onChange={onDateChange} />
           <TimePicker value={sendMinute ? dayjs(sendMinute, 'HH:mm:ss') : undefined} className={timeInput} onChange={onTimeChange} defaultOpenValue={dayjs('00:00:00', 'HH:mm:ss')} />
-          <Select
-            className={timeInput}
-            placeholder='Time Zone'
-            value={zone}
-            onChange={(val) => setZone(val)}
-            options={[
-              { value: 'beiJing', label: 'BeiJing' },
-            ]}
-          />
+          {/*<Select*/}
+          {/*  className={timeInput}*/}
+          {/*  placeholder='Time Zone'*/}
+          {/*  value={zone}*/}
+          {/*  onChange={(val) => setZone(val)}*/}
+          {/*  options={[*/}
+          {/*    { value: 'beiJing', label: 'BeiJing' },*/}
+          {/*  ]}*/}
+          {/*/>*/}
         </div>
       </div>
     </Modal>
