@@ -21,7 +21,7 @@ const TabBar = () => {
         </Link>
       </span>
       <span className={classNames(tabItem, {[active]: pathname === '/bookDemo'})}>
-        <Link href="/bookDemo">
+        <Link href="/bookDemo?reload=true">
           Book a Demo
         </Link>
       </span>

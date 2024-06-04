@@ -103,10 +103,11 @@ const Header: FC<Props> = (props) => {
               className={tooltip}
               title={<div className='more'>
                 <Link href='/dashboard' className="more-item">Dashboard</Link>
-                <Link href='/contactInfo' className="more-item">information</Link>
+                <Link href='/contactInfo' className="more-item">Information</Link>
                 <Link href='/userList' className="more-item">Users</Link>
                 <div className='more-item' onClick={() => setShowChangePw(true)} >Password</div>
                 <Link href='/billingHistory' className="more-item">Billing</Link>
+                <Link href='/emailList' className="more-item">Sender</Link>
                 <Link href='/' className='more-item mb0' onClick={handleSignOut}>Sign Out</Link>
               </div>}
               getPopupContainer={() => document.querySelector('#enterHeader') || document.body}

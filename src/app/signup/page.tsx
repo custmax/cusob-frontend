@@ -7,11 +7,12 @@ import {sendVerifyCode, register, sendPhoneCode} from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 import Image from "next/image";
 import PrefixSelector from "@/component/PrefixSelector";
 import Turnstile from "@/component/Turnstile";
+import {useLocation} from "react-router";
 
 const {
   signupWrapper,
@@ -36,23 +37,23 @@ const Signup = () => {
   const router = useRouter();
   const [turnstileToken, setTurnstileToken] = useState('');
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const shouldReload = searchParams.get('reload') === 'true';
+    if (shouldReload) {
+      window.location.replace('/signup');
+    }
+  }, []);
+
   const onTurnstileVerify = (token: string) => {
     setTurnstileToken(token);
   };
 
 
-  const onVerify = async () => {
-    const email = form.getFieldValue('email')
-    message.success('send successfully!');
-    const res = await sendVerifyCode(email)
-    if (res.code !== SUCCESS_CODE) {
-      message.error(res.message);
-    }
-  }
-
   const onFinish = async (value: User.UserSign & { prefix?: 'string' }) => {
     if (!turnstileToken) {
       message.warning('Please complete the Turnstile verification.');
+
       return;
     }
       if (value.phone && value.prefix) {

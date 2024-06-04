@@ -75,7 +75,9 @@ const Header: FC<Props> = (props) => {
             <Link href='/userList' className='more-item'>Users</Link>
             <div className='more-item' onClick={() => setShowChangePw(true)} >Password</div>
             <Link href='/billingHistory' className='more-item'>Billing</Link>
+              <Link href='/emailList' className="more-item">Sender</Link>
             <Link href='/' className='more-item mb0' onClick={clearToken}>Sign Out</Link>
+
           </div>}
           getPopupContainer={() => document.querySelector('#enterHeader') || document.body}
         >
