@@ -38,10 +38,10 @@ const SideBar = () => {
           <ImgWrapper className={barIcon} src='/img/bar_icon6.png' alt='bar icon' />
           <div className={barText}>Account</div>
       </Link>
-      <Link href='/emailList' className={barItem}>
-        <ImgWrapper className={senderIcon} src='/img/sender.png' alt='bar icon' />
-        <div className={barText}>Sender</div>
-      </Link>
+      {/*<Link href='/emailList' className={barItem}>*/}
+      {/*  <ImgWrapper className={senderIcon} src='/img/sender.png' alt='bar icon' />*/}
+      {/*  <div className={barText}>Sender</div>*/}
+      {/*</Link>*/}
     </div>
   </div>
 };

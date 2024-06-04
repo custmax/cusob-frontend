@@ -9,6 +9,7 @@ import { login } from '@/server/user';
 import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {getLocalUser, getToken, setLocalUser, setToken} from '@/util/storage';
+import {Navigate} from "react-router";
 
 const {
   loginWrapper,
@@ -26,7 +27,6 @@ const Login = () => {
   const [form] = Form.useForm();
   const router = useRouter();
   const [showForgotPw, setShowForgotPw] = useState<boolean>(false);
-
   useEffect(() => {
     if(getToken()){
       router.push("/dashboard")
@@ -110,7 +110,7 @@ const Login = () => {
         <div className={forgotBox}>
           <div className={forgotBtn} onClick={() => setShowForgotPw(true)}>Forgot password?</div>
           <div className={signupBtn}>
-            <Link href='/signup'>Sign Up</Link>
+            <Link href='/signup?reload=true'>Sign Up</Link>
           </div>
         </div>
       </div>

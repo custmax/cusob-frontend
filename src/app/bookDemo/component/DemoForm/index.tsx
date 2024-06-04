@@ -29,6 +29,14 @@ const DemoForm = () => {
   const [captchaCode, setCaptchaCode] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('');
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const shouldReload = searchParams.get('reload') === 'true';
+    if (shouldReload) {
+      window.location.replace('/bookDemo');
+    }
+  }, []);
+
   const onTurnstileVerify = (token: string) => {
     setTurnstileToken(token);
   };

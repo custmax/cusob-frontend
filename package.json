@@ -30,7 +30,8 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18",
     "react-helmet": "^6.1.0",
-    "react-quill": "^2.0.0"
+    "react-quill": "^2.0.0",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@types/formidable": "^3.4.5",
