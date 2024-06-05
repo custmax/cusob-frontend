@@ -18,6 +18,8 @@ import {CopyOutlined} from "@ant-design/icons";
 import copy from "copy-to-clipboard";
 import {createdomain, generateDkim, getdomain} from "@/server/mailu/Domain";
 import {createUser, getUser} from "@/server/mailu/user";
+import {afterWrite} from "@popperjs/core";
+import {checkuuid} from "@/server/sender";
 
 
 interface DataType {
@@ -120,12 +122,35 @@ const DomainCertify = () => {
   const [domain, setDomain] = useState('')
   const [dkimValue, setDkimValue] = useState<string>('')
   const [selector, setSelector] = useState('')
+  const [email, setEmail] = useState('')
+  const [domainValue, setDomainvalue] = useState('')
   const searchParams = useSearchParams()
-  const email = searchParams.get("email")
-  // @ts-ignore
-  const domainValue = email.split('@')[1];
+  const uuid = searchParams.get("uuid")
 
   const router = useRouter();
+
+  const fetchEmail = async () =>{
+    console.log('aaaa')
+    const res = await checkuuid(uuid)
+    if(res.code === SUCCESS_CODE){
+      setEmail(res.data)
+      setDomainvalue(res.data.split('@')[1])
+
+    }else {
+      message.error('Your information is incorrect!')
+    }
+  }
+
+  useEffect(() => {
+      fetchEmail()
+
+  }, []);
+
+  useEffect(() => {
+    if (email && domainValue) {
+      fetchData();
+    }
+  }, [email, domainValue]);
 
   const generatePassword = () =>{ //生成8位包含数字和字母的密码
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -168,6 +193,7 @@ const DomainCertify = () => {
 
   const getmessage = async (domain: string | null) => {
     const r = await getdomain(domainValue)
+    // console.log(domainValue)
     const data = {
       dkimDomain: 'dkim._domainkey.' + domainValue,
       dkimValue: r.dns_dkim.split('TXT "')[1].replaceAll('\"', ''),
@@ -214,7 +240,7 @@ const DomainCertify = () => {
 
     const spf_status = status.spf_status ? 'Verified' : 'Unverified';
     const dkim_status = status.dkim_status ? 'Verified' : 'Unverified';
-    const mx_status = status.mx_status ? 'Verified' : 'Unverified';
+    // const mx_status = status.mx_status ? 'Verified' : 'Unverified';
     const dmarc_status = status.dmarc_status ? 'Verified' : 'Unverified';
     const tableData: DataType[] = [
       {
@@ -247,15 +273,15 @@ const DomainCertify = () => {
       //   Enter_this_value: data.mxValue,
       //
       // },
-      // {
-      //   key: '4',
-      //   name: 'DMARC',
-      //   status: dmarc_status, // 示例状态值
-      //   type: 'TXT',
-      //   hostRecords: data.dmarcDomain,
-      //   hostname: hostname || '',
-      //   Enter_this_value: data.dmarcValue,
-      // },
+      {
+        key: '4',
+        name: 'DMARC',
+        status: dmarc_status, // 示例状态值
+        type: 'TXT',
+        hostRecords: data.dmarcDomain,
+        hostname: hostname || '',
+        Enter_this_value: data.dmarcValue,
+      },
 
     ];
     // 将 res 中的数据转换成表格需要的格式，并存储到 tableData 中
@@ -263,11 +289,6 @@ const DomainCertify = () => {
   };
 
   const [domainData, setDomainData] = useState<DataType[]>([]);
-
-  useEffect(() => {
-    fetchData();
-
-  }, []);
 
   function handleButtonClick() {
     fetchData();

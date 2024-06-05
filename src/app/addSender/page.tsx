@@ -79,7 +79,7 @@ const AddSender = () => {
     } = form3.getFieldsValue();
     const res = await checkEmail(email)
     if(res.code===SUCCESS_CODE){
-      router.push(`/domainCertify?email=${email}`);
+      message.success('Email has been sent,Please check your email')
       return;
     }
     else {

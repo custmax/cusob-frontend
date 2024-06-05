@@ -115,7 +115,7 @@ const AccountModal: FC<Props> = (props) => {
   }
 
   return <Modal
-    title="Account Info"
+    title="Contact Info"
     open={visible}
     onOk={_onOk}
     onCancel={onCancel}

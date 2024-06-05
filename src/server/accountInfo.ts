@@ -8,6 +8,14 @@ export const getAccountInfo = async () => {
   return res;
 }
 
+export const getAddr = async () => {
+  const res = await clientFetch({
+    url: `/api/accountInfo/getAddress`,
+    method: 'GET',
+  })
+  return res;
+}
+
 export const saveAccountInfo = async (data: Info.AccountInfo) => {
   const res = await clientFetch({
     url: `/api/accountInfo/save`,

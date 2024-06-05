@@ -16,6 +16,7 @@ import { getSenderList } from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
 import {API_USER, API_KEY, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
+import {getAddr} from "@/server/accountInfo";
 
 const {
   campaignEditorContainer,
@@ -88,6 +89,7 @@ const CampaignEditor = () => {
   const [richContent, setRichContent] = useState('')
   const [sendDate, setSendDate] = useState('')
   const [sendMinute, setSendMinute] = useState('')
+  const [allow, setAllow] = useState(true)
   const [zone, setZone] = useState('beiJing')
   const [timeType, setTimeType] = useState()
   const [senderId, setSenderId] = useState<number>()
@@ -182,9 +184,24 @@ const CampaignEditor = () => {
     }
   }, [])
 
+  const getAddress = async () =>{
+    const res = await getAddr()
+      setAllow(res.data)
+  }
   useEffect(() => {
-    initGroupList()
-  }, [])
+    getAddress()
+    console.log(allow)
+  }, []);
+
+  useEffect(() => {
+    if(allow){
+      initGroupList()
+    }else {
+      message.warning('Please provide your address information')
+      router.push('/contactInfo?form=true')
+    }
+
+  }, [allow])
 
   const onCampaignNameOk = () => {
     setShowCampaignName(false)
