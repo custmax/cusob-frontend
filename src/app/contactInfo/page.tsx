@@ -8,6 +8,8 @@ import { message } from 'antd';
 import AccountModal from './component/AccountModal';
 import { getBillingInfo, saveBillingInfo, updateBillingInfo } from '@/server/billingInfo';
 import BillingModal from './component/BillingModal';
+import {useRouter, useSearchParams} from "next/navigation";
+import {router} from "next/client";
 
 const {
   contactInfoContainer,
@@ -23,11 +25,13 @@ const {
 } = styles;
 
 const ContactInfo = () => {
+  const searchParams = useSearchParams()
   const [accountInfo, setAccountInfo] = useState<Info.AccountInfo | null>(null)
   const [billingInfo, setBillingInfo] = useState<Info.AccountInfo | null>(null)
-  const [showAccountModal, setShowAccountModal] = useState(false)
+  const [showAccountModal, setShowAccountModal] = useState(!!searchParams.get('form'))
   const [showBillingModal, setShowBillingModal] = useState(false)
-  
+  const router = useRouter();
+
 
   const initAccountInfo = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'loading' })
@@ -62,6 +66,9 @@ const ContactInfo = () => {
       const res = await updateAccountInfo(values)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message, initAccountInfo)
+        if(!!searchParams.get('form')){
+          router.push('/campaign')
+        }
       } else {
         message.error(res.message)
       }
@@ -69,6 +76,9 @@ const ContactInfo = () => {
       const res = await saveAccountInfo(values)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message, initAccountInfo)
+        if(!!searchParams.get('form')){
+          router.push('/campaign')
+        }
       } else {
         message.error(res.message)
       }

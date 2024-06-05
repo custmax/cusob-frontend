@@ -18,6 +18,14 @@ export const checkEmail = async (email:string) => {
   return res;
 }
 
+export const checkuuid = async (uuid: string | null) => {
+  const res = await clientFetch({
+    url: `/api/sender/check/${uuid}`,
+    method: 'GET',
+  })
+  return res;
+}
+
 export const saveSender = async (data: Omit<Sender.SaveSender, 'id'>) => {
   const res = await clientFetch({
     url: `/api/sender/save`,
