@@ -49,6 +49,7 @@ const EmailTemplates = () => {
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
       const data = res.data
+
       const newTemplateList = []
       if (data) {
         for (const key in data) {

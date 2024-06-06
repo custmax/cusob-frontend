@@ -77,13 +77,19 @@ const AddSender = () => {
     const {
       email
     } = form3.getFieldsValue();
-    const res = await checkEmail(email)
-    if(res.code===SUCCESS_CODE){
-      message.success('Email has been sent,Please check your email')
-      return;
-    }
-    else {
-      message.error(res.data);
+    if(validateEmail(email)){
+      message.loading({ content: 'loading', duration: 10, key: 'loading' })
+      const res = await checkEmail(email)
+      message.destroy('loading')
+      if(res.code===SUCCESS_CODE){
+        message.success('Email has been sent,Please check your email')
+        return;
+      }
+      else {
+        message.error(res.data);
+      }
+    }else {
+      message.error('This is not an email!')
     }
   };
 
@@ -125,7 +131,6 @@ const AddSender = () => {
     if(validateEmail(email)){
       message.loading({ content: 'loading', duration: 10, key: 'loading' })
 
-      console.log(data)
       const res = await saveSender(data)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {

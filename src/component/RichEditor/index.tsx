@@ -32,6 +32,7 @@ const RichEditor = (props: Props) => {
       ['link', 'image'],
       ['clean']
     ],
+
   }
 
   const _onChange = (val: string) => {
@@ -45,6 +46,12 @@ const RichEditor = (props: Props) => {
       theme="snow"
       value={value}
       onChange={_onChange}
+      formats={[
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video'
+      ]}
     />
   </div>
 };

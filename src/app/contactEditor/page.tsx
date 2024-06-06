@@ -3,7 +3,7 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import {DatePicker, Form, GetProp, Input, Select, Upload, UploadProps, message, Space} from 'antd';
+import {DatePicker, Form, GetProp, Input, Select, Upload, UploadProps, message, Space, Checkbox} from 'antd';
 import { Suspense, useEffect, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ImgWrapper from '@/component/ImgWrapper';
@@ -46,6 +46,7 @@ const ContactEditor = () => {
   const [previewAvatar, setPreviewAvatar] = useState<string>('');
   const [submit, setSubmit] = useState<boolean>(false);
   const [avatarStr, setAvatarStr] = useState<string>('');
+  const [isAvailable, setIsAvailable] = useState<number>(0);
   const [groupList, setGroupList] = useState<{ groupName: string, id: number }[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams()
@@ -72,6 +73,7 @@ const ContactEditor = () => {
       if (res.code === SUCCESS_CODE) {
         const {
           avatar,
+          isAvailable,
           birthDate,
           company,
           country,
@@ -85,8 +87,9 @@ const ContactEditor = () => {
           note,
           title,
         } = res.data || {}
-  
+        console.log(isAvailable)
         setAvatarStr(avatar);
+        setIsAvailable(isAvailable)
         setOriginContact(res.data)
         
         form.setFieldsValue({
@@ -168,6 +171,7 @@ const ContactEditor = () => {
       } = values;
       const data = {
         avatar: avatarStr,
+        isAvailable,
         birthDate: birthdate ? dayjs(birthdate).format('YYYY-MM-DD') : '',
         company,
         country: '',
@@ -183,8 +187,10 @@ const ContactEditor = () => {
         id: contactId,
       }
       if (contactId) {
+
         const res = await updateContact(data);
         if (res.code === SUCCESS_CODE) {
+
           message.success(res.message, () => {
             router.back()
           })
@@ -193,7 +199,9 @@ const ContactEditor = () => {
           setSubmit(false);
         }
       } else {
+        message.loading({ content: 'loading', duration: 10, key: 'Loading' })
         const res = await addContact(data);
+
         if (res.code === SUCCESS_CODE) {
           message.success(res.message, () => {
             router.back()
@@ -205,6 +213,10 @@ const ContactEditor = () => {
       }
     }
   }
+
+  const handleCheckboxChange = (e: { target: { checked: any; }; }) => {
+    setIsAvailable(e.target.checked ? 1 : 0);
+  };
 
   const onCancel = () => {
     if (contactId && originContact) {
@@ -344,6 +356,11 @@ const ContactEditor = () => {
             name='note'
           >
             <Input.TextArea placeholder="Memo" />
+          </Form.Item>
+          <Form.Item  name="isAvailable" >
+            <Checkbox checked={isAvailable === 1} onChange={handleCheckboxChange}>
+              Check to confirm that you have permission to send emails to this contact person
+            </Checkbox>
           </Form.Item>
         </Form>
       </div>

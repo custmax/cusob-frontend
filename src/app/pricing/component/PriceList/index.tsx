@@ -66,14 +66,20 @@ const PriceList = () => {
   const [months, setMonths] = useState(1)
   const [currency, setCurrency] = useState(0)
   const [capacityList, setCapacityList] = useState<{value: number, label:number}[]>([])
+  const order = ['Free', 'Essentials', 'Standard', 'Premium'];
 
   const initPriceList = async () => {
     message.loading({ content: 'loading', duration: 10, key: 'loading' })
     const res = await getPriceList(contactCapacity, months, currency)
     message.destroy('loading')
     if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+      console.log(res.data)
+      // 自定义排序函数
+      res.data.sort((a:any, b:any) => {
+        return order.indexOf(a.name) - order.indexOf(b.name);
+      });
       setPlans(res.data)
-
+      console.log(res.data)
     }
   }
 
@@ -104,13 +110,19 @@ const PriceList = () => {
 
   // capacity
   const onNumSelect = async (value: number) => {
-    setContactCapacity(value)
-    message.loading({ content: 'loading', duration: 10, key: 'loading' })
-    const res = await getPriceList(value, months, currency)
+    setContactCapacity(value);
+    message.loading({ content: 'loading', duration: 10, key: 'loading' });
+    const res = await getPriceList(value, months, currency);
+
     if (res.code === SUCCESS_CODE && res.data && res.data.length) {
-      setPlans(res.data)
+
+      res.data.sort((a: any, b: any) => {
+        return order.indexOf(a.name) - order.indexOf(b.name);
+      });
+      setPlans(res.data);
     }
-    message.destroy('loading')
+
+    message.destroy('loading');
   };
 
   const onMonthsChange = async (value: string) => {
@@ -119,12 +131,20 @@ const PriceList = () => {
       setMonths(1)
       const res = await getPriceList(contactCapacity, 1, currency)
       if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+        // 自定义排序函数
+        res.data.sort((a:any, b:any) => {
+          return order.indexOf(a.name) - order.indexOf(b.name);
+        });
         setPlans(res.data)
       }
     }else {
       setMonths(12)
       const res = await getPriceList(contactCapacity, 12, currency)
       if (res.code === SUCCESS_CODE && res.data && res.data.length) {
+        // 自定义排序函数
+        res.data.sort((a:any, b:any) => {
+          return order.indexOf(a.name) - order.indexOf(b.name);
+        });
         setPlans(res.data)
       }
     }
