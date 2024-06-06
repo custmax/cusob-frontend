@@ -31,7 +31,7 @@ export const addContact = async (data: Contact.NewContact) => {
 }
 
 export const updateContact = async (data: Contact.NewContact) => {
-
+console.log(data)
   const res = await clientFetch({
     url: `/api/contact/update`,
     method: 'POST',

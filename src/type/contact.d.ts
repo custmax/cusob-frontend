@@ -1,6 +1,7 @@
 declare module Contact {
   type NewContact = {
     avatar: string,
+    isAvailable: number,
     birthDate: string,
     company: string,
     country: string,

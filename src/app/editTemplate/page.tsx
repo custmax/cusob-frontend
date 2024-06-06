@@ -69,6 +69,8 @@ const EditTemplate = () => {
         })
         setRichContent(content)
         setRaioValue(type)
+      }else {
+        message.error(res.message)
       }
     }
   }
