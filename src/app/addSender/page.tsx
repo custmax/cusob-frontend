@@ -82,8 +82,11 @@ const AddSender = () => {
       const res = await checkEmail(email)
       message.destroy('loading')
       if(res.code===SUCCESS_CODE){
-        message.success('Email has been sent,Please check your email')
-        return;
+        if(res.data !== undefined && res.data !== null){
+          router.push('/domainCertify?uuid=',res.data)
+        }else {
+          message.success('Email has been sent,Please check your email')
+        }
       }
       else {
         message.error(res.data);
