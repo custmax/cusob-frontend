@@ -110,7 +110,7 @@ const Login = () => {
         <div className={forgotBox}>
           <div className={forgotBtn} onClick={() => setShowForgotPw(true)}>Forgot password?</div>
           <div className={signupBtn}>
-            <Link href='/signup?reload=true'>Sign Up</Link>
+            <Link href='/signup'>Sign Up</Link>
           </div>
         </div>
       </div>
