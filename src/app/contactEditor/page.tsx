@@ -187,7 +187,6 @@ const ContactEditor = () => {
         id: contactId,
       }
       if (contactId) {
-
         const res = await updateContact(data);
         if (res.code === SUCCESS_CODE) {
 
