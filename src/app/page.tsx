@@ -45,6 +45,7 @@ const Home = () => {
 
 
   return <div className={homeContainer}>
+
     <Header showBar showSign />
     <Index />
     <Footer />

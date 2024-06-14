@@ -43,6 +43,7 @@ const Reports = () => {
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
       setReportList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
+      console.log(res.data?.records)
       setTotal(res.data?.total || 0)
     }
   }, [currentPage, pageSize])
@@ -120,7 +121,9 @@ const Reports = () => {
       render: (_item, record) => <div>
         <span>delivered: {record.delivered}</span>
         <span style={{ padding: '0 1em' }}>opened: {record.opened}</span>
-        <span>clicked: {record.clicked}</span>
+        <span >clicked: {record.clicked}</span>
+        <span style={{ padding: '0 1em' }}>bounce: {record.clicked}</span>
+        <span >unsubscribe: {record.clicked}</span>
       </div>
     },
   ];
