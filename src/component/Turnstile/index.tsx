@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import nextConfig from "../../../next.config.mjs";
 
+//该组件用于生成CF验证码
 interface TurnstileProps {
     onVerify: (token: string) => void;
 }

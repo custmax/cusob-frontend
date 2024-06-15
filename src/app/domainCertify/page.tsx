@@ -120,8 +120,6 @@ const columns: TableProps<DataType>['columns'] = [
 
 const DomainCertify = () => {
   const [domain, setDomain] = useState('')
-  const [dkimValue, setDkimValue] = useState<string>('')
-  const [selector, setSelector] = useState('')
   const [email, setEmail] = useState('')
   const [domainValue, setDomainvalue] = useState('')
   const searchParams = useSearchParams()
@@ -131,7 +129,7 @@ const DomainCertify = () => {
 
   const fetchEmail = async () =>{
     console.log('aaaa')
-    const res = await checkuuid(uuid)
+    const res = await checkuuid(uuid) //检测该邮箱是否经过验证
     if(res.code === SUCCESS_CODE){
       setEmail(res.data)
       setDomainvalue(res.data.split('@')[1])
@@ -214,7 +212,7 @@ const DomainCertify = () => {
     const res = await createdomain(domainValue);
     console.log(res)
     if(res.code === SUCCESS_CODE){
-        const res = await generateDkim(domainValue);
+        const res = await generateDkim(domainValue);  //生成dkim信息
         if(res.code === SUCCESS_CODE){ //如果为第一次创建
           const data = await getmessage(domainValue);  //获取DNS数据
           await saveDomain(data); // 保存domain至数据库
@@ -222,7 +220,7 @@ const DomainCertify = () => {
     }
     // @ts-ignore
     const dotCount = (domainValue.match(/\./g) || []).length;
-    const verify = await domainVerify(domainValue);
+    const verify = await domainVerify(domainValue); //域名验证
     message.destroy('listLoading')
     let host = '@';
     let hostname = domainValue;
