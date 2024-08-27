@@ -1,12 +1,14 @@
 'use client'
-import { Form, Input, Modal, Select, message } from 'antd';
+import {Form, Input, Modal, Select, message, Button} from 'antd';
 import styles from './index.module.scss';
 import { FC, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic'
-import { getContact, getList } from '@/server/contact';
+import {generateByGroup, getContact, getList} from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
 import { getTemplate, getTemplateList } from '@/server/template';
 import Quill from 'quill';
+import {UserOutlined} from "@ant-design/icons";
+import {getGroupList} from "@/server/group";
 
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 
@@ -42,6 +44,12 @@ const {
   aiWrapper,
   aiContent,
   buildBtn,
+  generate,
+  uploadWrapper,
+    label,
+    addressValue,
+  AIModal,
+
 } = styles;
 
 const pageSize = 20;
@@ -56,7 +64,20 @@ const ContentModal: FC<Props> = (props) => {
   const [total, setTotal] = useState(0)
   const [innerContent, setInnerContent] = useState('')
   const [originContact, setOriginContact] = useState<Contact.NewContact | null>(null)
+  const [groupName, setGroupName] = useState('');
+  const [groupList, setGroupList] = useState<{ groupName: string, id: number }[]>([]);
+  const initGroupList = async () => {
+    const res = await getGroupList(); // 假设 getGroupList 是一个异步函数
+    if (res.code === SUCCESS_CODE) {
+      setGroupList(res.data);
+    } else {
+      message.error('Failed to load group list');
+    }
+  };
 
+  useEffect(() => {
+    initGroupList();
+  }, []);
   const initContactList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'loading' })
     const res = await getList(currentPage, pageSize)
@@ -136,10 +157,24 @@ const ContentModal: FC<Props> = (props) => {
     }
   }
 
-  const insertTextAtCursor = (text:string) => {
+  // const insertTextAtCursor = (text:string) => {
+  //   if (richEditorRef.current) {
+  //     const editor = richEditorRef.current.getEditor();
+  //     const position = editor.getSelection()?.index || editor.getLength(); // 获取当前光标位置，如果没有选择范围，则将文本插入到最后
+  //     editor.insertText(position, text);
+  //   }
+  // };
+  const insertTextAtCursor = (text: string) => {
     if (richEditorRef.current) {
       const editor = richEditorRef.current.getEditor();
-      const position = editor.getSelection()?.index || editor.getLength(); // 获取当前光标位置，如果没有选择范围，则将文本插入到最后
+
+      // 强制编辑器获取焦点，这样可以确保光标位置被正确识别
+      editor.focus();
+
+      // 获取光标位置。如果光标未选择位置，则插入到内容末尾
+      const position = editor.getSelection()?.index ?? editor.getLength();
+
+      // 在光标位置插入文本
       editor.insertText(position, text);
     }
   };
@@ -184,7 +219,77 @@ const ContentModal: FC<Props> = (props) => {
     insertTextAtCursor(dept);
   };
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    console.log('Input value:', inputValue); // 在这里处理输入框的值
+    const content = inputValue;
+    const groupId = groupList.find(group => group.groupName === groupName)?.id;
+    const loadingKey = 'loading';
+    message.loading({ content: 'Generating...', key: loadingKey, duration: 0 });
+    // 如果没有选中 groupId 则提示用户
+    if (!groupId) {
+      message.error('Please select a group.');
+      return;
+    }
+
+    // 构造请求体
+    const payload = {
+      groupId: groupId.toString(), // 将 groupId 转为字符串
+      content: content
+    };
+
+    try {
+      const res = await generateByGroup(payload)
+      message.destroy('contactLoading')
+      //console.log(res)
+      if(res.code === SUCCESS_CODE) {
+        message.success('Request successful');
+        console.log('Response content:', res.data);
+        if (richEditorRef.current) {
+          const editor = richEditorRef.current.getEditor();
+          editor.setText(''); // 清空编辑器内容
+          editor.insertText(0, res.data); // 从光标开始插入新内容
+        }
+      }
+      // if (res) {
+      //   // 请求成功，处理响应
+      //   const responseContent = res.choices[0].message.content; // 提取响应中的内容
+      //   console.log('Response content:', responseContent);
+      //   // 使用 richEditorRef 插入内容
+      //   // if (richEditorRef.current) {
+      //   //   const editor = richEditorRef.current.getEditor();
+      //   //   const position = editor.getSelection()?.index || editor.getLength(); // 获取光标位置
+      //   //   editor.insertText(position, responseContent); // 插入内容
+      //   // }
+      //   message.success('Request successful');
+      //   // 根据需要更新 UI
+      // } else {
+      //   // 请求失败，处理错误
+      //   message.error('Request failed');
+      // }
+    } catch (error) {
+      message.error('An error occurred');
+    }finally {
+      // 移除 loading 信息
+      message.destroy(loadingKey);
+    }
+
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+  };
   const onAIChange = () => {};
   return <Modal
     title="Content"
@@ -197,28 +302,89 @@ const ContentModal: FC<Props> = (props) => {
     <div className={main}>
       <div className={basicFormWrapper}>
         <Form
-          name="content"
-          className={basicForm}
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 20 }}
-          labelAlign='left'
-          colon={false}
+            name="content"
+            className={basicForm}
+            labelCol={{span: 4}}
+            wrapperCol={{span: 20}}
+            labelAlign='left'
+            colon={false}
         >
           <Form.Item
-            label="Template"
-            name='template'
+              label="Template"
+              name='template'
           >
             <Select
-              onChange={onTamplateChange}
-              options={templateList}
+                onChange={onTamplateChange}
+                options={templateList}
             />
           </Form.Item>
         </Form>
+          <div className={generate} onClick={showModal}>
+            Generate
+          </div>
+          <Modal
+              title="Use AI to empower your content"
+              open={isModalVisible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              className={AIModal}
+              footer={[
+                <Button key="cancel" onClick={handleCancel}>
+                  Cancel
+                </Button>,
+                <Button key="submit" type="primary" onClick={handleOk}>
+                  Confirm
+                </Button>,
+              ]}
+          >
+            <p>Describe your products, services, or unique selling points.</p>
+            <p>Tell us what makes your business special and why customers should choose you.</p>
+            <Input.TextArea
+                placeholder="Enter your content here"
+                value={inputValue}
+                onChange={handleInputChange}
+                rows={4} // 设置文本框为多行
+            />
+            <div className={uploadWrapper}>
+              <div className={label}>Group</div>
+              {groupList.length > 0 ? (
+                  <Select
+                      className={addressValue}
+                      onChange={value => setGroupName(value)}
+                      options={groupList.map((item, index) => ({
+                        value: item.groupName,
+                        label: item.groupName,
+                      }))}
+                  />
+              ) : (
+                  <Input
+                      className={addressValue}
+                      value={groupName}
+                      onChange={e => setGroupName(e.target.value)}
+                  />
+              )}
+            </div>
+          </Modal>
+
       </div>
+      {/*<div className={buttonContainer}>*/}
+      {/*  <Button*/}
+      {/*      type="primary"*/}
+      {/*      onClick={insertFirstName}*/}
+      {/*      style={{*/}
+      {/*        backgroundColor: '#7241FF', // 紫色背景*/}
+      {/*        borderColor: '#7241FF',*/}
+      {/*        color: '#FFFFFF', // 白色文字*/}
+      {/*      }}*/}
+      {/*  >*/}
+      {/*    插入名字*/}
+      {/*  </Button>*/}
+      {/*</div>*/}
+
       <div className={richTextTitle}>Content</div>
       <div className={richText}>
         <div className={richTextWrapper}>
-          <NewRichEditor ref={richEditorRef} value={innerContent} onChange={_onChange} />
+          <NewRichEditor ref={richEditorRef} value={innerContent} onChange={_onChange}/>
         </div>
         <div className={presetWrapper}>
           <div className={presetTitle}>Contact Fields</div>

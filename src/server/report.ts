@@ -16,3 +16,10 @@ export const getSenderName = async (campaignName:string)=>{
   })
   return res.data;
 }
+export const removeReport = async (id: string) => {
+  const res = await clientFetch({
+    url: `/api/report/remove/${id}`,
+    method: 'DELETE',
+  })
+  return res;
+}

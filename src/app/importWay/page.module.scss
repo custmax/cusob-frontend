@@ -59,7 +59,7 @@
       box-sizing: border-box;
       padding-left: 295vpx;
       padding-right: 295vpx;
-      padding-top: 216vpx;
+      padding-top: 120vpx;
 
       .contentTitle {
         display: flex;
@@ -73,6 +73,7 @@
           font-size: 40vpx;
           color: #000000;
           line-height: 56vpx;
+          margin-bottom: 50vpx;
         }
 
         .continueBtn {
@@ -144,12 +145,16 @@
 
           .sample {
             font-family: PingFangSC, PingFang SC;
-            font-weight: 400;
+            font-weight: 600;
             font-size: 20vpx;
-            color: #000AFF;
+            color: #7241FF;
             line-height: 28vpx;
-            text-decoration: underline;
+            text-decoration: none;
           }
+        }
+        .wayBox:hover{
+          background-color: #F5F5FF;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 鼠标悬停时增加阴影 */
         }
       }
     }

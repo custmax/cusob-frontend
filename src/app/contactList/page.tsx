@@ -20,7 +20,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { TableRowSelection } from 'antd/es/table/interface';
 import Link from 'next/link';
 import { getList, removeContact } from '@/server/contact';
-import { addGroup, getGroupList, getGroupsAndContactCount, removeGroup, updateGroup } from '@/server/group';
+import {
+  addGroup,
+  getGroupList,
+  getGroupsAndContactCount,
+  getSubscriptionCount,
+  removeGroup,
+  updateGroup
+} from '@/server/group';
 import { SUCCESS_CODE } from '@/constant/common';
 import classNames from 'classnames';
 
@@ -37,6 +44,7 @@ type DataType = {
   company: string,
   phone: string,
   group: string,
+  subscriptionType:string,
 }
 
 const {
@@ -53,6 +61,7 @@ const {
   editIcon,
   tag,
   categoryBox,
+  editButton,
   groupTitle,
   groupItem,
   active,
@@ -61,6 +70,7 @@ const {
   inputItem,
   label,
   value,
+  addgroupItem,
 } = styles;
 
 const pageSize = 10;
@@ -73,6 +83,7 @@ const ContactList = () => {
   const [groupName, setGroupName] = useState('');
   const [activeGroupId, setActiveGroupId] = useState(-1)
   const [groupList, setGroupList] = useState<{ groupName: string, id: number }[]>([]);
+  const [subObj, setSubObj] = useState<Record<string, number> | null>(null);
   const [groupNumObj, setGroupNumObj] = useState<Record<string, number> | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [contactList, setContactList] = useState([])
@@ -88,12 +99,28 @@ const ContactList = () => {
   }
 
   const initGroupNum = async () => {
+    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getGroupsAndContactCount()
     if (res.code === SUCCESS_CODE) {
       setGroupNumObj(res.data)
     }
   }
+  const initSubNum = async () => {
+    //console.log("sadfhsadhfgsdjafgdsajhf");
+    const res = await getSubscriptionCount()
+    //console.log("HHH");
+    console.log(res.data);
+    if (res.code === SUCCESS_CODE) {
+      setSubObj(res.data)
 
+    }
+  }
+
+//   设置活动组 ID 为 -1。
+// 显示加载消息。
+// 通过 getList 函数获取第一页的联系人数据。
+// 加载完成后销毁加载消息。
+// 如果请求成功，更新联系人列表和当前页码。
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const d = await Tracking();
@@ -112,6 +139,7 @@ const ContactList = () => {
     initList()
     initGroupList()
     initGroupNum()
+    initSubNum()
   }, [])
 
   const onGroupOk = async () => {
@@ -120,6 +148,7 @@ const ContactList = () => {
       if (res.code === SUCCESS_CODE) {
         initGroupList()
         initGroupNum()
+        initSubNum()
         message.success(res.message)
       } else {
         message.error(res.message)
@@ -141,6 +170,7 @@ const ContactList = () => {
         initList()
         initGroupList()
         initGroupNum()
+        initSubNum()
       } else {
         message.error(res.message)
       }
@@ -185,7 +215,7 @@ const ContactList = () => {
     onChange: onPageChange,
   }
 
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: TableProps<DataType>['columns'] = [//选择要展示的信息
     {
       title: 'Email',
       dataIndex: 'email',
@@ -194,7 +224,8 @@ const ContactList = () => {
         <Space size="middle">
           <span style={{ display: 'inline-block', width: '10vw' }}>{item}</span>
           <Link href={`/contactEditor?id=${record.key}`}>
-            <ImgWrapper className={editIcon} src='/img/edit_icon.png' alt='edit icon' />
+            <div className={editButton}>edit</div>
+            {/*<ImgWrapper className={editIcon} src='/img/edit_icon.png' alt='edit icon' />*/}
           </Link>
         </Space>
       ),
@@ -220,6 +251,11 @@ const ContactList = () => {
       key: 'phone',
     },
     {
+      title: 'Subscription type',
+      dataIndex: 'subscriptionType',
+      key: 'subscriptionType',
+    },
+    {
       title: 'Group',
       key: 'groupName',
       dataIndex: 'groupName',
@@ -243,6 +279,7 @@ const ContactList = () => {
         initList();
         initGroupList()
         initGroupNum()
+        initSubNum()
         message.success(res.message)
       } else {
         message.error(res.message)
@@ -260,7 +297,7 @@ const ContactList = () => {
     setActiveGroupId(groupItem.id)
     if (groupItem.id) {
       message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
-      const res = await getList(1, pageSize, searchVal || '', groupItem.id)
+      const res = await getList(1, pageSize, searchVal || '', groupItem.id,'')
       message.destroy('listLoading')
       if (res.code === SUCCESS_CODE) {
         setContactList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
@@ -269,6 +306,39 @@ const ContactList = () => {
       }
     }
   }
+  const onSubscriptionTypeClick = async (subscriptionType:string) => {
+    if(subscriptionType === 'Subscribed') {
+      setActiveGroupId(100);
+    }
+    else if(subscriptionType === 'Non-subscribed') {
+      setActiveGroupId(200);
+    }else if(subscriptionType === 'Unsubscribed') {
+      setActiveGroupId(300);
+    }
+
+    message.loading({ content: 'loading', duration: 10, key: 'listLoading' });
+
+    try {
+      console.log("sadfhsadhfgsdjafgdsajhf");
+      console.log(subscriptionType);
+
+      const res = await getList(1, pageSize, searchVal || undefined,0  ,subscriptionType);
+      console.log(res.data);
+
+      message.destroy('listLoading');
+
+      if (res.code === SUCCESS_CODE) {
+        setContactList(res.data?.records.map((item:any) => ({ ...item, key: item.id })) || []);
+        setTotal(res.data?.total);
+        setCurrentPage(1);
+      } else {
+        message.error('Failed to load contacts');
+      }
+    } catch (error) {
+      message.destroy('listLoading');
+      message.error('An error occurred while fetching data');
+    }
+  };
 
   const onAllContactClick = async () => {
     setActiveGroupId(-1)
@@ -302,12 +372,13 @@ const ContactList = () => {
     console.log(e);
   };
 
+
   return <div className={contactListContainer}>
     <EnteredHeader />
     <SideBar />
     <div className={main}>
       <div className={title}>
-        <span>Contacts</span>
+        <a href="/contactList">Contacts</a>
         <span style={{ margin: '0 0.5em', color: '#666' }}>/</span>
         <span style={{ color: '#999999' }}> All Contacts</span>
       </div>
@@ -343,7 +414,8 @@ const ContactList = () => {
       </div>
     </div>
     <div className={categoryBox}>
-      <div className={title}>Contacts</div>
+      {/*侧边过滤器显示*/}
+      <div className={title}>Filter By</div>
       <div className={groupTitle}>Group</div>
       <div
         className={classNames(groupItem, { [active]: activeGroupId === -1 })}
@@ -360,9 +432,33 @@ const ContactList = () => {
           {item.groupName}（{groupNumObj ? groupNumObj[item.groupName] || 0 : 0}）
         </div>)
       }
-      <div className={groupItem} onClick={() => setShowGroup(true)}>Add New Group</div>
+      <div className={addgroupItem} onClick={() => setShowGroup(true)}>Add New Group</div>
+      {/*订阅类型*/}
+      <div className={groupTitle}>Subscription type</div>
+      <div>
+        <div
+            className={classNames(groupItem, { [active]: activeGroupId === 100 })}
+            onClick={() => onSubscriptionTypeClick('Subscribed')}
+        >
+          Subscribed（{subObj ? subObj['Subscribed'] || 0 : 0}）
+        </div>
+        <div
+            className={classNames(groupItem, { [active]: activeGroupId === 200 })}
+            onClick={() => onSubscriptionTypeClick('Non-subscribed')}
+        >
+          Non-subscribed（{subObj ? subObj['Non-subscribed'] || 0 : 0}）
+        </div>
+        <div
+            className={classNames(groupItem, { [active]: activeGroupId === 300 })}
+            onClick={() => onSubscriptionTypeClick('Unsubscribed')}
+        >
+          Unsubscribed（{subObj ? subObj['Unsubscribed'] || 0 : 0}）
+        </div>
+      </div>
     </div>
+    {/*添加group*/}
     <Modal
+
       title="Add Group"
       open={showGroup}
       onOk={onGroupOk}

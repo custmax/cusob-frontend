@@ -36,15 +36,15 @@
         align-items: center;
         justify-content: center;
 
-        width: 100vpx;
+        width: 180vpx;
         height: 40vpx;
-        background: #000AFF;
+        background: #7241FF;
         border-radius: 20vpx;
-        border: 1px solid #0A14D2;
+        border: 1px solid #7241FF;
 
         font-family: PingFangSC, PingFang SC;
         font-weight: 600;
-        font-size: 18vpx;
+        font-size: 14vpx;
         color: #FFFFFF;
         cursor: pointer;
       }
@@ -58,7 +58,7 @@
       display: flex;
 
       .viewWrapper {
-        width: 320vpx;
+        width: 220vpx;
         height: 890vpx;
         box-sizing: border-box;
         background-color: #FCFCFF;
@@ -70,7 +70,7 @@
           font-family: PingFangSC, PingFang SC;
           font-weight: 600;
           font-size: 20vpx;
-          color: #000AFF;
+          color: #7241FF;
           border-bottom: 1px solid #E0E0E0;
           margin: 0 30vpx;
         }
@@ -93,13 +93,13 @@
           align-items: center;
           font-family: PingFangSC, PingFang SC;
           font-weight: 400;
-          font-size: 20vpx;
+          font-size: 16vpx;
           color: #1E1E69;
           cursor: pointer;
 
           &.active {
             font-weight: 600;
-            color: #000AFF;
+            color: #7241FF;
             background-color: #F1F1FE;
           }
         }
@@ -175,9 +175,19 @@
                 .itemTitle {
                   font-family: PingFangSC, PingFang SC;
                   font-weight: 600;
-                  font-size: 20vpx;
-                  color: #2B00FF;
+                  font-size: 24vpx;
+                  color: #7241FF;
                 }
+                .noItemTitle {
+                  font-family: PingFangSC, PingFang SC;
+                  font-weight: 600;
+                  font-size: 24vpx;
+                  color: #7241FF;
+                  pointer-events: none; /* 禁用鼠标点击事件 */
+                  //color: #999; /* 可选：改变链接颜色以表示禁用状态 */
+                  cursor: not-allowed; /* 鼠标指针显示为不可用状态 */
+                }
+
 
                 .itemDescText {
                   font-family: PingFangSC, PingFang SC;
@@ -195,18 +205,18 @@
               justify-content: center;
 
               .draftStatus {
-                width: 110vpx;
-                height: 40vpx;
-                background: #FFFFFF;
+                width: 100vpx;
+                height: 24vpx;
+                background:#f0f0f0;
                 border-radius: 2vpx;
-                border: 1px solid #000AFF;
+                border: 1px solid #f0f0f0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-family: PingFangSC, PingFang SC;
                 font-weight: 400;
-                font-size: 19vpx;
-                color: #000AFF;
+                font-size: 14vpx;
+                //color: #000AFF;
               }
             }
 
@@ -220,15 +230,34 @@
                 cursor: pointer;
                 width: 120vpx;
                 height: 40vpx;
-                background: #000AFF;
+                background: #7241FF;
                 border-radius: 20vpx;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-family: PingFangSC, PingFang SC;
-                font-weight: 400;
-                font-size: 19vpx;
+                font-weight: 600;
+                font-size: 14vpx;
                 color: #FFFFFF;
+                margin-right: 20vpx;
+              }
+              .noEditBtn {
+                //cursor: pointer;
+                width: 120vpx;
+                height: 40vpx;
+                background: #999;
+                border-radius: 20vpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: PingFangSC, PingFang SC;
+                font-weight: 600;
+                font-size: 14vpx;
+                color: #FFFFFF;
+                margin-right: 20vpx;
+                //pointer-events: none; /* 禁用鼠标点击事件 */
+                ////color: #999; /* 可选：改变链接颜色以表示禁用状态 */
+                //cursor: not-allowed; /* 鼠标指针显示为不可用状态 */
               }
             }
           }

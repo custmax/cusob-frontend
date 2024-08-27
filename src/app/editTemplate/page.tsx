@@ -4,11 +4,12 @@ import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import { Form, Input, Radio, RadioChangeEvent, message } from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic'
 import { getTemplate, saveTemplate, updateTemplate } from '@/server/template';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SUCCESS_CODE } from '@/constant/common';
+import Link from "next/link";
 
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 
@@ -47,7 +48,8 @@ const EditTemplate = () => {
   }, [])
 
   const initTemplate = async () => {
-    if (typeof templateId === 'number' && !isNaN(templateId)) {
+    if (typeof templateId === 'number' && !(templateId==0)) {
+      console.log('templateId=', templateId)
       message.loading({ content: 'loading', duration: 10, key: 'contactLoading' })
       const res = await getTemplate(templateId)
       message.destroy('contactLoading')
@@ -127,7 +129,7 @@ const EditTemplate = () => {
     <div className={main}>
       <div className={title}>
         <div className={titleLeft}>
-        <span>Email template</span>
+          <Link href='/emailTemplates'>Email template</Link>
         <span style={{ margin: '0 0.5em', color: '#666' }}>/</span>
         <span style={{ color: '#999999' }}>{templateId ? 'Edit Template' : 'Add Template'}</span>
         </div>

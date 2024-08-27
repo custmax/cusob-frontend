@@ -1,10 +1,11 @@
-import { ChangeEvent, FC, useState} from 'react';
+import React, { ChangeEvent, FC, useState} from 'react';
 import styles from './index.module.scss';
 import {Input, Modal, message} from 'antd';
 import {forgetPassword, sendEmailForResetPassword} from '@/server/user';
 import {SUCCESS_CODE} from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
+import { CloseOutlined } from '@ant-design/icons';
 
 type Props = {
   visible: boolean,
@@ -78,11 +79,12 @@ const ForgotPwModal: FC<Props> = (props) => {
   }
 
   return <Modal
-    title="Enter email to reset your password"
-    open={visible}
-    onCancel={onCancel}
-    wrapClassName={forgotPwModal}
-    footer={null}
+      title="Enter email to reset your password"
+      open={visible}
+      onCancel={onCancel}
+      wrapClassName={forgotPwModal}
+      footer={null}
+      closable={false}
   >
     <div className={forgotPwContent}>
       <div className={inputItem}>
@@ -91,18 +93,18 @@ const ForgotPwModal: FC<Props> = (props) => {
               value={email}
               placeholder="Email"
               onChange={e => emailChange(e)}
-              className={addressValue} />
+              className={addressValue}/>
         </div>
       </div>
       {
         available ?
-        <div className={addressBtn} onClick={onSend}>Reset Password</div>
-        :
-        <div className={addressBt}>Reset Password</div>
+            <div className={addressBtn} onClick={onSend}>Reset Password</div>
+            :
+            <div className={addressBt}>Reset Password</div>
       }
       <div className={cancelBtn} onClick={onCancel}>Cancel</div>
     </div>
-  </Modal>
+  </Modal>;
 };
 
 export default ForgotPwModal;

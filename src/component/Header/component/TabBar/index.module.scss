@@ -1,26 +1,29 @@
 .tabBarContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  top: 0;
+  left: 300vpx; /* 根据需要调整 */
+  right: auto; /* 根据需要调整 */
+  height: 90vpx;
   display: flex;
+  justify-content: space-between; /* 均匀间隔 */
   align-items: center;
-
+  background-color: transparent;
+  z-index: 101; /* 确保在 headerContainer 之上 */
+  transform: translateX(-10%); /* 根据需要调整偏移量 */
   .tabItem {
-    font-family: ArialMT;
+    font-family: 思源黑体;
     font-size: 20vpx;
-    color: #666666;
+    color: #000000;
     cursor: pointer;
+    margin: 0 50vpx; /* 调整为所需的间距 */
 
-    &:nth-of-type(1) {
-      margin-right: 192vpx;
-    }
-
+    font-weight: bold;
     &.active {
-      font-family: Arial, Arial;
-      font-size: 20vpx;
-      color: #000AFF;
+      font-family: 思源黑体;
+      color: #7241FF;
     }
-
+  }
+  .tabItem:first-child {
+    margin-left: 70px;
   }
 }

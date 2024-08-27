@@ -1,10 +1,15 @@
 .forgotPwModal {
+  //background-color: pink;
   :global {
     .ant-modal {
       .ant-modal-content {
         padding-right: 102vpx;
         padding-left: 100vpx;
+        margin-left: -100vpx;
+        padding-top:50vpx;
         width: 770vpx;
+        border-radius: 100vpx;
+        background-color: white;
         .ant-modal-header {
           .ant-modal-title {
             display: flex;
@@ -12,8 +17,10 @@
             align-items: center;
             font-family: PingFangSC, PingFang SC;
             font-weight: 600;
-            font-size: 28vpx;
-            color: #333333;
+            font-size: 30vpx;
+            //background-color: pink;
+            color: #7241FF;
+            text-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
           }
         }
       }
@@ -21,7 +28,7 @@
   }
   .forgotPwContent {
     padding-bottom: 30vpx;
-
+    //background-color: pink;
     .addressBtn {
       width: 380vpx;
       height: 40vpx;
@@ -30,13 +37,15 @@
       margin-top: 30vpx;
       justify-content: center;
       align-items: center;
-      background: #000AFF;
+      background: #7241FF;
       border-radius: 2vpx;
-      border: 1px solid #0A14D2;
+      border: 1px solid #7241FF;
       font-family: ArialMT;
       font-size: 18vpx;
+      font-weight: bold;
       color: #FFFFFF;
       cursor: pointer;
+      border-radius: 20vpx;
     }
 
     .addressBt {
@@ -48,9 +57,10 @@
       justify-content: center;
       align-items: center;
       background: #D9D9D9;
-      border-radius: 2vpx;
+      border-radius: 20vpx;
       border: 1px solid #D9D9D9;
       font-family: ArialMT;
+      font-weight: bold;
       font-size: 18vpx;
       color: #FFFFFF;
     }
@@ -65,7 +75,8 @@
       align-items: center;
       font-family: ArialMT;
       font-size: 18vpx;
-      color: #000AFF;
+      color: #7241FF;
+      font-weight:bold;
       cursor: pointer;
     }
     .inputItem {
@@ -97,10 +108,12 @@
         height: 50vpx;
         display: flex;
         align-items: center;
-
         .addressValue {
+          border-radius: 20vpx;
+          //background-color: pink;
           width: 400vpx;
           height: 100%;
+          font-size: 20vpx;
 
         }
 

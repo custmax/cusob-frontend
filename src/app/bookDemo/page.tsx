@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import Banner from './component/Banner'
+import Banner2 from './component/Banner2'
 import DemoForm from './component/DemoForm'
 import Header from '@/component/Header';
 import Footer from '@/component/Footer';
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const BookDemo = () => {
   return <div className={bookContainer}>
     <Header showBar showSign />
-    <Banner />
+    <Banner2 />
     <DemoForm />
     <Footer />
   </div>

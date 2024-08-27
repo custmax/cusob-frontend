@@ -32,7 +32,7 @@ const Feature4 = () => {
             className={imgBox0}
             imgClassName={featureImg}
             alt='powerful'
-            src='/img/powerful.png'
+            src='/img/powerful1.png'
             sizes='100%'
             priority
         />
@@ -44,7 +44,7 @@ const Feature4 = () => {
             className={imgBox1}
             imgClassName={featureImg}
             alt='affordable'
-            src='/img/affordable.png'
+            src='/img/affordable1.png'
             sizes='100%'
             priority
         />
@@ -56,7 +56,7 @@ const Feature4 = () => {
             className={imgBox2}
             imgClassName={featureImg}
             alt='excellent'
-            src='/img/excellent.png'
+            src='/img/excellent1.png'
             sizes='100%'
             priority
         />

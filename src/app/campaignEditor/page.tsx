@@ -17,7 +17,6 @@ import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
 import {API_USER, API_KEY, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
 import {getAddr} from "@/server/accountInfo";
-
 const {
   campaignEditorContainer,
   main,
@@ -32,6 +31,7 @@ const {
   subTitle,
   mainProcess,
   processItem,
+  addGroup,
   processLeft,
   radio,
   processDesc,
@@ -67,7 +67,10 @@ const {
   timeWrapper,
   timeLabel,
   timeInput,
+  campaignTitle,
+  sendBtn2,
 } = styles;
+
 
 const CampaignEditor = () => {
   const senderListRef = useRef<{ value: number, label: string }[]>([])
@@ -97,9 +100,9 @@ const CampaignEditor = () => {
 
   const [trackClicks, setTrackClicks] = useState<boolean>(false)
   const [trackLink, setTrackLink] = useState<boolean>(false)
-  const [trackOpens, setTrackOpens] = useState<boolean>(false)
+  const [trackOpens, setTrackOpens] = useState<boolean>(true)
   const [trackTextClicks, setTrackTextClicks] = useState<boolean>(false)
-  
+  const [timeZone, setTimeZone] = useState('UTC+08:00');
   const searchParams = useSearchParams()
   const campaignId = searchParams.get('id')
 
@@ -110,6 +113,35 @@ const CampaignEditor = () => {
     { title: 'Content', checked: false },
     { title: 'Send time', subTitle: '', checked: false },
   ])
+  const timeZones = [
+    { value: 'UTC+00:00', label: 'UTC+00:00' },
+    { value: 'UTC+01:00', label: 'UTC+01:00' },
+    { value: 'UTC+02:00', label: 'UTC+02:00' },
+    { value: 'UTC+03:00', label: 'UTC+03:00' },
+    { value: 'UTC+04:00', label: 'UTC+04:00' },
+    { value: 'UTC+05:00', label: 'UTC+05:00' },
+    { value: 'UTC+06:00', label: 'UTC+06:00' },
+    { value: 'UTC+07:00', label: 'UTC+07:00' },
+    { value: 'UTC+08:00', label: 'UTC+08:00' },
+    { value: 'UTC+09:00', label: 'UTC+09:00' },
+    { value: 'UTC+10:00', label: 'UTC+10:00' },
+    { value: 'UTC+11:00', label: 'UTC+11:00' },
+    { value: 'UTC+12:00', label: 'UTC+12:00' },
+    { value: 'UTC-12:00', label: 'UTC-12:00' },
+    { value: 'UTC-11:00', label: 'UTC-11:00' },
+    { value: 'UTC-10:00', label: 'UTC-10:00' },
+    { value: 'UTC-09:00', label: 'UTC-09:00' },
+    { value: 'UTC-08:00', label: 'UTC-08:00' },
+    { value: 'UTC-07:00', label: 'UTC-07:00' },
+    { value: 'UTC-06:00', label: 'UTC-06:00' },
+    { value: 'UTC-05:00', label: 'UTC-05:00' },
+    { value: 'UTC-04:00', label: 'UTC-04:00' },
+    { value: 'UTC-03:00', label: 'UTC-03:00' },
+    { value: 'UTC-02:00', label: 'UTC-02:00' },
+    { value: 'UTC-01:00', label: 'UTC-01:00' },
+
+  ];
+
 
   const initCampaign = useCallback(async (groupList: { value: number, label: string }[]) => {
     if (campaignId) {
@@ -192,13 +224,28 @@ const CampaignEditor = () => {
     getAddress()
     console.log(allow)
   }, []);
+  const showWarningModal = () => {
+    Modal.confirm({
+      title: 'Warning',
+      content: 'Please provide your address information',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: () => {
+        router.push('/contactInfo?form=true');
+      },
+      onCancel: () => {
+        router.push('/campaign?form=true');
+      }
+    });
+  };
 
   useEffect(() => {
     if(allow){
       initGroupList()
     }else {
-      message.warning('Please provide your address information')
-      router.push('/contactInfo?form=true')
+      // message.warning('Please provide your address information')
+      // router.push('/contactInfo?form=true')
+      showWarningModal();
     }
 
   }, [allow])
@@ -366,6 +413,9 @@ const CampaignEditor = () => {
   const onTimeChange: TimePickerProps['onChange'] = (val) => {
     setSendMinute(dayjs(val).format('HH:mm:ss'))
   };
+  const onTimeZoneChange = (value: string) => {
+    setTimeZone(value);
+  };
 
   const onRadioChange = (e: RadioChangeEvent) => {
     if (e.target.value === 1) {
@@ -409,27 +459,11 @@ const CampaignEditor = () => {
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
         return;
       }
-      if (!content || !chosenContent) {
-        message.error('please set content');
+      if (!toGroup || !chosenTo) {
+        message.error('please set toGroup');
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
         return;
       }
-      if (!preText || !chosenSubject) {
-        message.error('please set preText');
-        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
-        return;
-      }
-      if (!sendDate || !chosenSendTime) {
-        message.error('please set sendDate');
-        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
-        return;
-      }
-      if (!sendMinute || !chosenSendTime) {
-        message.error('please set sendMinute');
-        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
-        return;
-      }
-
       if (!senderId || !chosenFrom) {
         message.error('please set senderEmail');
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
@@ -445,16 +479,37 @@ const CampaignEditor = () => {
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
         return;
       }
-      if (!toGroup || !chosenTo) {
-        message.error('please set toGroup');
+      if (!preText || !chosenSubject) {
+        message.error('please set preText');
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
         return;
       }
+      if (!content || !chosenContent) {
+        message.error('please set content');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+
+      if (!sendDate || !chosenSendTime) {
+        message.error('please set sendDate');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+      if (!sendMinute || !chosenSendTime) {
+        message.error('please set sendMinute');
+        setSubmit(false); // 触发错误消息时设置 submit 状态为 false
+        return;
+      }
+
+
+
+
       const data = {
         campaignName,
         content: richContent,
         preText,
         sendTime:  `${sendDate} ${sendMinute}`,
+        timeZone,
         senderName,
         senderId,
         subject,
@@ -509,6 +564,7 @@ const CampaignEditor = () => {
     const chosenSubject = process.find(item => item.title === 'Subject')?.checked
     const chosenContent = process.find(item => item.title === 'Content')?.checked
     const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
+    //const chosenTimeZone = process.find(item => item.title === 'Send time')?.checked
     if (!campaignName) return message.error('please set campaignName');
     const data = {
       campaignName,
@@ -517,6 +573,7 @@ const CampaignEditor = () => {
       sendTime: chosenSendTime ? `${sendDate} ${sendMinute}` : '',
       // senderEmail: chosenFrom ? senderEmail : '',
       senderId,
+      timeZone,
       senderName: chosenFrom ? senderName : '',
       subject: chosenSubject ? subject : '',
       toGroup: chosenTo ? toGroup : -1,
@@ -550,23 +607,39 @@ const CampaignEditor = () => {
       <div className={title}>
         <div className={titleLeft}>
           <div className={back} onClick={() => router.back()}>
-            <ImgWrapper className={arrowLeft} src='/img/arrow_left.png' alt='arrow left' />
-            <span>Continue like this</span>
+            <ImgWrapper className={arrowLeft} src='/img/arrow_left.png' alt='arrow left'/>
+            {/*<span>Continue like this</span>*/}
+            <span>Campaigns</span>
           </div>
-          <div onClick={onDraft} className={draftBtn}>Draft</div>
+          {/*<div onClick={onDraft} className={draftBtn}>Draft</div>*/}
         </div>
-        <div onClick={onSend} className={exitBtn}>Send</div>
+        <div className={sendWrapper}>
+
+          <div onClick={onDraft} className={sendBtn2}>Save as Draft</div>
+          <div onClick={onSend} className={sendBtn}>Send</div>
+        </div>
+        {/*<div onClick={onSend} className={exitBtn}>Send</div>*/}
       </div>
       <div className={content}>
         <div className={contentTitle}>
           <span>{campaignName || 'Untitled'}</span>
           <span onClick={() => setShowCampaignName(true)} className={subTitle}>Edit name</span>
         </div>
+        {/*<div className={contentTitle}>*/}
+        {/*  <div className={campaignTitle}>Campaign Name:</div>*/}
+        {/*  <Input*/}
+        {/*      value={campaignName}*/}
+        {/*      onChange={e => setCampaignName(e.target.value)}*/}
+        {/*      placeholder="Name your campaign"*/}
+        {/*      className={subTitle} // 使用原来的样式类名*/}
+        {/*  />*/}
+        {/*</div>*/}
+
         <div className={mainProcess}>
           {
             process.map((item, index) => <div key={index} className={processItem}>
               <div className={processLeft}>
-                <Radio className={radio} checked={item.checked} />
+                <Radio className={radio} checked={item.checked}/>
                 <div className={processDesc}>
                   <span>{item.title}</span>
                   {item.subTitle && <span className={desc}>{item.subTitle}</span>}
@@ -576,40 +649,42 @@ const CampaignEditor = () => {
             </div>)
           }
         </div>
-        <div className={trackWrapper}>
-          <div className={trackTitle}>Settings & Tracking</div>
-          <div className={trackList}>
-            <div className={trackItem}>
-              <Checkbox checked={trackOpens} onChange={e => setTrackOpens(e.target.checked)} />
-              <div className={trackText}>Track opens</div>
-            </div>
-            <div className={trackItem}>
-              <Checkbox checked={trackClicks} onChange={e => setTrackClicks(e.target.checked)} />
-              <div className={trackText}>Track clicks</div>
-            </div>
-            <div className={trackItem}>
-              <Checkbox checked={trackTextClicks} onChange={e => setTrackTextClicks(e.target.checked)} />
-              <div className={trackText}>Track plain-text clicks</div>
-            </div>
-            <div className={trackItem}>
-              <Checkbox checked={trackLink} onChange={e => setTrackLink(e.target.checked)} />
-              <div className={trackText}>Google Analytics link tracking</div>
-            </div>
-          </div>
-        </div>
-        <div className={sendWrapper}>
-          <div onClick={onSend} className={sendBtn}>Send</div>
-        </div>
+        {/*<div className={trackWrapper}>*/}
+        {/*  <div className={trackTitle}>Settings & Tracking</div>*/}
+        {/*  <div className={trackList}>*/}
+        {/*    <div className={trackItem}>*/}
+        {/*      <Checkbox checked={trackOpens} onChange={e => setTrackOpens(e.target.checked)} />*/}
+        {/*      <div className={trackText}>Track opens</div>*/}
+        {/*    </div>*/}
+        {/*    <div className={trackItem}>*/}
+        {/*      <Checkbox checked={trackClicks} onChange={e => setTrackClicks(e.target.checked)} />*/}
+        {/*      <div className={trackText}>Track clicks</div>*/}
+        {/*    </div>*/}
+        {/*    <div className={trackItem}>*/}
+        {/*      <Checkbox checked={trackTextClicks} onChange={e => setTrackTextClicks(e.target.checked)} />*/}
+        {/*      <div className={trackText}>Track plain-text clicks</div>*/}
+        {/*    </div>*/}
+        {/*    <div className={trackItem}>*/}
+        {/*      <Checkbox checked={trackLink} onChange={e => setTrackLink(e.target.checked)} />*/}
+        {/*      <div className={trackText}>Google Analytics link tracking</div>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+        {/*删去这些选项，设定为默认值*/}
+        {/*<div className={sendWrapper}>*/}
+        {/*  <div onClick={onSend} className={sendBtn}>Send</div>*/}
+        {/*  <div onClick={onDraft} className={sendBtn}>Draft</div>*/}
+        {/*</div>*/}
       </div>
     </div>
     <Modal
-      title="Campaign Name"
-      open={showCampaignName}
-      onOk={onCampaignNameOk}
-      onCancel={onCampaignNameCancel}
-      wrapClassName={subjectModal}
+        title="Campaign Name"
+        open={showCampaignName}
+        onOk={onCampaignNameOk}
+        onCancel={onCampaignNameCancel}
+        wrapClassName={subjectModal}
     >
-      <div className={subjectContent}>
+    <div className={subjectContent}>
         <div className={inputItem}>
           <div className={label}>name</div>
           <Input value={campaignName} onChange={e => setCampaignName(e.target.value)} className={value} />
@@ -633,7 +708,9 @@ const CampaignEditor = () => {
           />
           <span>All subscribers in audience</span>
         </div>
+
       </div>
+      <Link href='/contactList' className={addGroup}>Navigate to Add New Group</Link>
     </Modal>
     <Modal
       title="From"
@@ -704,15 +781,13 @@ const CampaignEditor = () => {
           <div className={timeLabel}>Sending time</div>
           <DatePicker value={sendDate ? dayjs(sendDate) : undefined} className={timeInput} onChange={onDateChange} />
           <TimePicker value={sendMinute ? dayjs(sendMinute, 'HH:mm:ss') : undefined} className={timeInput} onChange={onTimeChange} defaultOpenValue={dayjs('00:00:00', 'HH:mm:ss')} />
-          {/*<Select*/}
-          {/*  className={timeInput}*/}
-          {/*  placeholder='Time Zone'*/}
-          {/*  value={zone}*/}
-          {/*  onChange={(val) => setZone(val)}*/}
-          {/*  options={[*/}
-          {/*    { value: 'beiJing', label: 'BeiJing' },*/}
-          {/*  ]}*/}
-          {/*/>*/}
+          <Select
+            className={timeInput}
+            placeholder='Time Zone'
+            value={timeZone}
+            onChange={(val) => setTimeZone(val)}
+            options={timeZones}
+          />
         </div>
       </div>
     </Modal>

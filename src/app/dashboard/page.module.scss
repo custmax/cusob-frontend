@@ -42,7 +42,7 @@
         font-family: PingFangSC, PingFang SC;
         font-weight: 600;
         font-size: 30vpx;
-        color: #333333;
+        color: #7241FF;
         line-height: 42vpx;
         padding-bottom: 30vpx;
         padding-left: 30vpx;
@@ -81,12 +81,40 @@
           }
 
           .view {
-            font-family: PingFangSC, PingFang SC;
-            font-weight: 400;
-            font-size: 20vpx;
-            color: #000AFF;
+            width: 120vpx;
+            height: 36vpx;
+            padding-left: 10vpx;
+            padding-top: 5vpx;
+            margin-top: 10vpx;
+            justify-content: center;
+            align-items: center;
+            //font-family: PingFangSC, PingFang SC;
+            font-weight: 600;
+            font-size: 14vpx;
+            color: #f0f0f0;
             line-height: 28vpx;
             cursor: pointer;
+            background-color: #7241FF;
+            border-radius: 20vpx;
+
+          }
+          .view2 {
+            width: 136vpx;
+            height: 36vpx;
+            padding-left: 10vpx;
+            padding-top: 5vpx;
+            margin-top: 10vpx;
+            justify-content: center;
+            align-items: center;
+            //font-family: PingFangSC, PingFang SC;
+            font-weight: 600;
+            font-size: 14vpx;
+            color: #f0f0f0;
+            line-height: 28vpx;
+            cursor: pointer;
+            background-color: #7241FF;
+            border-radius: 20vpx;
+
           }
         }
       }
@@ -98,15 +126,15 @@
         border: 1px solid #FFFFFF;
         position: relative;
         padding-bottom: 20vpx;
-
+        border-radius: 50vpx;
         .left {
-          width: 547vpx;
+          width: 100%;
           height: 100%;
           display: flex;
           flex-direction: column;
           box-sizing: border-box;
           padding-left: 72vpx;
-
+          //background-color: pink;
           .quickTitle {
             padding-top: 60vpx;
             padding-bottom: 58vpx;
@@ -117,28 +145,47 @@
             line-height: 42vpx;
           }
 
-          .actionItem {
+          .func{
             display: flex;
-            align-items: center;
-            font-family: ArialMT;
-            font-size: 26vpx;
-            color: #333333;
-            margin-bottom: 60vpx;
-            cursor: pointer;
-
-            &:nth-last-of-type(1) {
-              margin-bottom: 0;
+            flex-wrap: wrap;
+            .actionItem {
+              width: 400vpx;
+              height: 120vpx;
+              display: flex;
+              align-items: center;
+              //font-family: ArialMT;
+              font-weight: 700;
+              font-size: 24vpx;
+              color: #7241FF;
+              margin-bottom: 60vpx;
+              cursor: pointer;
+              justify-content: center;
+              background-color: white;
+              margin-right: 50vpx;
+              border-radius: 40vpx;
+              &:nth-last-of-type(1) {
+                margin-bottom: 0;
+                margin-right: 50vpx;
+              }
+              &:nth-last-of-type(1) {
+                margin-bottom: 0;
+                margin-left: 0vpx;
+              }
+              .circle {
+                width: 24vpx;
+                height: 24vpx;
+                background: #FFFFFF;
+                border: 1px solid #E0E0E0;
+                border-radius: 50%;
+                margin-right: 32vpx;
+              }
             }
-
-            .circle {
-              width: 24vpx;
-              height: 24vpx;
-              background: #FFFFFF;
-              border: 1px solid #E0E0E0;
-              border-radius: 50%;
-              margin-right: 32vpx;
+            .actionItem:hover{
+              background-color: #FAFAFF;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 鼠标悬停时增加阴影 */
             }
           }
+
         }
 
         .quickActionIcon {

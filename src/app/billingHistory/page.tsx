@@ -28,8 +28,9 @@ const BillingHistory = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [historyList, setHistoryList] = useState([])
   const [total, setTotal] = useState(0)
-
+  const [loading, setLoading] = useState(false);
   const initOrderHistory = useCallback(async () => {
+    setLoading(true); // 开始加载
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
     const res = await getOrderHistory(currentPage, pageSize)
     console.log(res)
@@ -37,7 +38,9 @@ const BillingHistory = () => {
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
       setHistoryList(res.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || [])
+      setLoading(true); // 加载结束
     }
+
   }, [currentPage, pageSize])
 
   useEffect(() => {
@@ -96,13 +99,16 @@ const BillingHistory = () => {
     total: total,
     onChange: onPageChange,
   }
-
+  // if (loading) {  // 判断是否在加载
+  //   return <div>Loading...</div>; // 或者可以使用一个加载动画
+  // }
   return <div className={billingHistoryContainer}>
     <EnteredHeader />
     <div className={main}>
       <div className={title}>Billing history</div>
       {
-        historyList.length
+        historyList.length>0
+          // loading
           ? <Table
             columns={columns}
             dataSource={historyList}

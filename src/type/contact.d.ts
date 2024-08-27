@@ -14,5 +14,6 @@ declare module Contact {
     note: string,
     phone: string,
     title: string,
+    subscriptionType,
   }
 }

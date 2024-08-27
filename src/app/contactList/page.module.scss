@@ -38,9 +38,9 @@
         .filterLeft {
           > span {
             font-family: PingFangSC, PingFang SC;
-            font-weight: 400;
+            font-weight: 500;
             font-size: 24vpx;
-            color: #000AFF;
+            color: #7241FF;
             line-height: 33vpx;
             text-decoration: underline;
             margin-right: 40vpx;
@@ -122,6 +122,26 @@
         height: 20vpx;
         cursor: pointer;
       }
+      .editButton{
+        //background-color: white;
+        width: 40vpx;
+        height: 20vpx;
+        line-height: 15vpx;
+        padding-left: 6vpx;
+        padding-bottom: 5vpx;
+        //justify-content: center;
+        //align-items: center;
+        cursor: pointer;
+        color: #7241FF;
+        border-radius: 6vpx;
+        border: 2vpx solid #7241FF;
+        font-weight: 600;
+        font-size:14vpx;
+      }
+      .editButton:hover{
+        background-color: #7241FF;
+        color: white;
+      }
     }
   }
 
@@ -145,7 +165,7 @@
       border-bottom: 1px solid #E0E0E0;
       font-family: PingFangSC, PingFang SC;
       font-weight: 600;
-      font-size: 20vpx;
+      font-size: 36vpx;
       color: #333333;
     }
 
@@ -156,24 +176,61 @@
       font-size: 24vpx;
       color: #333333;
       line-height: 33vpx;
+      &:nth-last-of-type(2){
+        //background-color: pink;
+        margion-top: 20vpx;
+        border-top: 2px solid #E0E0E0;
+        padding-top: 20vpx;
+      }
     }
 
     .groupItem {
       margin-top: 20vpx;
       font-family: PingFangSC, PingFang SC;
       font-weight: 400;
-      font-size: 20vpx;
+      font-size: 16vpx;
       color: #1E1E69;
       line-height: 28vpx;
       cursor: pointer;
 
       &.active {
-        color: #000AFF;
+        color: #7241FF;
+        font-weight: 600;
       }
 
-      &:nth-last-of-type(1) {
-        color: #000AFF;
+      //&:nth-last-of-type(3) {
+      //  color: #000AFF;
+      //  text-decoration: underline;
+      //  padding-bottom: 20vpx;
+      //  border-bottom: 1px solid #E0E0E0;
+      //}
+    }
+    .addgroupItem {
+      margin-top: 20vpx;
+      margin-left: -10vpx;
+      width:190vpx;
+      height:50vpx;
+      justify-content: center;
+      padding-top: 10vpx;
+      padding-left: 15vpx;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 400;
+      font-size: 20vpx;
+      color: #1E1E69;
+      background-color: #7241FF;
+      border-radius: 30vpx;
+      line-height: 28vpx;
+      cursor: pointer;
+      text-decoration: none;
+
+
+      &:nth-last-of-type(3) {
+        color:white;
         text-decoration: underline;
+        padding-bottom: 20vpx;
+        //border-bottom: 1px solid #E0E0E0;
+        text-decoration: none;
+        //border-bottom: 1px solid #E0E0E0;
       }
     }
   }

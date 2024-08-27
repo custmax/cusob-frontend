@@ -10,6 +10,8 @@ import { SUCCESS_CODE } from '@/constant/common';
 import { useRouter } from 'next/navigation';
 import {getLocalUser, getToken, setLocalUser, setToken} from '@/util/storage';
 import {Navigate} from "react-router";
+import classNames from "classnames";
+import Image from "next/image";
 
 const {
   loginWrapper,
@@ -19,6 +21,15 @@ const {
   loginForm,
   forgotBox,
   forgotBtn,
+  header,
+    log,
+  logoBox,
+  logo,
+    right,
+    word,
+    down,
+    content,
+    text,
   signupBtn
 } = styles;
 
@@ -79,38 +90,79 @@ const Login = () => {
 
   return <>
     <div className={loginWrapper}>
-      <ImgWrapper className={loginBg} alt='login_bg' src='/img/login_bg.png'/>
-      <div className={loginBox}>
-        <div className={title}>Log In</div>
-        <Form
-            form={form}
-            layout="vertical"
-            className={loginForm}
-            onFinish={onFinish}
-        >
-          <Form.Item
-              name='email'
-              rules={[{required: true, message: 'Please input your Email address!'}]}
-          >
-            <Input placeholder="Email address"/>
-          </Form.Item>
-          <Form.Item
-              name='password'
-              rules={[{required: true, message: 'Please input your Password!'}]}
-          >
-            <Input type='password' placeholder="Password"/>
-          </Form.Item>
-          <Form.Item label="" name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType='submit'>Log in</Button>
-          </Form.Item>
-        </Form>
-        <div className={forgotBox}>
-          <div className={forgotBtn} onClick={() => setShowForgotPw(true)}>Forgot password?</div>
-          <div className={signupBtn}>
-            <Link href='/signup'>Sign Up</Link>
+
+      <div className={header}>
+        <Link href='/'>
+          <div className={classNames(logoBox)}>
+            <Image
+                fill
+                className={classNames(logo)}
+                alt='logo'
+                src='/img/logo.png'
+                sizes='100%'
+                priority
+            />
+          </div>
+        </Link>
+        <div className={right}>
+          <Link href='/signup'>Sign Up</Link>
+        </div>
+      </div>
+      <div className={down}>
+        <div className={content}>
+          <div className={word}>
+            <h1>Log in</h1>
+          </div>
+          <div className={loginBox}>
+            <Form
+                form={form}
+                layout="vertical"
+                className={loginForm}
+                onFinish={onFinish}
+            >
+              <Form.Item
+                  className={text}
+                  name='email'
+                  rules={[{required: true, message: 'Please input your Email address!'}]}
+              >
+                <Input style={{
+                  // width: '80vpx',
+                  // //borderColor: '#7241FF', // 设置边框颜色
+                  // borderRadius: '24px',    // 设置圆角效果
+                  // //padding: '8px',
+                  // marginLeft:'100vpx',
+                  // paddingLeft:'20px',// 可选：增加内边距以增强视觉效果
+                  // fontSize:'24px',
+                  //backgroundColor:'#F5F5F5',
+                }}placeholder="Email"/>
+              </Form.Item>
+              <Form.Item
+                  className={text}
+                  name='password'
+                  rules={[{required: true, message: 'Please input your Password!'}]}
+              >
+                <Input style={{
+                  // width: '80vpx',
+                  // //borderColor: '#7241FF', // 设置边框颜色
+                  // borderRadius: '24px',    // 设置圆角效果
+                  // //padding: '8px',
+                  // paddingLeft:'20px',// 可选：增加内边距以增强视觉效果
+                  // fontSize:'24px',
+                }}type='password' placeholder="Password"/>
+              </Form.Item>
+              <Form.Item label="" name="remember" valuePropName="checked">
+                <Checkbox>Remember me</Checkbox>
+              </Form.Item>
+              <Form.Item className={log}>
+                <Button   type="primary" htmlType='submit'>Log in</Button>
+              </Form.Item>
+            </Form>
+            <div className={forgotBox}>
+              <div className={forgotBtn} onClick={() => setShowForgotPw(true)}>Forgot password?</div>
+              <div className={signupBtn}>
+                <Link href='/signup'>Sign Up</Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

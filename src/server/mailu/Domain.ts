@@ -33,7 +33,7 @@ export const generateDkim = async (domain: string | null) => {
 }
 
 
-export const getdomain = async (domain: string | null) => {
+export const getdomain = async (domain: string | null) => {//获取domain信息
     const response = await fetch(`/api4/v1/domain/${domain}`, {
         method: 'GET',
         headers: {

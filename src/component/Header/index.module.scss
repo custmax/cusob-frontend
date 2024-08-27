@@ -13,8 +13,7 @@
   box-sizing: border-box;
   z-index: 100;
   background-color: #fff;
-  border-bottom: 1px solid #BCBAB8;
-
+  border-bottom: 1px solid rgba(#BCBAB8,0.5);
 
   .logoBox {
     width: 167vpx;
@@ -31,6 +30,4 @@
       object-fit: cover;
     }
   }
-
 }
-

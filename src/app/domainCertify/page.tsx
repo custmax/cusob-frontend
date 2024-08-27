@@ -48,7 +48,7 @@ const handleCopy = (value: string) => {
   message.success("Copy Success")
 }
 
-
+// 定义了表格的列配置，每列对应一个 DNS 记录的字段。包括列名、数据字段、宽度，以及在某些列中自定义的渲染逻辑。
 const columns: TableProps<DataType>['columns'] = [
   {
     title: 'Name',
@@ -131,10 +131,10 @@ const DomainCertify = () => {
 
   const fetchEmail = async () =>{
     console.log('aaaa')
-    const res = await checkuuid(uuid)
+    const res = await checkuuid(uuid)//获取uuid对应的email
     if(res.code === SUCCESS_CODE){
       setEmail(res.data)
-      setDomainvalue(res.data.split('@')[1])
+      setDomainvalue(res.data.split('@')[1])//获取email对应的domain
 
     }else {
       message.error('Your information is incorrect!')
@@ -148,7 +148,7 @@ const DomainCertify = () => {
 
   useEffect(() => {
     if (email && domainValue) {
-      fetchData();
+      fetchData();//获取domain的DNS信息
     }
   }, [email, domainValue]);
 
@@ -169,7 +169,7 @@ const DomainCertify = () => {
       if(!find){
         const password = generatePassword();
         console.log(password)
-        await createUser(email, password);
+        await createUser(email, password);//新增User
         const res = await SavedomainSender(email, password)
         if(res.code === SUCCESS_CODE){
           message.success('Verified!')
@@ -191,7 +191,7 @@ const DomainCertify = () => {
     }
   }
 
-  const getmessage = async (domain: string | null) => {
+  const getmessage = async (domain: string | null) => {//获取DNS信息
     const r = await getdomain(domainValue)
     // console.log(domainValue)
     const data = {
@@ -211,16 +211,18 @@ const DomainCertify = () => {
 
   const fetchData = async () => {
     message.loading({content: 'loading', duration: 10, key: 'listLoading'})
-    const res = await createdomain(domainValue);
-    console.log(res)
+    const res = await createdomain(domainValue);//mailu创建domain
+    console.log("mailu api返回："+res)
     if(res.code === SUCCESS_CODE){
         const res = await generateDkim(domainValue);
+        console.log("generateDkim返回："+res)
         if(res.code === SUCCESS_CODE){ //如果为第一次创建
           const data = await getmessage(domainValue);  //获取DNS数据
           await saveDomain(data); // 保存domain至数据库
         }
     }
     // @ts-ignore
+    console.log("domainValue:"+domainValue)
     const dotCount = (domainValue.match(/\./g) || []).length;
     const verify = await domainVerify(domainValue);
     message.destroy('listLoading')

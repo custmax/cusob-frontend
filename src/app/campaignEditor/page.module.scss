@@ -22,12 +22,49 @@
       margin-left: 170vpx;
       margin-right: 40vpx;
       border-bottom: 1px solid #E0E0E0;
+      .sendWrapper {
+        width: 400vpx;
+        display: flex;
+        justify-content: center;
+        margin-top: 4vpx;
 
+        .sendBtn {
+          width: 120vpx;
+          height: 40vpx;
+          background: #7241FF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 600;
+          font-size: 14vpx;
+          color: #FFFFFF;
+          cursor: pointer;
+          border-radius: 20vpx;
+          margin-left: 24vpx;
+          margin-right: 24vpx;
+        }
+        .sendBtn2 {
+          width: 160vpx;
+          height: 40vpx;
+          //background: #7241FF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 600;
+          font-size: 14vpx;
+          color: #7241FF;
+          cursor: pointer;
+          border-radius: 20vpx;
+          margin-left: 48vpx;
+        }
+      }
       .titleLeft {
         height: 100%;
         display: flex;
         align-items: center;
-
+       // background-color: pink;
         font-family: PingFangSC, PingFang SC;
         font-weight: 400;
         font-size: 20vpx;
@@ -99,15 +136,32 @@
         font-weight: 600;
         font-size: 30vpx;
         color: #666666;
-
+        .campaignTitle{
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 600;
+            font-size: 30vpx;
+            color: #666666;
+            //margin-bottom: 20vpx;
+        }
         .subTitle {
+          width: 30%;
+          height: 50vpx;
           font-family: PingFangSC, PingFang SC;
           font-weight: 400;
-          font-size: 20vpx;
+          font-size: 14vpx;
           color: #000AFF;
           cursor: pointer;
+          text-decoration: underline;
+          margin-top: 20vpx; // 调整与输入框之间的距离
+          display: block;
+        }
+        input {
+          display: block;
+          width: 100%; // 确保输入框占据整行宽度
+          margin-top: 10vpx;
         }
       }
+
 
       .mainProcess {
         .processItem {
@@ -154,14 +208,14 @@
           .processRight {
             width: 100vpx;
             height: 40vpx;
-            background: #000AFF;
+            background: #7241FF;
             border-radius: 20vpx;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: PingFangSC, PingFang SC;
-            font-weight: 400;
-            font-size: 20vpx;
+            font-weight: 600;
+            font-size: 14vpx;
             color: #FFFFFF;
             cursor: pointer;
           }
@@ -210,7 +264,7 @@
         .sendBtn {
           width: 160vpx;
           height: 40vpx;
-          background: #000AFF;
+          background: #7241FF;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -271,6 +325,20 @@
         margin-top: 10vpx;
       }
     }
+
+  }
+  .addGroup {
+    display: block;
+    //background-color: pink;
+    width: 220vpx;
+    //padding-top: 20vpx;
+    margin-left: 60vpx;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 16vpx;
+    color: #000AFF;
+    line-height: 22vpx;
+    text-decoration: underline;
   }
 
 }
@@ -320,13 +388,19 @@
     }
 
     .addSender {
+      width: 100vpx;
+      height: 30vpx;
+      line-height: 30vpx;
+      //background-color: black;
       display: block;
-      padding-top: 20vpx;
-      padding-left: 160vpx;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30vpx;
+      padding-left: 0vpx;
       font-family: PingFangSC, PingFang SC;
       font-weight: 400;
       font-size: 16vpx;
-      color: #000AFF;
+      color: #7214FF;
       line-height: 22vpx;
       text-decoration: underline;
     }

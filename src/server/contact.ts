@@ -1,11 +1,11 @@
 import clientFetch from '@/helper/clientFetch';
 import { getToken } from '@/util/storage';
 
-export const getList = async (page: number, limit: number, keyword?: string, groupId?: number) => {
+export const getList = async (page: number, limit: number, keyword?: string, groupId?: number,subscriptionType?:string) => {
   const res = await clientFetch({
     url: `/api/contact/getList/${page}/${limit}`,
     method: 'GET',
-    data: { keyword: keyword || '', groupId: groupId || '' }
+    data: { keyword: keyword || '', groupId: groupId || '' ,subscriptionType:subscriptionType || ''},
   })
   return res;
 }
@@ -71,10 +71,34 @@ export const getContact = async (contactId: number) => {
   })
   return res;
 }
+// 定义 generateByGroup 方法
+
+export const generateByGroup = async (payload: { groupId: string; content: string; }) => {
+  const res = await clientFetch({
+    url: `/api/generate/generateByGroup`,
+    method: 'POST',
+    data: payload, // 将整个对象作为请求体发送
+  });
+  return res;
+};
+
+
 
 export const batchImport = async (data: FormData) => {
   const token = getToken() || ''
   const result = await fetch('/api/contact/batchImport', {
+    method: "POST",
+    body: data,
+    headers: {
+      token,
+    }
+  })
+  const res = await result.json()
+  return res;
+}
+export const parseFields = async (data: FormData) => {
+  const token = getToken() || ''
+  const result = await fetch('/api/contact/parseFields', {
     method: "POST",
     body: data,
     headers: {

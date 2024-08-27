@@ -15,8 +15,13 @@ const TabBar = () => {
 
   return <div className={classNames(tabBarContainer)}>
     
+      <span className={classNames(tabItem, {[active]: pathname === '/'})}>
+        <Link href="/">
+          Home
+        </Link>
+      </span>
       <span className={classNames(tabItem, {[active]: pathname === '/pricing'})}>
-        <Link href="/pricing">
+        <Link href="/pricing?reload=true">
           Pricing
         </Link>
       </span>
@@ -25,6 +30,11 @@ const TabBar = () => {
           Book a Demo
         </Link>
       </span>
+      {/*<span className={classNames(tabItem, {[active]: pathname === '/resource'})}>*/}
+      {/*  <Link href="/resource?reload=true">*/}
+      {/*    Resource*/}
+      {/*  </Link>*/}
+      {/*</span>*/}
   </div>
 };
 

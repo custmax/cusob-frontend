@@ -7,10 +7,12 @@ import classNames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import {Checkbox, Input, Select, message, Table, PaginationProps} from 'antd';
 import Link from 'next/link';
-import { getCampaignPage } from '@/server/campaign';
+import {getCampaignPage, removeCampaign} from '@/server/campaign';
 import { SUCCESS_CODE } from '@/constant/common';
 import {getstatus} from "@/server/mailgun/status";
 import {getOrderHistory} from "@/server/orderHistory";
+import {getReportList, removeReport} from "@/server/report";
+import {getCampaignList} from "@/server/sendcloud/campaigins";
 
 
 
@@ -38,11 +40,13 @@ const {
   listIcon,
   itemDescBox,
   itemTitle,
+  noItemTitle,
   itemDescText,
   listCenter,
   draftStatus,
   listRight,
   editBtn,
+  noEditBtn,
 } = styles;
 
 const pageSize = 10;
@@ -128,6 +132,36 @@ const Campaign = () => {
     onChange: onPageChange,
   }
 
+  async function onDelete(id: any) {
+    const res = await removeCampaign(id)
+    if (res.code === SUCCESS_CODE) {
+      message.success({ content: 'delete success', duration: 0.5, key: 'listLoading' })
+      // window.location.reload();
+      //下面的代码实现了不重新加载页面的情况下删除列表中的数据
+      // 从当前的 reportList 中移除已删除的项
+      setCampaignList(prevList => prevList.filter(item => item.id !== id));
+
+      // 更新总数
+      setTotal(prevTotal => prevTotal - 1);
+
+      // 检查当前页的数据是否需要补充
+      if (setCampaignList.length <= 1 && currentPage > 1) {
+        // 当前页只剩最后一项时删除，需要将页码向前调整并重新加载数据
+        setCurrentPage(prevPage => prevPage - 1);
+      } else {
+        // 当前页仍有数据或是第一页，重新加载当前页的数据
+        const query = { status, name: searchVal, order: order }
+        const newListRes = await getCampaignPage(currentPage, pageSize,query);
+        if (newListRes.code === SUCCESS_CODE) {
+          setCampaignList(newListRes.data?.records.map((item: { id: number }) => ({ ...item, key: item.id })) || []);
+        }
+      }
+    }
+    else{
+      message.error({ content: 'delete failed', duration: 0.5, key: 'listLoading' })
+    }
+  }
+
   return <div className={campaignContainer}>
     <EnteredHeader />
     <SideBar />
@@ -136,11 +170,11 @@ const Campaign = () => {
         <div className={titleLeft}>
           <span>Campaigns</span>
         </div>
-        <Link href='/campaignEditor' className={newBtn}>New</Link>
+        <Link href='/campaignEditor' className={newBtn}>New Campaign</Link>
       </div>
       <div className={content}>
         <div className={viewWrapper}>
-          <div className={viewTitle}>List View</div>
+          {/*<div className={viewTitle}>List View</div>*/}
           <div className={statusTitle}>View by Status</div>
           <div onClick={() => onStatusClick('')} className={classNames(statusItem, { [active]: status === '' })}>All</div>
           <div onClick={() => onStatusClick('1')} className={classNames(statusItem, { [active]: status === '1' })}>Ongoing</div>
@@ -184,9 +218,9 @@ const Campaign = () => {
                     render: (text, record) => (
                         <div className={listItem}>
                           <div className={listLeft}>
-                            <ImgWrapper src='/img/list_item_icon.png' alt='list item' className={listIcon} />
+                            {/*<ImgWrapper src='/img/list_item_icon.png' alt='list item' className={listIcon} />*/}
                             <div className={itemDescBox}>
-                              <div className={itemTitle}>{record.campaignName}</div>
+                              <Link href={`/campaignEditor?id=${record.id}`} className={record.status === 0 ?itemTitle:noItemTitle}>{record.campaignName}</Link>
                               <div className={itemDescText}>{record.updateTime} by you</div>
                             </div>
                           </div>
@@ -196,7 +230,8 @@ const Campaign = () => {
                             </div>
                           </div>
                           <div className={listRight}>
-                            <Link href={`/campaignEditor?id=${record.id}`} className={editBtn}>Edit</Link>
+                            <Link href={`/campaignEditor?id=${record.id}`} className={record.status === 0 ?editBtn:noEditBtn}>Edit</Link>
+                            <div onClick={() => onDelete(record.id)} className={editBtn}>Delete</div>
                           </div>
                         </div>
                     ),

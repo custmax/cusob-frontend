@@ -12,6 +12,8 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "@next/third-parties": "^14.1.4",
@@ -48,7 +50,7 @@
     "postcss-px-to-viewport": "^1.1.1",
     "sass": "^1.77.2",
     "sass-loader": "^14.1.1",
-    "tailwindcss": "^3.3.0",
+    "tailwindcss": "^3.4.4",
     "typescript": "5.4.5",
     "webpack": "^5.91.0"
   }

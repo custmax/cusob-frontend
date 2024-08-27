@@ -56,10 +56,11 @@ const AddSender = () => {
 
   const [error, setError] = useState('');
   const [select, setSelect] = useState('IMAP');
-
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const onVertifyOk = () => {
     setShowVertify(false);
+    router.push('/campaign?form=true');
   };
   let isSubmitting = false;
 
@@ -74,6 +75,8 @@ const AddSender = () => {
   };
 
   async function onDomainBinderOk() {
+    if (isProcessing) return;
+    setIsProcessing(true);
     const {
       email
     } = form3.getFieldsValue();
@@ -82,9 +85,9 @@ const AddSender = () => {
       const res = await checkEmail(email)
       message.destroy('loading')
       if(res.code===SUCCESS_CODE){
-        if(res.data !== undefined && res.data !== null){
+        if(res.data !== undefined && res.data !== null){//已经存在
           router.push('/domainCertify?uuid=',res.data)
-        }else {
+        }else {//不存在，发送邮件
           message.success('Email has been sent,Please check your email')
         }
       }
@@ -94,6 +97,7 @@ const AddSender = () => {
     }else {
       message.error('This is not an email!')
     }
+    setIsProcessing(false);
   };
 
   const onManualOk = async () => {
@@ -264,6 +268,8 @@ const AddSender = () => {
     router.push("/domainCertify");
   }
   const handleSubmit = () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     form1
         .validateFields()
         .then(values => {
@@ -274,9 +280,12 @@ const AddSender = () => {
           // 在这里处理表单验证失败后的逻辑，例如提示用户错误信息等操作
           console.error('Validation failed:', errorInfo);
         });
+    setIsProcessing(false);
   };
 
   const handleSubmitManual = () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     form2
         .validateFields()
         .then(values => {
@@ -287,6 +296,7 @@ const AddSender = () => {
           // 在这里处理表单验证失败后的逻辑，例如提示用户错误信息等操作
           console.error('Validation failed:', errorInfo);
         });
+    setIsProcessing(false);
   };
 
   const selectOptions = [{"type":"POP3"},{"type":"IMAP"}].map(item => ({
@@ -351,7 +361,7 @@ const AddSender = () => {
     <Modal
       title="Bind your Email Account"
       open={showBinder}
-      onOk={handleSubmit}
+      onOk={!isProcessing ?handleSubmit:undefined}
       onCancel={onBinderCancel}
       okText='Done'
       wrapClassName={binderModal}
@@ -395,6 +405,7 @@ const AddSender = () => {
     <Modal
         title="Domain Authentication"
         open={showdomainBinder}
+        // onOk={!isProcessing?onDomainBinderOk:undefined}
         onOk={onDomainBinderOk}
         onCancel={onDomainBinderCancel}
         okText='Done'
@@ -425,7 +436,7 @@ const AddSender = () => {
     <Modal
         title="Manual Settings"
         open={showManual}
-        onOk={handleSubmitManual}
+        onOk={isProcessing ?handleSubmitManual:undefined}
         onCancel={onManualCancel}
         okText='Done'
         wrapClassName={binderModal}

@@ -28,6 +28,8 @@ const {
   actionItem,
   circle,
   quickActionIcon,
+  view2,
+  func,
 } = styles;
 
 const Dashboard = () => {
@@ -63,6 +65,7 @@ const Dashboard = () => {
   return <div className={dashboardContainer}>
     <EnteredHeader />
     <SideBar />
+    {/*侧边展示栏*/}
     <div className={main}>
       <div className={title}>
         <span>{plan?.planName} plan</span>
@@ -87,35 +90,37 @@ const Dashboard = () => {
               <span>{plan?.emailCount} of {plan?.emailCapacity}</span>
             </div>
             <Progress percent={(plan?.emailCount || 0) / (plan?.emailCapacity || 0) * 100} showInfo={false} />
-            <div className={tip}>{(plan?.emailCapacity || 0) - (plan?.emailCount || 0)} sends remaining on your selected plan. Sends reset on Mar 3.</div>
-            <Link href='/campaign' className={view}>View Campaigns</Link>
+            <div className={tip}>{(plan?.emailCapacity || 0) - (plan?.emailCount || 0)} sends remaining on your selected plan.</div>
+            <Link href='/campaign' className={view2}>View Campaigns</Link>
           </div>
         </div>
         <div className={quickActionWrapper}>
           <div className={left}>
             <div className={quickTitle}>Quick actions</div>
-            <Link href='/contactEditor' className={actionItem}>
-              <div className={circle}></div>
-              <span>Add contacts</span>
-            </Link>
-            <Link href='/campaignEditor' className={actionItem}>
-              <div className={circle}></div>
-              <span>Create a campaign</span>
-            </Link>
-            <Link href='/emailTemplates' className={actionItem}>
-              <div className={circle}></div>
-              <span>Email template</span>
-            </Link>
-            <Link href='/addSender' className={actionItem}>
-              <div className={circle}></div>
-              <span>Add sender</span>
-            </Link>
-            <Link href='/userList' className={actionItem}>
-              <div className={circle}></div>
-              <span>Invite your team</span>
-            </Link>
+            <div className={func}>
+              <Link href='/contactEditor' className={actionItem}>
+                {/*<div className={circle}></div>*/}
+                <span>Add contacts</span>
+              </Link>
+              <Link href='/campaignEditor' className={actionItem}>
+                {/*<div className={circle}></div>*/}
+                <span>Create a campaign</span>
+              </Link>
+              <Link href='/emailTemplates' className={actionItem}>
+                {/*<div className={circle}></div>*/}
+                <span>Email template</span>
+              </Link>
+              <Link href='/addSender' className={actionItem}>
+                {/*<div className={circle}></div>*/}
+                <span>Add sender</span>
+              </Link>
+              <Link href='/userList' className={actionItem}>
+                {/*<div className={circle}></div>*/}
+                <span>Invite your team</span>
+              </Link>
+            </div>
           </div>
-          <ImgWrapper className={quickActionIcon} src='/img/quick_action_icon.png' alt='quick_action_icon' />
+          {/*<ImgWrapper className={quickActionIcon} src='/img/quick_action_icon.png' alt='quick_action_icon' />*/}
         </div>
       </div>
     </div>

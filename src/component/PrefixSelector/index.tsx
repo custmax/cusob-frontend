@@ -1,23 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Form, Select, Input, Space } from 'antd';
 import { countryOptions } from '@/constant/phone';
+import './global.css';
 const PrefixSelector = () => {
     const selectOptions = countryOptions;
     const [searchValue, setSearchValue] = useState('');
     const [filteredOptions, setFilteredOptions] = useState(selectOptions);
 
-    const handleSearch = (value: string) => {
+    const handleSearch = (value:any) => {
         setSearchValue(value);
         const filtered = selectOptions.filter((option) =>
             option.value.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredOptions(filtered);
     };
+
     return (
         <Form.Item name="prefix" noStyle>
             <Select
-                style={{ width: 150 }}
-                dropdownStyle={{ minWidth: 250, minHeight: 250 }}
+                style={{ width: 120, backgroundColor: 'transparent',borderRadius: '40px' }}
+                dropdownStyle={{ minWidth: 300, minHeight: 250, borderRadius: '20px' }}
                 dropdownRender={(menu) => (
                     <div>
                         <Input

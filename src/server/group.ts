@@ -31,6 +31,15 @@ export const getGroupsAndContactCount = async () => {
   })
   return res;
 }
+export const getSubscriptionCount = async () => {
+  const res = await clientFetch({
+    url: `/api/subscription/getSubscriptionCount`,
+    method: 'GET',
+  })
+  return res;
+}
+
+
 
 export const removeGroup = async (groupId: number) => {
   const res = await clientFetch({

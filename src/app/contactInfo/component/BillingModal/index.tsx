@@ -3,6 +3,8 @@ import { Form, Input, Modal, Select, Space } from 'antd';
 import styles from './index.module.scss';
 import { FC, useCallback, useEffect } from 'react';
 import { countryOptions } from '@/constant/phone';
+import PrefixSelector from "@/component/PrefixSelector";
+import {countryOptionss} from "@/constant/country";
 
 const selectOptions = countryOptions;
 
@@ -12,6 +14,7 @@ type Props = {
   onCancel: () => void,
   values: Info.AccountInfo | null
 }
+const CountryOptions = countryOptionss;
 
 const {
   accountModal,
@@ -184,10 +187,11 @@ const BillingModal: FC<Props> = (props) => {
             <Input placeholder="Tax ID" />
           </Form.Item>
           <Form.Item
-            label="Phone Number"
-            name='accountPhone'
+              label="Phone Number"
+              name='accountPhone'
+              labelCol={{ span: '1px' }}
           >
-            <Input addonBefore={prefixSelector1} />
+            <Input style={{marginLeft: '5px' }} addonBefore={<PrefixSelector/>} />
           </Form.Item>
         </Form>
         <Form
@@ -198,28 +202,25 @@ const BillingModal: FC<Props> = (props) => {
         >
           <Space.Compact block size='large' className={countryBox}>
             <Form.Item
-              name="accountCountry"
-              label="Country"
+                name="accountCountry"
+                label="Country"
             >
               <Select
-                placeholder="Select a country"
-                options={[
-                  {value: 'USA', label: 'USA' },
-                  { value: 'UK', label: 'UK' },
-                  { value: 'China', label: 'China' },
-                ]}
+                  placeholder="Select a country"
+                  options={CountryOptions}
               />
             </Form.Item>
             <Form.Item
               name="accountState"
-              label="State"
+              label="State / Province"
             >
-              <Select
-                placeholder="Please select a state"
-                options={[
-                  { value: 'Hubei', label: 'Hubei' },
-                ]}
-              />
+              {/*<Select*/}
+              {/*  placeholder="Please select a state"*/}
+              {/*  options={[*/}
+              {/*    { value: 'Hubei', label: 'Hubei' },*/}
+              {/*  ]}*/}
+              {/*/>*/}
+              <Input placeholder="Please input your state/province" />
             </Form.Item>
             <Form.Item
               label="Zip code"

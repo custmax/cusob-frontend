@@ -77,37 +77,78 @@ const DemoForm = () => {
         autoComplete="off"
       >
         <Form.Item<FieldType>
+            label={<span style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}>Name</span>}
           name="name"
           rules={[{ required: true, message: 'Please input your name!' }]}
         >
-          <Input placeholder="Name"/>
+          <Input
+              style={{
+                //backgroundColor: 'yellow',
+                borderColor: '#7241FF', // 边框颜色
+                borderWidth: '2px', // 边框宽度
+                opacity: '0.5', // 透明度
+                borderRadius: '8px' ,   // 圆角效果
+                fontSize: '20px',
+              }}
+          />
         </Form.Item>
         <Form.Item<FieldType>
+            label={<span style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}>Phone</span>}
           name="phone"
           rules={[{ required: true, message: 'Please input your phone number!' }]}
         >
-          <Input placeholder="Phone"/>
+          <Input
+              style={{
+                //backgroundColor: 'yellow',
+                borderColor: '#7241FF', // 边框颜色
+                borderWidth: '2px', // 边框宽度
+                opacity: '0.5', // 透明度
+                borderRadius: '8px'  ,  // 圆角效果
+                fontSize: '20px',
+              }}
+          />
         </Form.Item>
         <Form.Item<FieldType>
+            label={<span style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}>Email</span>}
           name="email"
           rules={[{ required: true, message: 'Please input your email address!' }]}
         >
-          <Input placeholder="Email"/>
+          <Input
+              style={{
+                //backgroundColor: 'yellow',
+                borderColor: '#7241FF', // 边框颜色
+                borderWidth: '2px', // 边框宽度
+                opacity: '0.5', // 透明度
+                borderRadius: '8px'  ,  // 圆角效果
+                fontSize: '20px',       // 输入文字的字体大小
+              }}
+          />
         </Form.Item>
         <Form.Item<FieldType>
+            label={<span style={{ fontSize: '20px', fontFamily: 'Arial, sans-serif' }}>Message</span>}
           name="message"
           rules={[{ required: true, message: 'Please input your message!' }]}
         >
-          <Input.TextArea placeholder="Message"/>
+          <Input.TextArea
+              style={{
+                //backgroundColor: 'yellow',
+                borderColor: '#7241FF', // 边框颜色
+                borderWidth: '2px', // 边框宽度
+                opacity: '0.5', // 透明度
+                borderRadius: '8px' ,   // 圆角效果
+                fontSize: '20px',
+              }}
+          />
+
         </Form.Item>
         <Form.Item<FieldType>
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'  }}
+            style={{ display: 'flex', paddingLeft:'1000vpx',justifyContent: 'center', alignItems: 'center'  }}
         >
           <Turnstile onVerify={onTurnstileVerify}/>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 12, span: 12 }}>
           <Button className={submitBtn} type="primary" htmlType="submit">
-            Submit
+            Schedule Demo
           </Button>
         </Form.Item>
 

@@ -4,6 +4,7 @@ import serverFetch from "./serverFetch";
 const routeHandler = async (request: Request) => {
   const headersList = headers()
   const token = headersList.get('token') || ''
+  const stripeSignature = headersList.get('Stripe-Signature') || ''; // 获取 Stripe-Signature 头
   const pathname = new URL(request.url).pathname.replace('/api', '') + new URL(request.url).search;
   const contentType = request.headers.get('Content-Type') || 'application/json';
   const method = request.method;
@@ -14,6 +15,7 @@ const routeHandler = async (request: Request) => {
     data: text,
     contentType,
     token,
+    stripeSignature,
   })
   if (result.status === 200) {
     const res = await result.json()

@@ -4,18 +4,20 @@ import Link from 'next/link'
 
 const {
   signContainer,
-  division
+  division,
+    login,
+    start,
 } = styles;
 
 const Sign = () => {
   return <div className={classNames(signContainer)}>
-    <span>
-      <Link href='/login'>Sign in</Link>
+    <span className={classNames(login)}>
+      <Link href='/login'>Log in</Link>
     </span>
-    {/* <span className={classNames(division)} />
-    <span>
-      <Link href='/signup'>Sign up</Link>
-    </span> */}
+    <span className={classNames(division)} />
+    <span className={classNames(start)}>
+      <Link href='/signup'>Get started for free</Link>
+    </span>
   </div>
 };
 

@@ -8,6 +8,7 @@
     min-height: calc(100% - 90vpx);
     background-color: #fff;
     padding-bottom: 80vpx;
+    font-weight: 600;
 
     .title {
       height: 90vpx;
@@ -95,7 +96,18 @@
     .content {
       margin-left: 170vpx;
       margin-right: 40vpx;
-
+      font-weight: 600;
+      .deleteButton{
+        background-color: #7241FF;
+        width:80vpx;
+        height:30vpx;
+        color: #f0f0f0;
+        font-size: 14vpx;
+        font-weight: 600;
+        // font-family: PingFangSC, PingFang SC;
+        border-radius: 20vpx;
+        margin-left: 20vpx;
+      }
       .listTable {
         margin-top: 40vpx;
 

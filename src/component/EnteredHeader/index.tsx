@@ -58,9 +58,9 @@ const Header: FC<Props> = (props) => {
       <ImgWrapper className={logoBox} alt='logo' src='/img/logo.png'/>
     </Link>
     <div className={right}>
-        <Link href='/stationMessage'>
-          <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>
-        </Link>
+        {/*<Link href='/stationMessage'>*/}
+        {/*  <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>*/}
+        {/*</Link>*/}
         <ImgWrapper
           className={avatar}
           alt='avatar'
@@ -73,7 +73,7 @@ const Header: FC<Props> = (props) => {
               <Link href='/dashboard' className="more-item">Dashboard</Link>
             <Link href='/contactInfo' className='more-item'>Information</Link>
             <Link href='/userList' className='more-item'>Users</Link>
-            <div className='more-item' onClick={() => setShowChangePw(true)} >Password</div>
+            <div className='more-item' onClick={() => setShowChangePw(true)} >Reset Password</div>
             <Link href='/billingHistory' className='more-item'>Billing</Link>
               <Link href='/emailList' className="more-item">Sender</Link>
             <Link href='/' className='more-item mb0' onClick={clearToken}>Sign Out</Link>

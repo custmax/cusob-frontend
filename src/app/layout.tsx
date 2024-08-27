@@ -22,15 +22,38 @@ export default function RootLayout({
         () => import('../component/Crisp/index'),
         { ssr: false }
     );
+    // const scriptContent = `
+    //     (function(d,t) {
+    //         var BASE_URL="http://69.164.202.126:3000";
+    //         var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    //         g.src=BASE_URL+"/packs/js/sdk.js";
+    //         g.defer = true;
+    //         g.async = true;
+    //         s.parentNode.insertBefore(g,s);
+    //         g.onload=function(){
+    //             window.chatwootSDK.run({
+    //                 websiteToken: 'kKiTMXr7vwNA3E4hYf9EQcGU',
+    //                 baseUrl: BASE_URL
+    //             })
+    //         }
+    //     })(document,"script");
+    // `;
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <>
             <html lang="en">
+            {/*<head>*/}
+            {/*    <script dangerouslySetInnerHTML={{__html: scriptContent}}/>*/}
+            {/*</head>*/}
             <body className={inter.className}>
             <AntdRegistry>{children}</AntdRegistry>
             <CrispWithNoSSR />
-            <GoogleTagManager gtmId="G-9B4TXJVBQZ" />
-            <GoogleAnalytics gaId="G-W0GVCMQBR8" />
+            {/*<script dangerouslySetInnerHTML={{__html: scriptContent}}/>*/}
+
+            <GoogleTagManager gtmId="G-9B4TXJVBQZ"/>
+            <GoogleAnalytics gaId="G-W0GVCMQBR8"/>
             </body>
             </html>
         </>
