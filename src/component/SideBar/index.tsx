@@ -55,7 +55,7 @@ const SideBar = () => {
         setResponseText(data.choices[0].message.content); // 假设API返回数据格式为{ choices: [{ message: { content: '...' }}]}
         setShowModal(true);
       } else {
-        console.error('Error:', response.statusText);
+        // console.error('Error:', response.statusText);
       }
     } catch (error) {
       console.error('Error:', error);

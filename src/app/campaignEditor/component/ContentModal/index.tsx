@@ -26,9 +26,10 @@ type Props = {
   visible: boolean,
   value: string,
   onChange: (val: string) => void,
-  onOk: () => void,
+  onOk: () =>void,
   onCancel: () => void,
 }
+
 
 const {
   contentModal,
@@ -115,12 +116,15 @@ const ContentModal: FC<Props> = (props) => {
     if (visible) {
       initContactList()
       initTemplateList()
+
     }
   }, [visible])
 
   useEffect(() => {
     if (value) {
       initInnerContent(value)
+
+
     }
   }, [value])
 
@@ -157,13 +161,6 @@ const ContentModal: FC<Props> = (props) => {
     }
   }
 
-  // const insertTextAtCursor = (text:string) => {
-  //   if (richEditorRef.current) {
-  //     const editor = richEditorRef.current.getEditor();
-  //     const position = editor.getSelection()?.index || editor.getLength(); // 获取当前光标位置，如果没有选择范围，则将文本插入到最后
-  //     editor.insertText(position, text);
-  //   }
-  // };
   const insertTextAtCursor = (text: string) => {
     if (richEditorRef.current) {
       const editor = richEditorRef.current.getEditor();
@@ -228,6 +225,7 @@ const ContentModal: FC<Props> = (props) => {
 
   const handleOk = async () => {
     console.log('Input value:', inputValue); // 在这里处理输入框的值
+
     const content = inputValue;
     const groupId = groupList.find(group => group.groupName === groupName)?.id;
     const loadingKey = 'loading';
@@ -247,7 +245,6 @@ const ContentModal: FC<Props> = (props) => {
     try {
       const res = await generateByGroup(payload)
       message.destroy('contactLoading')
-      //console.log(res)
       if(res.code === SUCCESS_CODE) {
         message.success('Request successful');
         console.log('Response content:', res.data);
@@ -257,26 +254,10 @@ const ContentModal: FC<Props> = (props) => {
           editor.insertText(0, res.data); // 从光标开始插入新内容
         }
       }
-      // if (res) {
-      //   // 请求成功，处理响应
-      //   const responseContent = res.choices[0].message.content; // 提取响应中的内容
-      //   console.log('Response content:', responseContent);
-      //   // 使用 richEditorRef 插入内容
-      //   // if (richEditorRef.current) {
-      //   //   const editor = richEditorRef.current.getEditor();
-      //   //   const position = editor.getSelection()?.index || editor.getLength(); // 获取光标位置
-      //   //   editor.insertText(position, responseContent); // 插入内容
-      //   // }
-      //   message.success('Request successful');
-      //   // 根据需要更新 UI
-      // } else {
-      //   // 请求失败，处理错误
-      //   message.error('Request failed');
-      // }
+
     } catch (error) {
       message.error('An error occurred');
     }finally {
-      // 移除 loading 信息
       message.destroy(loadingKey);
     }
 
@@ -367,19 +348,7 @@ const ContentModal: FC<Props> = (props) => {
           </Modal>
 
       </div>
-      {/*<div className={buttonContainer}>*/}
-      {/*  <Button*/}
-      {/*      type="primary"*/}
-      {/*      onClick={insertFirstName}*/}
-      {/*      style={{*/}
-      {/*        backgroundColor: '#7241FF', // 紫色背景*/}
-      {/*        borderColor: '#7241FF',*/}
-      {/*        color: '#FFFFFF', // 白色文字*/}
-      {/*      }}*/}
-      {/*  >*/}
-      {/*    插入名字*/}
-      {/*  </Button>*/}
-      {/*</div>*/}
+
 
       <div className={richTextTitle}>Content</div>
       <div className={richText}>
@@ -398,17 +367,7 @@ const ContentModal: FC<Props> = (props) => {
           <div className={presetItem} onClick={insertBirthDate}>*BIRTHDAY</div>
         </div>
       </div>
-      {/*<div className={aiWrapper}>*/}
-      {/*  <Select*/}
-      {/*    defaultValue="a1"*/}
-      {/*    onChange={onAIChange}*/}
-      {/*    options={[*/}
-      {/*      { value: 'a1', label: 'AI A1' },*/}
-      {/*    ]}*/}
-      {/*  />*/}
-      {/*  <Input.TextArea className={aiContent} />*/}
-      {/*  <div className={buildBtn}>Build</div>*/}
-      {/*</div>*/}
+
     </div>
   </Modal>
 };

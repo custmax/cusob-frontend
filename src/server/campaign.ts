@@ -1,5 +1,13 @@
 import clientFetch from '@/helper/clientFetch';
 
+export const getLastCampaignId = async () => {
+  const res = clientFetch({
+    url: '/api/campaign/getLastCampaignId',
+    method: 'GET',
+  })
+  return res;
+}
+
 export const getCampaignPage = async ( page: number, limit: number,query: Record<string, string>) => {
   const res = await clientFetch({
     url: `/api/campaign/getPage/${limit}/${page}`,

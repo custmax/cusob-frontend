@@ -85,6 +85,7 @@ const Reports = () => {
       }
     }
   }
+
   async function onDelete(id: any) {
     const res = await removeReport(id)
     if (res.code === SUCCESS_CODE) {
@@ -93,7 +94,6 @@ const Reports = () => {
       //下面的代码实现了不重新加载页面的情况下删除列表中的数据
       // 从当前的 reportList 中移除已删除的项
       setReportList(prevList => prevList.filter(item => item.id !== id));
-
       // 更新总数
       setTotal(prevTotal => prevTotal - 1);
 

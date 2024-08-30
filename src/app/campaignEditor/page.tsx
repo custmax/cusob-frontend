@@ -3,20 +3,32 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import ImgWrapper from '@/component/ImgWrapper';
-import { Checkbox, DatePicker, DatePickerProps, Input, Modal, Radio, RadioChangeEvent, Select, TimePicker, TimePickerProps, message } from 'antd';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  DatePicker,
+  DatePickerProps,
+  Input,
+  message,
+  Modal,
+  Radio,
+  RadioChangeEvent,
+  Select,
+  TimePicker,
+  TimePickerProps
+} from 'antd';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import dayjs from 'dayjs';
 import ContentModal from './component/ContentModal';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation'
-import { getGroupList } from '@/server/group';
-import { SUCCESS_CODE } from '@/constant/common';
-import { getCampaign, saveDraft, sendEmail, updateCampaign } from '@/server/campaign';
-import { getSenderList } from '@/server/sender';
+import {useRouter, useSearchParams} from 'next/navigation'
+import {getGroupList} from '@/server/group';
+import {SUCCESS_CODE} from '@/constant/common';
+import {getCampaign, getLastCampaignId, saveDraft, sendEmail, updateCampaign} from '@/server/campaign';
+import {getSenderList} from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
-import {API_USER, API_KEY, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
+import {API_KEY, API_USER, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
 import {getAddr} from "@/server/accountInfo";
+
 const {
   campaignEditorContainer,
   main,
@@ -97,14 +109,14 @@ const CampaignEditor = () => {
   const [timeType, setTimeType] = useState()
   const [senderId, setSenderId] = useState<number>()
   const [contactList, setContactList] = useState('')
-
   const [trackClicks, setTrackClicks] = useState<boolean>(false)
   const [trackLink, setTrackLink] = useState<boolean>(false)
   const [trackOpens, setTrackOpens] = useState<boolean>(true)
   const [trackTextClicks, setTrackTextClicks] = useState<boolean>(false)
   const [timeZone, setTimeZone] = useState('UTC+08:00');
   const searchParams = useSearchParams()
-  const campaignId = searchParams.get('id')
+  let campaignId = searchParams.get('id')
+  //const [campaignIdOnSend,setCampaignIdOnSend]=useState<number>();
 
   const [process, setProcess] = useState([
     { title: 'To', subTitle: '', checked: false },
@@ -142,6 +154,35 @@ const CampaignEditor = () => {
 
   ];
 
+  function replaceUrls(input: string, replacer: (match: string) => string) {
+       const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+        return input.replace(urlRegex, replacer);
+    }
+
+  //Prohibit modification
+  const replaceLinkContent = ()=>{
+    let val =richContent;
+    const prefix = "localhost:3000/api/report"+"/"+campaignId+"/";
+    const myReplacer = (match:string) => {
+             let domain = match.replace(/https?:\/\//, '');
+             return prefix + domain;
+    };
+    const result = replaceUrls(val, myReplacer);
+    console.log("replaceLinkContent+"+result);
+    setRichContent(result);
+  }
+
+  const replaceLinkContentByLink = (links:string)=>{
+    let val =links;
+    const prefix = "www.cusob.com/api/report"+"/"+campaignId+"/";
+    const myReplacer = (match:string) => {
+      let domain = match.replace(/https?:\/\//, '');
+      return prefix + domain;
+    };
+    const result = replaceUrls(val, myReplacer);
+    setRichContent(result);
+    return result;
+  }
 
   const initCampaign = useCallback(async (groupList: { value: number, label: string }[]) => {
     if (campaignId) {
@@ -269,6 +310,7 @@ const CampaignEditor = () => {
       }
       return item
     })
+
     setProcess(newProcess)
     setShowTo(false)
   }
@@ -349,6 +391,7 @@ const CampaignEditor = () => {
   }
 
   const onContentOk = () => {
+
     const newProcess = process.map((item, index) => {
       if (item.title === 'Content') {
         return {
@@ -360,6 +403,7 @@ const CampaignEditor = () => {
     })
     setProcess(newProcess)
     setShowContent(false)
+
   }
 
   const onContentCancel = () => {
@@ -379,6 +423,7 @@ const CampaignEditor = () => {
   const onSendTimeOk = () => {
     const newProcess = process.map((item, index) => {
       if (item.title === 'Send time') {
+
         return {
           ...item,
           subTitle: '',
@@ -454,6 +499,7 @@ const CampaignEditor = () => {
       const chosenSubject = process.find(item => item.title === 'Subject')?.checked
       const chosenContent = process.find(item => item.title === 'Content')?.checked
       const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
+
       if (!campaignName) {
         message.error('please set campaignName');
         setSubmit(false); // 触发错误消息时设置 submit 状态为 false
@@ -502,8 +548,6 @@ const CampaignEditor = () => {
       }
 
 
-
-
       const data = {
         campaignName,
         content: richContent,
@@ -519,7 +563,15 @@ const CampaignEditor = () => {
         trackOpens,
         trackTextClicks
       }
-      // sendBySendCloud()
+
+
+      const resMaxCampaignId= await getLastCampaignId();
+      if (resMaxCampaignId.code===SUCCESS_CODE) {
+        campaignId = resMaxCampaignId.data;
+      }else {
+        campaignId = resMaxCampaignId.data;
+      }
+      data.content = replaceLinkContentByLink(data.content)
       const res = await sendEmail(data,campaignId)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message, () => {
@@ -557,6 +609,7 @@ const CampaignEditor = () => {
     }
   }
 
+
   const onDraft = async () => {
     const senderName = senderListRef.current.find(item => item.value === senderId)?.label
     const chosenTo = process.find(item => item.title === 'To')?.checked
@@ -583,7 +636,6 @@ const CampaignEditor = () => {
       trackTextClicks
     }
     if (campaignId) {
-
       const res = await updateCampaign({ ...data, id: +campaignId })
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
@@ -649,32 +701,6 @@ const CampaignEditor = () => {
             </div>)
           }
         </div>
-        {/*<div className={trackWrapper}>*/}
-        {/*  <div className={trackTitle}>Settings & Tracking</div>*/}
-        {/*  <div className={trackList}>*/}
-        {/*    <div className={trackItem}>*/}
-        {/*      <Checkbox checked={trackOpens} onChange={e => setTrackOpens(e.target.checked)} />*/}
-        {/*      <div className={trackText}>Track opens</div>*/}
-        {/*    </div>*/}
-        {/*    <div className={trackItem}>*/}
-        {/*      <Checkbox checked={trackClicks} onChange={e => setTrackClicks(e.target.checked)} />*/}
-        {/*      <div className={trackText}>Track clicks</div>*/}
-        {/*    </div>*/}
-        {/*    <div className={trackItem}>*/}
-        {/*      <Checkbox checked={trackTextClicks} onChange={e => setTrackTextClicks(e.target.checked)} />*/}
-        {/*      <div className={trackText}>Track plain-text clicks</div>*/}
-        {/*    </div>*/}
-        {/*    <div className={trackItem}>*/}
-        {/*      <Checkbox checked={trackLink} onChange={e => setTrackLink(e.target.checked)} />*/}
-        {/*      <div className={trackText}>Google Analytics link tracking</div>*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
-        {/*删去这些选项，设定为默认值*/}
-        {/*<div className={sendWrapper}>*/}
-        {/*  <div onClick={onSend} className={sendBtn}>Send</div>*/}
-        {/*  <div onClick={onDraft} className={sendBtn}>Draft</div>*/}
-        {/*</div>*/}
       </div>
     </div>
     <Modal

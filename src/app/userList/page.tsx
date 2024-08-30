@@ -54,6 +54,13 @@ const UserList = () => {
   const [originPermission, setOriginPermission] = useState<{ value: number, label: string }>(permissionList[0])
   const [userIdEditing, setUserIdEditing] = useState(-1)
 
+  const getUserId = async () => {
+    const res = await getUserInfo()
+    if (res.code === SUCCESS_CODE && res.data) {
+      var id = res.data.id;
+      return id;
+    }
+  }
 
   const initUserInfo = async () => {
     const res = await getUserInfo()

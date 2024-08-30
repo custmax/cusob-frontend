@@ -221,16 +221,20 @@ const ContactEditor = () => {
       if (!email) {
         message.error('Please fill in email!');
         setSubmit(false);
+        setIsProcessing(false);
         return;
       }
       if (!groups) {
         message.error('Please fill in groups!');
         setSubmit(false);
+        setIsProcessing(false);
+        setShowGroup(true);
         return;
       }
       if (!subscriptionType) {
         message.error('Please fill in subscriptionType!');
         setSubmit(false);
+        setIsProcessing(false);
         return;
       }
       const data = {
@@ -254,12 +258,12 @@ const ContactEditor = () => {
       if (contactId) {
         const res = await updateContact(data);
         if (res.code === SUCCESS_CODE) {
-
           message.success(res.message, () => {
             router.back()
           })
         } else {
           message.error(res.message)
+          setIsProcessing(false)
           setSubmit(false);
         }
       } else {
@@ -272,6 +276,7 @@ const ContactEditor = () => {
           })
         } else {
           message.error(res.message)
+          setIsProcessing(false)
           setSubmit(false);
         }
       }
@@ -459,12 +464,13 @@ const ContactEditor = () => {
         </Form>
         <div className={operateBox}>
           {/*<div className={cancelBtn} onClick={onCancel}>Cancel</div>*/}
-          <div className={saveBtn} onClick={!isProcessing?onSave:undefined}>Add contact</div>
+          <div className={saveBtn} onClick={
+            !isProcessing?onSave:undefined
+          }>Add contact</div>
         </div>
       </div>
     </div>
     <Modal
-
         title="Add Group"
         open={showGroup}
         onOk={onGroupOk}
