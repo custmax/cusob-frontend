@@ -1,6 +1,7 @@
 ## Node Version
-20.10.0
-
+20.12.2
+## NPM Version
+10.5.0
 ## install
 ```
 npm install

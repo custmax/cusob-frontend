@@ -151,8 +151,6 @@ const Reports = () => {
         <span>delivered: {record.delivered}</span>
         <span style={{ padding: '0 1em' }}>opened: {record.opened}</span>
         <span >clicked: {record.clicked}</span>
-        {/*<span style={{ padding: '0 1em' }}>bounce: {record.clicked}</span>*/}
-        {/*<span >unsubscribe: {record.clicked}</span>*/}
       </div>
     },
     {
@@ -163,9 +161,7 @@ const Reports = () => {
           <div>
             <button className={deleteButton} onClick={() => onDelete(record.key)}>Details</button>
             <button className={deleteButton} onClick={() => onDelete(record.key)}>Delete</button>
-
           </div>
-
       )
     }
   ];

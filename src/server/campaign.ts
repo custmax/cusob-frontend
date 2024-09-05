@@ -34,11 +34,10 @@ export const getCampaign = async (id: string) => {
   return res;
 }
 export const removeCampaign = async (id: string) => {
-  const res = await clientFetch({
+  return await clientFetch({
     url: `/api/campaign/remove/${id}`,
     method: 'DELETE',
-  })
-  return res;
+  });
 }
 
 export const updateCampaign = async (data: Partial<Campaign.CampaignNew>) => {

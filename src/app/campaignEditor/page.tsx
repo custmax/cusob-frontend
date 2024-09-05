@@ -28,6 +28,7 @@ import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
 import {API_KEY, API_USER, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
 import {getAddr} from "@/server/accountInfo";
+import {getTemplate} from "@/server/template";
 
 const {
   campaignEditorContainer,
@@ -116,6 +117,7 @@ const CampaignEditor = () => {
   const [timeZone, setTimeZone] = useState('UTC+08:00');
   const searchParams = useSearchParams()
   let campaignId = searchParams.get('id')
+  let templateId = Number(searchParams.get('templateId'))
   //const [campaignIdOnSend,setCampaignIdOnSend]=useState<number>();
 
   const [process, setProcess] = useState([
@@ -160,18 +162,6 @@ const CampaignEditor = () => {
     }
 
   //Prohibit modification
-  const replaceLinkContent = ()=>{
-    let val =richContent;
-    const prefix = "localhost:3000/api/report"+"/"+campaignId+"/";
-    const myReplacer = (match:string) => {
-             let domain = match.replace(/https?:\/\//, '');
-             return prefix + domain;
-    };
-    const result = replaceUrls(val, myReplacer);
-    console.log("replaceLinkContent+"+result);
-    setRichContent(result);
-  }
-
   const replaceLinkContentByLink = (links:string)=>{
     let val =links;
     const prefix = "www.cusob.com/api/report"+"/"+campaignId+"/";
@@ -232,6 +222,17 @@ const CampaignEditor = () => {
           return item
         })
         setProcess(newProcess)
+      }
+    }
+    if(templateId){
+      message.loading({ content: 'loading', duration: 10, key: 'loading' })
+      const res = await getTemplate(templateId);
+      message.destroy('loading')
+      setShowContent(true)
+      if (res.code === SUCCESS_CODE ){
+        setRichContent(res.data.content)
+      }else {
+        message.error("An error occurred during the initialization of the template")
       }
     }
   }, [campaignId])
@@ -796,7 +797,7 @@ const CampaignEditor = () => {
             <div className={headerContent}>After email marketing review, send according to the selection below</div>
           </div>
         </div>
-        <div className={radioWrapper}>
+        <div    className={radioWrapper}>
           <div className={radioLabel}>Send setting</div>
           <Radio.Group onChange={onRadioChange} value={timeType}>
             <Radio value={1}>Send Now</Radio>

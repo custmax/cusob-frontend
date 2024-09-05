@@ -4,9 +4,6 @@ import ImgWrapper from '../ImgWrapper';
 import Link from 'next/link';
 import {useState} from "react";
 import classNames from "classnames";
-import {message} from "antd";
-import {getCampaignPage} from "@/server/campaign";
-import {SUCCESS_CODE} from "@/constant/common";
 
 const {
   sideBarContainer,
@@ -83,10 +80,6 @@ const SideBar = () => {
         <ImgWrapper className={barIcon} src='/img/bar_icon2.png' alt='bar icon'/>
         <div className={barText}>Templates</div>
       </Link>
-      {/*<Link href='/media' className={barItem}>*/}
-      {/*  <ImgWrapper className={barIcon} src='/img/bar_icon3.png' alt='bar icon'/>*/}
-      {/*  <div className={barText}>Media</div>*/}
-      {/*</Link>*/}
       <Link href='/campaign' className={barItem}>
         <ImgWrapper className={barIcon} src='/img/bar_icon4.png' alt='bar icon'/>
         <div className={barText}>Campaign</div>
@@ -103,11 +96,6 @@ const SideBar = () => {
         <ImgWrapper className={barIcon} src='/img/bar_icon7.png' alt='bar icon'/>
         <div className={barText}>Sender</div>
       </Link>
-      {/*<button className={barItem} onClick={handleGenerateClick}>Generate</button>*/}
-      {/*<Link href='/emailList' className={barItem}>*/}
-      {/*  <ImgWrapper className={senderIcon} src='/img/sender.png' alt='bar icon' />*/}
-      {/*  <div className={barText}>Sender</div>*/}
-      {/*</Link>*/}
     </div>
     {showModal && (
         <div className="modal">

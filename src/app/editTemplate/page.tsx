@@ -39,7 +39,8 @@ const EditTemplate = () => {
   const [raioValue, setRaioValue] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams()
-  const templateId = Number(searchParams.get('id'))
+  const templateId =  Number(searchParams.get('id'));
+  const realTemplateId = Number(searchParams.get('templateId'));
   const [richContent, setRichContent] = useState('');
   const [originTemplate, setOriginTemplate] = useState<Template.TemplateNew | null>(null)
 
@@ -49,8 +50,7 @@ const EditTemplate = () => {
 
   const initTemplate = async () => {
     if (typeof templateId === 'number' && !(templateId==0)) {
-      console.log('templateId=', templateId)
-      message.loading({ content: 'loading', duration: 10, key: 'contactLoading' })
+      message.loading({ content: 'initilization loading', duration: 10, key: 'contactLoading' })
       const res = await getTemplate(templateId)
       message.destroy('contactLoading')
       if (res.code === SUCCESS_CODE && res.data) {
@@ -121,7 +121,6 @@ const EditTemplate = () => {
     }
   }
 
-  const onContentChange = (val: string) => {}
 
   return <div className={editTemplateContainer}>
     <EnteredHeader />

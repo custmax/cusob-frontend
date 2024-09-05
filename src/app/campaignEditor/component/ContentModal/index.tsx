@@ -6,8 +6,6 @@ import dynamic from 'next/dynamic'
 import {generateByGroup, getContact, getList} from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
 import { getTemplate, getTemplateList } from '@/server/template';
-import Quill from 'quill';
-import {UserOutlined} from "@ant-design/icons";
 import {getGroupList} from "@/server/group";
 
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });

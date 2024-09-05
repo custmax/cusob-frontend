@@ -1,5 +1,5 @@
 import { getToken } from "@/util/storage";
-import { useRouter } from 'next/navigation';
+
 
 type RequestOptions = {
   url: string,
@@ -34,15 +34,19 @@ const request = async (options: RequestOptions) => {
     fetchOpt = { ...fetchOpt, method: parsedMethod, headers }
   }
   if (parsedMethod === 'POST' || parsedMethod === 'PUT' || parsedMethod === 'DELETE') {
+
     const token = getToken() || ''
     headers = { ...headers, 'Content-Type': contentType, token }
-    let body = '';
+
+    let body =''
     if (contentType.includes('application/json')) {
-      body = JSON.stringify(data)
+      // function(k, v) { return v === undefined ? null : v; }
+      body = JSON.stringify(data,function(k, v) { return v === undefined ? null : v; })
     }
     if (contentType.includes('application/x-www-form-urlencoded')) {
       body = new URLSearchParams(data).toString()
     }
+
     fetchOpt = { ...fetchOpt, headers, body, method: parsedMethod }
   }
   const result = await fetch(fetchUrl, fetchOpt)

@@ -140,10 +140,8 @@ const Campaign = () => {
       //下面的代码实现了不重新加载页面的情况下删除列表中的数据
       // 从当前的 reportList 中移除已删除的项
       setCampaignList(prevList => prevList.filter(item => item.id !== id));
-
       // 更新总数
       setTotal(prevTotal => prevTotal - 1);
-
       // 检查当前页的数据是否需要补充
       if (setCampaignList.length <= 1 && currentPage > 1) {
         // 当前页只剩最后一项时删除，需要将页码向前调整并重新加载数据
