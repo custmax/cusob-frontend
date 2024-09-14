@@ -4,7 +4,7 @@ import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import {Input, message, Modal, Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {
     deleteTemplateList,
@@ -17,8 +17,6 @@ import {
 import {SUCCESS_CODE, TEMPLATE_REMOVE_ERROR_CODE} from '@/constant/common';
 import {useRouter} from 'next/navigation';
 import Image from "next/image";
-import {isGeneratorFunction} from "node:util/types";
-import {duration} from "@mui/material";
 
 
 const {
@@ -79,9 +77,6 @@ const EmailTemplates = () => {
         initFolderList();
         initPrivateFolderList();
     }, [])
-    const print = (value: any) => {
-        console.log(value)
-    }
 
     const getLastTwoWeeks = async () => {
         const res = await getLastTwoWeeksTemplate();
@@ -182,7 +177,6 @@ const EmailTemplates = () => {
         }
         message.destroy('listLoading')
     }
-
     const onSelectFirstChange = async (value: string) => {
         message.loading({content: 'Loading', duration: 10, key: 'listLoading'})
         let name = '';
@@ -223,11 +217,9 @@ const EmailTemplates = () => {
             finalCheckBox.push({id: realId, check: check})
         }
     }
-
     const deleteTemplate = async (id: number) => {
         if (id) {
             const res: any = await delTemplate(id)
-            console.log(res)
             if (res.code == SUCCESS_CODE) {
                 message.success("Successfully deleted template")
             } else {
@@ -238,7 +230,6 @@ const EmailTemplates = () => {
     const parseHtmlReact = (htmlString: string) => {
         return <div dangerouslySetInnerHTML={{__html: htmlString}}/>;
     }
-
     const initList = async () => {
         message.loading({content: 'loading', duration: 10, key: 'listLoading'})
         const folder = "AdminPublic";
@@ -265,6 +256,7 @@ const EmailTemplates = () => {
         const folder = "AdminPublic";
         await initSelectFolderList(folder);
     }
+
     const initPrivateFolderList = async () => {
         const res = await getPrivateFolderList()
         if (res.code === SUCCESS_CODE) {
@@ -274,6 +266,7 @@ const EmailTemplates = () => {
         }
 
     }
+
     const initSelectFolderList = async (folder: string) => {
         let res = await getFolderList()
         if (folder === "AdminPrivate") {
@@ -295,9 +288,11 @@ const EmailTemplates = () => {
         setContentModalShowRename(false)
 
     }
+
     const onContentModalShowRenameCancel = async () => {
         setContentModalShowRename(false)
     }
+
     const onSelectChange = async (value: string) => {
         message.loading({content: 'loading', duration: 10, key: 'listLoading'})
         const query = {folder: value === 'all' ? '' : value, keyword: searchVal || ''}
@@ -317,7 +312,6 @@ const EmailTemplates = () => {
             }
         }
     };
-
 
     const onSearch = async () => {
         if (searchVal) {
@@ -341,7 +335,7 @@ const EmailTemplates = () => {
             }
         }
     }
-    // @ts-ignore
+
     return <div className={emailTemplatesContainer}>
         <EnteredHeader/>
         <SideBar/>
@@ -375,19 +369,26 @@ const EmailTemplates = () => {
                     />
                 </div>
                 <div className={editLastWeek}>
-                    <button className={editLastButton} onClick={() => {
-                        getLastTwoWeeks()
-                    }}>Edit Over Last Week
+                    <button className="relative group overflow-hidden px-6 h-12 border border-purple-200 rounded-full"
+                            onClick={() => {
+                                getLastTwoWeeks()
+                            }}>
+                        <div aria-hidden="true" className="transition duration-300 group-hover:-translate-y-12">
+                            <div className="h-12 flex items-center justify-center">
+                                <span className="text-purple-700">Edit Over Last Week</span>
+                            </div>
+                            <div className="h-12 flex items-center justify-center">
+                                <span className="text-purple-700">Click</span>
+                            </div>
+                        </div>
                     </button>
                 </div>
-
                 <div className={delDiv}>
-
                     <button className={delDivImg}><img className={delDivButton} title={"Delete selected"}
-                                                          src={"/emailTemplates/img/delAll.png"} alt={""}
-                                                          onClick={() => {
-                                                              deleteSelectTemplate()
-                                                          }}/></button>
+                                                       src={"/emailTemplates/img/delAll.png"} alt={""}
+                                                       onClick={() => {
+                                                           deleteSelectTemplate()
+                                                       }}/></button>
 
                     <Select className={delDivSelect}
                             placeholder={"Move to Folder"} value={selectPrivateOptions}
@@ -445,13 +446,14 @@ const EmailTemplates = () => {
                     </div>)
                 }
             </div>
+
+
         </div>
         <Modal
             title="Rename"
             open={contentModalShowRename}
             onOk={onContentModalShowRenameOK}
             onCancel={onContentModalShowRenameCancel}
-            // wrapClassName={subjectModal}
         >
             <div>
                 <div>New Folder Name</div>

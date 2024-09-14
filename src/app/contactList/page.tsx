@@ -99,14 +99,12 @@ const ContactList = () => {
   }
 
   const initGroupNum = async () => {
-    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getGroupsAndContactCount()
     if (res.code === SUCCESS_CODE) {
       setGroupNumObj(res.data)
     }
   }
   const initSubNum = async () => {
-    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getSubscriptionCount()
     //console.log("HHH");
     console.log(res.data);

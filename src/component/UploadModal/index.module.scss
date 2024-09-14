@@ -5,11 +5,11 @@
       .ant-modal-content {//整个浮动框的样式修改
         padding-right: 102vpx;
         padding-left: 80vpx;
-        margin-left: -250vpx;
+        margin-left: -200vpx;
         margin-top: 60vpx;
         padding-top:50vpx;
-        width: 1020vpx;
-        height:600vpx;
+        width: 1100vpx;
+        height:700vpx;
         border-radius: 100vpx;
         background-color: #F5F5FF;
         .ant-modal-header {
@@ -165,8 +165,6 @@
         height: 50vpx;
         display: flex;
         align-items: center;
-
-
       }
     }
   }

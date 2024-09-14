@@ -32,22 +32,22 @@
       }
 
 
-
     }
 
     .content {
       width: 100%;
       box-sizing: border-box;
-      padding-left: 535vpx;
-      padding-right: 535vpx;
-      padding-top: 80vpx;
-      padding-bottom: 112vpx;
-      position: relative;
+      margin-left: 100vpx;
+      //padding-right: 535vpx;
+      //padding-top: 80vpx;
+      //padding-bottom: 112vpx;
+      justify-items: center;
+
       .addgroupItem {
         margin-top: 20vpx;
         margin-left: -10vpx;
-        width:190vpx;
-        height:50vpx;
+        width: 190vpx;
+        height: 50vpx;
         justify-content: center;
         padding-top: 10vpx;
         padding-left: 15vpx;
@@ -63,7 +63,7 @@
 
 
         &:nth-last-of-type(3) {
-          color:white;
+          color: white;
           text-decoration: underline;
           padding-bottom: 20vpx;
           //border-bottom: 1px solid #E0E0E0;
@@ -71,10 +71,12 @@
           //border-bottom: 1px solid #E0E0E0;
         }
       }
+
       .operateBox {
         height: 100%;
         display: flex;
-        align-items: center;
+        padding-right: 100vpx;
+        //align-items: center;
         //取消按钮
         //.cancelBtn {
         //  width: 100vpx;
@@ -102,7 +104,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-left: 220vpx;
+          //margin-left: 600vpx;
           font-family: PingFangSC, PingFang SC;
           font-weight: 600;
           font-size: 18vpx;
@@ -110,6 +112,7 @@
           cursor: pointer;
         }
       }
+
       .avatarUploader {
         padding-left: 20%;
         margin-top: 30vpx;
@@ -122,16 +125,19 @@
       }
 
       .contactForm {
+        justify-items: center;
 
         :global {
+
           .ant-form-item {
             .ant-form-item-row {
               .ant-form-item-label {
-                // display: flex;
-                // align-items: center;
-                // justify-content: flex-end;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
                 > label {
-                  font-family: PingFan  gSC, PingFang SC;
+                  font-family: PingFan gSC, PingFang SC;
                   font-weight: 600;
                   font-size: 20vpx;
                   color: #666666;
@@ -139,9 +145,17 @@
               }
 
               .ant-form-item-control {
+                width: 100%;
+
                 .ant-form-item-control-input {
+                  width: 100%;
+
+                  .ant-form-item-control-input-content {
+                    width: 1000vpx;
+                  }
                   min-height: 50vpx;
                 }
+
               }
             }
           }
@@ -162,6 +176,7 @@
       }
     }
   }
+
   .groupModal {
     :global {
       .ant-modal {
@@ -180,6 +195,7 @@
         }
       }
     }
+
     .groupContent {
       padding-bottom: 30vpx;
 

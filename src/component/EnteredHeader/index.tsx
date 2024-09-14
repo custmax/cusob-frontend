@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import ImgWrapper from '../ImgWrapper';
 import { Tooltip } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ChangePwModal from '../ChangePwModal';
 import { getLocalUser } from '@/util/storage';
 import { clearToken } from '@/util/storage';
@@ -53,44 +53,45 @@ const Header: FC<Props> = (props) => {
     setShowChangePw(false)
   }
 
-  return <div className={classNames(headerContainer)} id='enterHeader'>
-    <Link href='/'>
-      <ImgWrapper className={logoBox} alt='logo' src='/img/logo.png'/>
-    </Link>
-    <div className={right}>
-        {/*<Link href='/stationMessage'>*/}
-        {/*  <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>*/}
-        {/*</Link>*/}
-        <ImgWrapper
-          className={avatar}
-          alt='avatar'
-          src={props.avatar || localAvatar || '/img/default-avatar.png'}
-        />
-        <Tooltip
-          placement="bottomRight"
-          className={tooltip}
-          title={<div className='more'>
-              <Link href='/dashboard' className="more-item">Dashboard</Link>
-            <Link href='/contactInfo' className='more-item'>Information</Link>
-            <Link href='/userList' className='more-item'>Users</Link>
-            <div className='more-item' onClick={() => setShowChangePw(true)} >Reset Password</div>
-            <Link href='/billingHistory' className='more-item'>Billing</Link>
-              <Link href='/emailList' className="more-item">Sender</Link>
-            <Link href='/' className='more-item mb0' onClick={clearToken}>Sign Out</Link>
+    return <div className={classNames(headerContainer)} id='enterHeader'>
+        <Link href='/'>
+            <ImgWrapper className={logoBox} alt='logo' src='/img/logo.png'/>
+        </Link>
+        <div className={right}>
+            {/*<Link href='/stationMessage'>*/}
+            {/*  <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>*/}
+            {/*</Link>*/}
+            <ImgWrapper
+                className={avatar}
+                alt='avatar'
+                src={props.avatar || localAvatar || '/img/default-avatar.png'}
+            />
 
-          </div>}
-          getPopupContainer={() => document.querySelector('#enterHeader') || document.body}
-        >
-          <span className={nickname}>{firstName}</span>
-          <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
-        </Tooltip>
-    </div>
-    <ChangePwModal
-      visible={showChangePw}
-      onOk={onChangePwOk}
-      onCancel={onChangePwCancel}
-    />
-  </div>
+            <Tooltip
+                placement="bottomRight"
+                className={tooltip}
+                title={
+                    <div className='more'>
+                        <Link href='/dashboard' className="more-item">Dashboard</Link>
+                        <Link href='/contactInfo' className='more-item'>Information</Link>
+                        <Link href='/userList' className='more-item'>Users</Link>
+                        <div className='more-item' onClick={() => setShowChangePw(true)}>Reset Password</div>
+                        <Link href='/billingHistory' className='more-item'>Billing</Link>
+                        <Link href='/emailList' className="more-item">Sender</Link>
+                        <Link href='/' className='more-item mb0' onClick={clearToken}>Sign Out</Link>
+                    </div>}
+                getPopupContainer={() => document.querySelector('#enterHeader') || document.body}
+            >
+                <span className={nickname}>{firstName}</span>
+                <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
+            </Tooltip>
+        </div>
+        <ChangePwModal
+            visible={showChangePw}
+            onOk={onChangePwOk}
+            onCancel={onChangePwCancel}
+        />
+    </div>;
 };
 
 export default Header;

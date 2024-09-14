@@ -3,21 +3,18 @@ import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import ImgWrapper from '@/component/ImgWrapper';
-import { Radio } from 'antd';
-import Link from 'next/link';
 import classNames from 'classnames';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {CONTACT_TEMPLATE} from '@/constant/cusob'
-import ForgotPwModal from "@/component/ForgotPwModal";
 import UploadModal from "@/component/UploadModal";
-
+import ImportResultFile from "@/app/importResult/page";
+import Link from "next/link";
 const {
   importWayContainer,
   main,
   title,
   titleLeft,
-  exitBtn,
   content,
   contentTitle,
   titleText,
@@ -27,7 +24,6 @@ const {
   active,
   radioBox,
   icon,
-  radio,
   explain,
   sample,
 } = styles;
@@ -89,40 +85,29 @@ const ImportWay = () => {
       <div className={content}>
         <div className={contentTitle}>
           <div className={titleText}>How would you like to add contacts?</div>
-          {/*<div className={continueBtn} onClick={onContinue}>Continue</div>*/}
         </div>
         <div className={wayWrapper}>
-          {/*<div onClick={() => onWayBoxClick('another')} className={classNames(wayBox, { [active]: way === 'another' })}>*/}
-          {/*  <div className={radioBox}>*/}
-          {/*    <ImgWrapper className={icon} src='/img/download_icon.png' alt='download icon' />*/}
-          {/*    /!*<Radio checked={way === 'another'} className={radio} />*!/*/}
-          {/*  </div>*/}
-          {/*  <div className={explain}>import from another service</div>*/}
-          {/*</div>*/}
-
-          <div onClick={() => setShowUpload(true)} className={classNames(wayBox, { [active]: way === 'upload' })}>
+          <div onClick={() => setShowUpload(true)} className={classNames(wayBox, {[active]: way === 'upload'})}>
             <div className={radioBox}>
-              <ImgWrapper className={icon} src='/img/upload_icon.png' alt='upload icon' />
-              {/*<Radio checked={way === 'upload'} className={radio} />*/}
+              <ImgWrapper className={icon} src='/img/upload_icon.png' alt='upload icon'/>
             </div>
             <div className={explain}>Upload a file</div>
             <div onClick={handleSampleClick} className={sample}>Sample file</div>
           </div>
-          {/*<div onClick={() => onWayBoxClick('copy')} className={classNames(wayBox, { [active]: way === 'copy' })}>*/}
-          {/*  <div className={radioBox}>*/}
-          {/*    <ImgWrapper className={icon} src='/img/copy_icon.png' alt='copy icon' />*/}
-          {/*    /!*<Radio checked={way === 'copy'} className={radio} />*!/*/}
-          {/*  </div>*/}
-          {/*  <div className={explain}>Copy and paste</div>*/}
-          {/*</div>*/}
+          <Link href={"/contactEditor"} className={classNames(wayBox, {[active]: way === 'upload'})}>
+            <div className={radioBox}>
+              <ImgWrapper className={icon} src='/img/upload_icon.png' alt=' icon'/>
+            </div>
+            <div className={explain}>Add a Contact</div>
+          </Link>
         </div>
       </div>
+      <UploadModal
+          visible={showUpload}
+          onOk={onUploadOk}
+          onCancel={onUploadCancel}
+      />
     </div>
-    <UploadModal
-        visible={showUpload}
-        onOk={onUploadOk}
-        onCancel={onUploadCancel}
-    />
   </div>
 };
 

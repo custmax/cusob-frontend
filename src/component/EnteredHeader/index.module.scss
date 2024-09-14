@@ -70,16 +70,13 @@
         }
       }
 
-
-
       .more {
         background-color: #fff;
         display: flex;
         flex-direction: column;
-        width: 300vpx;
-
+        width: 200vpx;
         .more-item {
-          width: 350vpx;
+          width: 100%;
           height: 60vpx;
           background: rgba(145,148,245,0.1);
           border-radius: 2vpx;
@@ -87,17 +84,16 @@
           align-items: center;
           box-sizing: border-box;
           padding-left: 12vpx;
-
           font-family: PingFangSC, PingFang SC;
           font-weight: 600;
           font-size: 20vpx;
           color: #000AFF;
           margin-bottom: 8px;
           cursor: pointer;
-          &.mb0 {
-            margin-bottom: 0;
-            cursor: pointer;
-          }
+          //&.mb0 {
+          //  margin-bottom: 0;
+          //  cursor: pointer;
+          //}
         }
       }
     }

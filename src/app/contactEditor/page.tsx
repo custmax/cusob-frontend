@@ -3,10 +3,22 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import {DatePicker, Form, GetProp, Input, Select, Upload, UploadProps, message, Space, Checkbox, Modal} from 'antd';
-import { Suspense, useEffect, useState } from 'react';
+import {
+  DatePicker,
+  Form,
+  GetProp,
+  Input,
+  Select,
+  Upload,
+  UploadProps,
+  message,
+  Space,
+  Checkbox,
+  Modal,
+  Tag
+} from 'antd';
+import { useEffect, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import ImgWrapper from '@/component/ImgWrapper';
 import { countryOptions } from '@/constant/phone';
 import { getContact, updateContact, uploadAvatar } from '@/server/contact';
 import { SUCCESS_CODE } from '@/constant/common';
@@ -18,6 +30,20 @@ import PrefixSelector from "@/component/PrefixSelector";
 import Link from "next/link";
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {Switch} from "@/components/ui/switch";
+import {Button} from "@/components/ui/button";
+import {ReloadIcon} from "@radix-ui/react-icons";
+import {AppleIcon} from "lucide-react";
+
+
 const selectOptions = countryOptions;
 const { Option } = Select;
 const {
@@ -26,12 +52,8 @@ const {
   title,
   titleLeft,
   operateBox,
-  addgroupItem,
-  cancelBtn,
   saveBtn,
   content,
-  avatarUploader,
-  avatarImg,
   contactForm,
   groupModal,
   value,
@@ -73,6 +95,20 @@ const ContactEditor = () => {
     }
   }
 
+  function CurrentDateComponent() {
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setCurrentDate(new Date());
+      }, 60000); // 每秒更新日期
+
+      return () => clearTimeout(timer); // 组件卸载时清除定时器
+    }, []);
+
+    return <label>{currentDate.toLocaleDateString()}</label>;
+  }
+
   const initContact = async () => {
     if (typeof contactId === 'number' && !isNaN(contactId)) {
       message.loading({ content: 'loading', duration: 10, key: 'contactLoading' })
@@ -100,7 +136,7 @@ const ContactEditor = () => {
         setAvatarStr(avatar);
         setIsAvailable(1)
         setOriginContact(res.data)
-        
+
         form.setFieldsValue({
           firstName,
           lastName,
@@ -139,9 +175,7 @@ const ContactEditor = () => {
   const [subObj, setSubObj] = useState<Record<string, number> | null>(null);
 
   const initSubNum = async () => {
-    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getSubscriptionCount()
-    //console.log("HHH");
     console.log(res.data);
     if (res.code === SUCCESS_CODE) {
       setSubObj(res.data)
@@ -199,6 +233,7 @@ const ContactEditor = () => {
 
 
   const onSave = async () => {
+
     if (isProcessing) return;
     setIsProcessing(true);
     if(!submit){
@@ -269,7 +304,6 @@ const ContactEditor = () => {
       } else {
         message.loading({ content: 'loading', duration: 10, key: 'Loading' })
         const res = await addContact(data);
-
         if (res.code === SUCCESS_CODE) {
           message.success(res.message, () => {
             router.back()
@@ -286,6 +320,10 @@ const ContactEditor = () => {
 
   const handleCheckboxChange = (e: { target: { checked: any; }; }) => {
     setIsAvailable(e.target.checked ? 1 : 0);
+  };
+
+  const handleSwitchChange = (checked:boolean) => {
+    setIsAvailable(checked ? 1 : 0);
   };
 
   const onCancel = () => {
@@ -308,7 +346,7 @@ const ContactEditor = () => {
       } = originContact || {}
 
       setAvatarStr(avatar);
-      
+
       form.setFieldsValue({
         firstName,
         lastName,
@@ -339,8 +377,17 @@ const ContactEditor = () => {
           <span style={{margin: '0 0.5em', color: '#666'}}>/</span>
           <span style={{color: '#999999'}}>{contactId ? 'Edit Contact' : 'Add New'}</span>
         </div>
-
       </div>
+      <Card className="overflow-hidden w-3/5 mt-4 mx-auto">
+        <CardHeader className="flex flex-row items-start bg-muted/50">
+          <div className="grid gap-0.5">
+            <CardTitle className="group flex items-center gap-2 text-lg">
+              {contactId ? 'Edit Contact' : 'New Contact'}
+            </CardTitle>
+            <CardDescription>Date:{CurrentDateComponent()}</CardDescription>
+          </div>
+        </CardHeader>
+      <CardContent >
       <div className={content}>
         {/*<Upload//上传头像*/}
         {/*  name="avatar"*/}
@@ -369,106 +416,379 @@ const ContactEditor = () => {
         >
           {/*修改输入框样式*/}
           {/*style={{paddingLeft:'15px',height:'50px',fontSize:'18px',borderColor:'#7241FF',borderRadius:'14px'}}*/}
-          <Form.Item style={{marginBottom: 0}}>
-            <Form.Item name='firstName'
-                       style={{display: 'inline-block', marginRight: '16px', width: 'calc(50% - 8px)'}}>
-              <Input placeholder="First name"/>
-            </Form.Item>
-            <Form.Item name='lastName' style={{display: 'inline-block', width: 'calc(50% - 8px)'}}>
-              <Input placeholder="Last name"/>
-            </Form.Item>
-          </Form.Item>
-          <Form.Item
+          <Form.Item style={{marginBottom: 0, width: '100%'}}>
+            <div
+                className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
+            >
+              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+              <div className="space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {/*<Tag color="error">Required</Tag>*/}
+                  firstname
+                </p>
+                <p className="text-sm text-muted-foreground">
+                </p>
+                <Form.Item name='firstName'
+                           style={{display: 'inline-block', marginRight: '16px', width: 'calc(50% - 8px)'}}>
+                  <Input placeholder="First name"/>
+                </Form.Item>
 
-              name='email'
-              rules={[{ required: true, message: 'Please input your email!' }]}
+              </div>
+              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+              <div className="space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {/*<Tag color="error">Required</Tag>*/}
+                  lastname
+                </p>
+                <p className="text-sm text-muted-foreground">
+                </p>
+                <Form.Item name='lastName'
+                           style={{display: 'inline-block', width: 'calc(50% - 8px)'}}>
+                  <Input placeholder="Last name"/>
+                </Form.Item>
+
+              </div>
+            </div>
+          </Form.Item>
+          {/*<Form.Item name='firstName'*/}
+          {/*           style={{display: 'inline-block', marginRight: '16px', width: 'calc(50% - 8px)'}}>*/}
+          {/*  <Input placeholder="First name"/>*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item name='lastName'*/}
+          {/*           style={{display: 'inline-block', width: 'calc(50% - 8px)'}}>*/}
+          {/*  <Input placeholder="Last name"/>*/}
+          {/*</Form.Item>*/}
+
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
           >
-            <Input placeholder="* Email"/>
-          </Form.Item>
-          <Form.Item
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Email
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Tag color="error">Required</Tag>Enter Contact email
+              </p>
 
-              name='email2'
+              <Form.Item
+
+                  name='email'
+                  rules={[{required: true, message: 'Please input your email!'}]}
+              >
+                <Input placeholder="* m@example.com"/>
+              </Form.Item>
+
+            </div>
+          </div>
+          {/*<Form.Item*/}
+
+          {/*    name='email'*/}
+          {/*    rules={[{required: true, message: 'Please input your email!'}]}*/}
+          {/*>*/}
+          {/*  <Input placeholder="* Email"/>*/}
+          {/*</Form.Item>*/}
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
           >
-            <Input placeholder="Email2"/>
-          </Form.Item>
-          <Form.Item
-              name='phone'
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Email2
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {/*/!*<Tag color="error">Required</Tag>*!/<Tag color="warning">optional</Tag>*/}
+                Enter Second email
+              </p>
+              <Form.Item
+
+                  name='email2'
+              >
+                <Input placeholder="Email2"/>
+              </Form.Item>
+            </div>
+          </div>
+
+          {/*    name='email2'*/}
+          {/*>*/}
+          {/*  <Input placeholder="Email2"/>*/}
+          {/*</Form.Item>*/}
+
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
           >
-            <Input placeholder='Phone' addonBefore={<PrefixSelector/>}
-                   style={{borderColor: '#7241FF', borderRadius: '14px'}}/>
-          </Form.Item>
-          <Form.Item style={{marginBottom: 0}}>
-            <Form.Item name='company' style={{display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)'}}>
-              <Input placeholder="Company"/>
-            </Form.Item>
-            <Form.Item name='dept' style={{display: 'inline-block', marginRight: '8px', width: 'calc(30% - 8px)'}}>
-              <Input placeholder="Dept"/>
-            </Form.Item>
-            <Form.Item name='title' style={{display: 'inline-block', width: 'calc(20%)'}}>
-              <Input placeholder="Title"/>
-            </Form.Item>
-          </Form.Item>
-          <Form.Item
-
-              name='birthdate'
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Phone
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {/*<Tag color="error">Required</Tag>*/}
+                Enter Contact Phone
+              </p>
+              <Form.Item
+                  name='phone'
+              >
+                <Input placeholder='Phone' addonBefore={<PrefixSelector/>}
+                       style={{borderColor: '#7241FF', borderRadius: '14px'}}/>
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
           >
-            <DatePicker style={{width: '100%'}}/>
-          </Form.Item>
-
-          <Form.Item
-
-              name='groups'
-              rules={[{required: true, message: 'Please input your groupName!'}]}
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Company
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Tag color="error">Required</Tag>Enter some musts
+              </p>
+              <Form.Item style={{marginBottom: 0}}>
+                <Form.Item name='company'
+                           style={{display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)'}}>
+                  <Input placeholder="Company"/>
+                </Form.Item>
+                <Form.Item name='dept'
+                           style={{display: 'inline-block', marginRight: '8px', width: 'calc(30% - 8px)'}}>
+                  <Input placeholder="Dept"/>
+                </Form.Item>
+                <Form.Item name='title' className="w-1" style={{display: 'inline-block', width: 'calc(20%)'}}>
+                  <Input placeholder="Title"/>
+                </Form.Item>
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
           >
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                BirthDay
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Tag color="warning">optional</Tag>
+                Contact BirthDay
+              </p>
+              <Form.Item
+                  name='birthdate'
+              >
+                <DatePicker style={{width: '100%'}}/>
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
+          >
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Groups
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Tag color="error">Required</Tag>Select Contact Groups
+              </p>
+              <Form.Item
 
-            {
-              groupList.length
-                  ? <Select
-                      placeholder="* Groups"
-                      options={groupList.map((item, index) => ({
-                        value: item.groupName,
-                        label: item.groupName
-                      }))}
-                  />
-                  : <Input placeholder="Use commas to separate multiple words or phrases"/>
-            }
-            {/*<div  onClick={() => setShowGroup(true)}>+</div>*/}
-          </Form.Item>
+                  name='groups'
+                  rules={[{required: true, message: 'Please input your groupName!'}]}
+              >
+
+                {
+                  groupList.length
+                      ? <Select
+                          placeholder="* Groups"
+                          options={groupList.map((item, index) => ({
+                            value: item.groupName,
+                            label: item.groupName
+                          }))}
+                      />
+                      : <Input placeholder="Use commas to separate multiple words or phrases"/>
+                }
+                {/*<div  onClick={() => setShowGroup(true)}>+</div>*/}
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
+          >
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                subscriptionType
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <Tag color="error">Required</Tag>Contacts Subscription Type
+
+              </p>
+              <Form.Item
+                  name='subscriptionType'
+                  rules={[{required: true, message: 'Please select a subscription type!'}]}
+              >
+                <Select placeholder="* Subscription type">
+                  <Option value="Subscribed">Subscribed contact</Option>
+                  <Option value="Unsubscribed">Unsubscribed contact</Option>
+                  <Option value="Non-subscribed">Non-subscribed contact</Option>
+                </Select>
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
+          >
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <p className="text-sm font-medium leading-none">
+                Note
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {/*<Tag color="error">Required</Tag>*/}
+                {/*Enter Second email*/}
+              </p>
+              <Form.Item
+                  name='note'
+              >
+                <Input.TextArea placeholder="Memo"/>
+              </Form.Item>
+            </div>
+          </div>
+          <div
+              className="mt-0.5 mb-0.5 grid grid-cols-[25px_1fr] items-start last:mb-0 last:pb-0"
+          >
+            <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
+            <div className="space-y-1">
+              <Form.Item name={"isAvailable"}>
+                <div className=" flex items-center space-x-4 rounded-md border p-4">
+                  <div className="flex-1 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      Confirm Emails
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Switch to confirm that you have permission to send emails to this contact person
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      The Cusob system will use AI to determine whether the email address can be contacted
+                    </p>
+                  </div>
+                  <Switch checked={isAvailable === 1} onCheckedChange={(checked) => {
+                    handleSwitchChange(checked)
+                  }}/>
+                </div>
+              </Form.Item>
+            </div>
+          </div>
+
+          {/*<Form.Item*/}
+          {/*    name='phone'*/}
+          {/*>*/}
+          {/*  <Input placeholder='Phone' addonBefore={<PrefixSelector/>}*/}
+          {/*         style={{borderColor: '#7241FF', borderRadius: '14px'}}/>*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item style={{marginBottom: 0}}>*/}
+          {/*  <Form.Item name='company' style={{display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)'}}>*/}
+          {/*    <Input placeholder="Company"/>*/}
+          {/*  </Form.Item>*/}
+          {/*  <Form.Item name='dept' style={{display: 'inline-block', marginRight: '8px', width: 'calc(30% - 8px)'}}>*/}
+          {/*    <Input placeholder="Dept"/>*/}
+          {/*  </Form.Item>*/}
+          {/*  <Form.Item name='title' className="w-1" style={{display: 'inline-block', width: 'calc(20%)'}}>*/}
+          {/*    <Input placeholder="Title"/>*/}
+          {/*  </Form.Item>*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item*/}
+
+          {/*    name='birthdate'*/}
+          {/*>*/}
+          {/*  <DatePicker style={{width: '100%'}}/>*/}
+          {/*</Form.Item>*/}
+
+          {/*<Form.Item*/}
+
+          {/*    name='groups'*/}
+          {/*    rules={[{required: true, message: 'Please input your groupName!'}]}*/}
+          {/*>*/}
+
+          {/*  {*/}
+          {/*    groupList.length*/}
+          {/*        ? <Select*/}
+          {/*            placeholder="* Groups"*/}
+          {/*            options={groupList.map((item, index) => ({*/}
+          {/*              value: item.groupName,*/}
+          {/*              label: item.groupName*/}
+          {/*            }))}*/}
+          {/*        />*/}
+          {/*        : <Input placeholder="Use commas to separate multiple words or phrases"/>*/}
+          {/*  }*/}
+          {/*  /!*<div  onClick={() => setShowGroup(true)}>+</div>*!/*/}
+          {/*</Form.Item>*/}
           {/*<Form.Item*/}
           {/*    name='subscriptionType'*/}
           {/*>*/}
           {/*  <Input placeholder="Subscription type" />*/}
           {/*</Form.Item>*/}
 
-          <Form.Item
-              name='subscriptionType'
-              rules={[{ required: true, message: 'Please select a subscription type!' }]}
-          >
-            <Select placeholder="* Subscription type">
-              <Option value="Subscribed">Subscribed contact</Option>
-              <Option value="Unsubscribed">Unsubscribed contact</Option>
-              <Option value="Non-subscribed">Non-subscribed contact</Option>
-            </Select>
-          </Form.Item>
+          {/*<Form.Item*/}
+          {/*    name='subscriptionType'*/}
+          {/*    rules={[{required: true, message: 'Please select a subscription type!'}]}*/}
+          {/*>*/}
+          {/*  <Select placeholder="* Subscription type">*/}
+          {/*    <Option value="Subscribed">Subscribed contact</Option>*/}
+          {/*    <Option value="Unsubscribed">Unsubscribed contact</Option>*/}
+          {/*    <Option value="Non-subscribed">Non-subscribed contact</Option>*/}
+          {/*  </Select>*/}
+          {/*</Form.Item>*/}
 
-          <Form.Item
-              name='note'
-          >
-            <Input.TextArea placeholder="Memo"/>
-          </Form.Item>
-          <Form.Item name="isAvailable">
-            <Checkbox checked={isAvailable === 1} onChange={handleCheckboxChange}>
-              Check to confirm that you have permission to send emails to this contact person
-            </Checkbox>
-          </Form.Item>
+          {/*<Form.Item*/}
+          {/*    name='note'*/}
+          {/*>*/}
+          {/*  <Input.TextArea placeholder="Memo"/>*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item name="isAvailable">*/}
+          {/*  <Checkbox checked={isAvailable === 1} onChange={handleCheckboxChange}>*/}
+          {/*    Check to confirm that you have permission to send emails to this contact person*/}
+          {/*  </Checkbox>*/}
+          {/*</Form.Item>*/}
+          {/*<Form.Item name={"isAvailable"}>*/}
+          {/*  <div className=" flex items-center space-x-4 rounded-md border p-4">*/}
+          {/*    <div className="flex-1 space-y-1">*/}
+          {/*      <p className="text-sm font-medium leading-none">*/}
+          {/*        Confirm Emails*/}
+          {/*      </p>*/}
+          {/*      <p className="text-sm text-muted-foreground">*/}
+          {/*        Switch to confirm that you have permission to send emails to this contact person*/}
+          {/*      </p>*/}
+          {/*    </div>*/}
+          {/*    <Switch checked={isAvailable === 1} onCheckedChange={(checked) => {*/}
+          {/*      handleSwitchChange(checked)*/}
+          {/*    }}/>*/}
+          {/*  </div>*/}
+          {/*</Form.Item>*/}
+
         </Form>
         <div className={operateBox}>
-          {/*<div className={cancelBtn} onClick={onCancel}>Cancel</div>*/}
-          <div className={saveBtn} onClick={
-            !isProcessing?onSave:undefined
-          }>Add contact</div>
+          {/*<div onClick={onCancel}>Cancel</div>*/}
+          {/*<div className={saveBtn} onClick={*/}
+          {/*  !isProcessing ? onSave : undefined*/}
+          {/*}>Add contact*/}
+          {/*</div>*/}
+          {!isProcessing ? (<Button onClick={onSave} >
+            <AppleIcon className="mr-2 h-4 w-4 " />
+            {contactId ? 'Edit Contact' : 'Add Contact'}
+          </Button>) : (<Button disabled>
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+            Please wait
+          </Button>)}
+          {/*<Button disabled>*/}
+          {/*  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />*/}
+          {/*  Please wait*/}
+          {/*</Button>*/}
         </div>
+
       </div>
+      </CardContent>
+      </Card>
     </div>
     <Modal
         title="Add Group"
@@ -480,10 +800,11 @@ const ContactEditor = () => {
       <div className={groupContent}>
         <div className={inputItem}>
           <div className={label}>Group Name</div>
-          <Input value={groupName} onChange={e => setGroupName(e.target.value)} className={value} />
+          <Input value={groupName} onChange={e => setGroupName(e.target.value)} className={value}/>
         </div>
       </div>
     </Modal>
+
   </div>
 };
 

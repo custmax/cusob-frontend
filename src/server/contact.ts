@@ -83,12 +83,22 @@ export const generateByGroup = async (payload: { groupId: string; content: strin
 };
 
 
-
 export const batchImport = async (data: FormData) => {
   const token = getToken() || ''
   const result = await fetch('/api/contact/batchImport', {
     method: "POST",
     body: data,
+    headers: {
+      token,
+    }
+  })
+  const res = await result.json()
+  return res;
+}
+export const batchImportResult = async () => {
+  const token = getToken() || ''
+  const result = await fetch('/api/contact/batchImportResult', {
+    method: "GET",
     headers: {
       token,
     }

@@ -20,13 +20,10 @@ const routeHandler = async (request: Request) => {
   if (result.status === 200) {
     const res = await result.json()
     if (res.code ===301){
-      console.log(res)
       const url = res.data;
-      var s = url.toString().valueOf();
       return Response.redirect("https://"+url)
     }
     return Response.json(res);
-
   }
 
   return Response.json({ code: result.status });

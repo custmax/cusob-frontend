@@ -117,40 +117,40 @@ const Header: FC<Props> = (props) => {
     {/*如果showBar为true，则显示TabBar组件*/}
     {!token ? <Sign /> ://如果token不存在，则显示Sign组件
         <div>
-        <div className={right} id="enterHeader">
-          {/*否则显示一个div元素，className为right*/}
-          <Link href='/stationMessage'>
-            <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>
-          {/* 点击notification图标跳转到stationMessage*/}
-          </Link>
-          <ImgWrapper
-              className={avatar}
-              alt='avatar'
-              src={props.avatar || localAvatar || '/img/default-avatar.png'}
+          <div className={right} id="enterHeader">
+            {/*否则显示一个div元素，className为right*/}
+            <Link href='/stationMessage'>
+              <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>
+              {/* 点击notification图标跳转到stationMessage*/}
+            </Link>
+            <ImgWrapper
+                className={avatar}
+                alt='avatar'
+                src={props.avatar || localAvatar || '/img/default-avatar.png'}
+            />
+            <Tooltip//Tooltip提示框
+                placement="bottomRight"//提示框位置
+                className={tooltip}//提示框样式
+                title={<div className='more'>
+                  <Link href='/dashboard' className="more-item">Dashboard</Link>
+                  <Link href='/contactInfo' className="more-item">Information</Link>
+                  <Link href='/userList' className="more-item">Users</Link>
+                  <div className='more-item' onClick={() => setShowChangePw(true)}>Password</div>
+                  <Link href='/billingHistory' className="more-item">Billing</Link>
+                  <Link href='/emailList' className="more-item">Sender</Link>
+                  <Link href='/' className='more-item mb0' onClick={handleSignOut}>Sign Out</Link>
+                </div>}
+                getPopupContainer={() => document.querySelector('#enterHeader') || document.body}//获取弹出框的容器
+            >
+              <span className={nickname}>{firstName}</span>
+              <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
+            </Tooltip>
+          </div>
+          <ChangePwModal
+              visible={showChangePw}//显示ChangePwModal
+              onOk={onChangePwOk}//点击确定按钮的回调函数
+              onCancel={onChangePwCancel}//点击取消按钮的回调函数
           />
-          <Tooltip//Tooltip提示框
-              placement="bottomRight"//提示框位置
-              className={tooltip}//提示框样式
-              title={<div className='more'>
-                <Link href='/dashboard' className="more-item">Dashboard</Link>
-                <Link href='/contactInfo' className="more-item">Information</Link>
-                <Link href='/userList' className="more-item">Users</Link>
-                <div className='more-item' onClick={() => setShowChangePw(true)} >Password</div>
-                <Link href='/billingHistory' className="more-item">Billing</Link>
-                <Link href='/emailList' className="more-item">Sender</Link>
-                <Link href='/' className='more-item mb0' onClick={handleSignOut}>Sign Out</Link>
-              </div>}
-              getPopupContainer={() => document.querySelector('#enterHeader') || document.body}//获取弹出框的容器
-          >
-            <span className={nickname}>{firstName}</span>
-            <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
-          </Tooltip>
-        </div>
-      <ChangePwModal
-      visible={showChangePw}//显示ChangePwModal
-    onOk={onChangePwOk}//点击确定按钮的回调函数
-    onCancel={onChangePwCancel}//点击取消按钮的回调函数
-  />
         </div>
     }
   </div>

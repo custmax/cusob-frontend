@@ -35,7 +35,6 @@ export const updateApiUser = async (name: string, newName?: string, domainName?:
         url: `/api2/apiuser/update`,
         method: 'POST',
         data: {
-            // todo
             apiUser: API_USER,
             apiKey: API_KEY,
             name: name,
