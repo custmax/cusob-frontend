@@ -2,6 +2,29 @@
   width: 100%;
   height: 100%;
   padding-top: 90vpx;
+  .titleBox{
+    //background-color: #fff;
+    padding-bottom: 28vpx;
+    padding-left: 130vpx;
+    padding-right: 380vpx;
+    box-sizing: border-box;
+    width: 1705px;
+    height: 70px;
+    opacity: 1;
+    background: #EEEEFF;
+    .title {
+      height: 90vpx;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #E0E0E0;
+      font-family: Source Han Sans;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 60px;
+      letter-spacing: 0em;
+      color: #7241FF;
+    }
+  }
 
   .main {
     width: 100%;
@@ -12,136 +35,139 @@
     padding-right: 380vpx;
     box-sizing: border-box;
 
-    .title {
-      font-family: PingFangSC, PingFang SC;
-      font-weight: 400;
-      font-size: 20vpx;
-      color: #1E1E69;
-      line-height: 28vpx;
-      height: 90vpx;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid #E0E0E0;
+    .menu{
+      width: 1230px;
+      font-family: Source Han Sans;
+      font-size: 16px;
+      font-weight: 350;
+      line-height: normal;
+      letter-spacing: 0px;
+      font-feature-settings: "kern" on;
+      color: #000000;
     }
 
     .content {
-      width: 100%;
+      width: 1230px;
       box-sizing: border-box;
+    }
+    .content1 {
+      width: 1230px;
+      box-sizing: border-box;
+    }
 
-      .filterBox {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 74vpx;
-        width: 100%;
+    .filterBox {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74vpx;
+      width: 100%;
 
-        .filterLeft {
-          > span {
-            font-family: PingFangSC, PingFang SC;
-            font-weight: 500;
-            font-size: 24vpx;
-            color: #7241FF;
-            line-height: 33vpx;
-            text-decoration: underline;
-            margin-right: 40vpx;
-            cursor: pointer;
-          }
+      .filterLeft {
+        > span {
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 500;
+          font-size: 24vpx;
+          color: #7241FF;
+          line-height: 33vpx;
+          margin-right: 40vpx;
+          cursor: pointer;
         }
+      }
 
-        .searchInputBox {
-          width: 240vpx;
-          height: 50vpx;
-          box-sizing: border-box;
-          padding-right: 45vpx;
-          position: relative;
-          border-radius: 25vpx;
-          border: 1px solid #E0E0E0;
-          overflow: hidden;
+      .searchInputBox {
+        width: 240vpx;
+        height: 50vpx;
+        box-sizing: border-box;
+        padding-right: 45vpx;
+        position: relative;
+        border-radius: 25vpx;
+        border: 1px solid #E0E0E0;
+        overflow: hidden;
 
-          :global {
-            .ant-input {
-              width: 100%;
-              height: 100%;
+        :global {
+          .ant-input {
+            width: 100%;
+            height: 100%;
+            border: 0;
+
+            &::placeholder {
+            }
+
+            &:focus,
+            &:hover,
+            &:focus-visible {
               border: 0;
-    
-              &::placeholder {
-              }
-
-              &:focus,
-              &:hover,
-              &:focus-visible {
-                border: 0;
-                box-shadow: none;
-              }
+              box-shadow: none;
             }
-    
           }
 
+        }
 
-          .searchIconBox {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40vpx;
-            height: 40vpx;
-            background: #000AFF;
-            border-radius: 25vpx;
-            border: 1px solid #0A14D2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
 
-            .searchIcon {
-              width: 21vpx;
-              height: 21vpx;
-            }
+        .searchIconBox {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 40vpx;
+          height: 40vpx;
+          background: #7241FF;
+          border-radius: 25vpx;
+          border: 1px solid #7241FF;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+
+          .searchIcon {
+            width: 21vpx;
+            height: 21vpx;
           }
         }
       }
+    }
 
-      .tag {
-        padding: 0 20vpx;
-        height: 36vpx;
-        background: #FFEBB4;
-        border-radius: 18vpx;
+    .tag {
+      padding: 20vpx;
+      height: 36vpx;
+      background: #FFEBB4;
+      border-radius: 18vpx;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-        font-family: PingFangSC, PingFang SC;
-        font-weight: 400;
-        font-size: 20vpx;
-        color: #333333;
-      }
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 400;
+      font-size: 20vpx;
+      color: #333333;
+    }
 
-      .editIcon {
-        width: 20vpx;
-        height: 20vpx;
-        cursor: pointer;
-      }
-      .editButton{
-        //background-color: white;
-        width: 40vpx;
-        height: 20vpx;
-        line-height: 15vpx;
-        padding-left: 6vpx;
-        padding-bottom: 5vpx;
-        //justify-content: center;
-        //align-items: center;
-        cursor: pointer;
-        color: #7241FF;
-        border-radius: 6vpx;
-        border: 2vpx solid #7241FF;
-        font-weight: 600;
-        font-size:14vpx;
-      }
-      .editButton:hover{
-        background-color: #7241FF;
-        color: white;
-      }
+    .editIcon {
+      width: 20vpx;
+      height: 20vpx;
+      cursor: pointer;
+    }
+    .editButton{
+      //background-color: white;
+      width: 40vpx;
+      height: 20vpx;
+      line-height: 15vpx;
+      padding-left: 6vpx;
+      padding-bottom: 5vpx;
+      //justify-content: center;
+      //align-items: center;
+      cursor: pointer;
+      color: #7241FF;
+      border-radius: 6vpx;
+      border: 2vpx solid #7241FF;
+      font-weight: 600;
+      font-size:14vpx;
+    }
+    .editButton:hover{
+      background-color: #7241FF;
+      color: white;
+
     }
   }
 
@@ -150,7 +176,7 @@
     position: fixed;
     z-index: 10;
     right: 0;
-    top: 90vpx;
+    top: 260vpx;
     box-sizing: border-box;
     padding-left: 27vpx;
     padding-right: 40vpx;

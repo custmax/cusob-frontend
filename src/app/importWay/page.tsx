@@ -88,16 +88,16 @@ const ImportWay = () => {
         </div>
         <div className={wayWrapper}>
           <div onClick={() => setShowUpload(true)} className={classNames(wayBox, {[active]: way === 'upload'})}>
-            <div className={radioBox}>
-              <ImgWrapper className={icon} src='/img/upload_icon.png' alt='upload icon'/>
-            </div>
+            {/*<div className={radioBox}>*/}
+            {/*  <ImgWrapper className={icon} src='/img/upload_icon.png' alt='upload icon'/>*/}
+            {/*</div>*/}
             <div className={explain}>Upload a file</div>
             <div onClick={handleSampleClick} className={sample}>Sample file</div>
           </div>
           <Link href={"/contactEditor"} className={classNames(wayBox, {[active]: way === 'upload'})}>
-            <div className={radioBox}>
-              <ImgWrapper className={icon} src='/img/upload_icon.png' alt=' icon'/>
-            </div>
+            {/*<div className={radioBox}>*/}
+            {/*  <ImgWrapper className={icon} src='/img/upload_icon.png' alt=' icon'/>*/}
+            {/*</div>*/}
             <div className={explain}>Add a Contact</div>
           </Link>
         </div>

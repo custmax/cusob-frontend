@@ -10,6 +10,24 @@ export const getList = async (page: number, limit: number, keyword?: string, gro
   return res;
 }
 
+export const getGroup = async (selectType: string, selectOption: string) => {
+  const res = await clientFetch({
+    url: `/api/contact/getGroup`,
+    method: 'POST',
+    data:{selectType, selectOption },
+  })
+  return res;
+}
+
+export const getAllContact = async (searchVal:string) => {
+  const res = await clientFetch({
+    url: `/api/contact/getAllContact`,
+    method: 'POST',
+    data: searchVal
+  })
+  return res;
+}
+
 export const getHistoryList = async (page: number, limit: number) => {
   const res = await clientFetch({
     url: `/api/contact/getList/${page}/${limit}`,
@@ -83,6 +101,7 @@ export const generateByGroup = async (payload: { groupId: string; content: strin
 };
 
 
+
 export const batchImport = async (data: FormData) => {
   const token = getToken() || ''
   const result = await fetch('/api/contact/batchImport', {
@@ -127,4 +146,20 @@ export const getEmailsByGroupId = async (groupId: number) => {
   return res;
 }
 
+export const deleteGroup = async (groupIds : number[]) => {
+  const res = await clientFetch({
+    url: `/api/contact/deleteGroup`,
+    method: 'DELETE',
+    data: groupIds
+  })
+  return res;
+}
 
+export const deleteContact = async (ContactIds : number[]) => {
+  const res = await clientFetch({
+    url: `/api/contact/deleteContact`,
+    method: 'DELETE',
+    data: ContactIds
+  })
+  return res;
+}
