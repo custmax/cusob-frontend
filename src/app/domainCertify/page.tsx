@@ -110,7 +110,7 @@ const columns: TableProps<DataType>['columns'] = [
         <div style={{ whiteSpace: 'normal' }}>
           <span style={{ marginRight: '5px' }}>{value}</span>
           <CopyOutlined style={{cursor: 'pointer'}} onClick={() => handleCopy(value)}
-                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                        onPointerOverCapture={undefined} onPointerOutCapture={undefined} />
         </div>
     ),
     ellipsis: true, // 添加这行来启用省略号

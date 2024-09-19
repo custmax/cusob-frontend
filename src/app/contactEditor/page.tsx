@@ -226,7 +226,7 @@ const ContactEditor = () => {
 
   const uploadButton = (
     <button style={{ border: 0, background: 'none' }} type="button">
-      {loading ? <LoadingOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} /> : <PlusOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />}
+      {loading ? <LoadingOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined} /> : <PlusOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined} />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
   );

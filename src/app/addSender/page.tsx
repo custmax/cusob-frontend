@@ -436,7 +436,7 @@ const AddSender = () => {
     <Modal
         title="Manual Settings"
         open={showManual}
-        onOk={isProcessing ?handleSubmitManual:undefined}
+        onOk={!isProcessing ?handleSubmitManual:undefined}
         onCancel={onManualCancel}
         okText='Done'
         wrapClassName={binderModal}
