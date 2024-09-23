@@ -13,6 +13,9 @@ import {getstatus} from "@/server/mailgun/status";
 import {getOrderHistory} from "@/server/orderHistory";
 import {getReportList, removeReport} from "@/server/report";
 import {getCampaignList} from "@/server/sendcloud/campaigins";
+import { Modal, Button } from 'antd'; // 添加 Modal 和 Button
+
+
 
 
 
@@ -58,6 +61,7 @@ const Campaign = () => {
   const [campaignList, setCampaignList] = useState<(Campaign.CampaignNew & { status: number, updateTime: string })[]>([])
   const [total, setTotal] = useState(0)
   const [order, setOrder] = useState<string>('0');
+
 
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
@@ -132,6 +136,25 @@ const Campaign = () => {
     onChange: onPageChange,
   }
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = (type: 'bulk' | 'personalized') => {
+    setIsModalVisible(false);
+    if (type === 'bulk') {
+      window.location.href = '/campaignEditor';
+    } else if (type === 'personalized') {
+      window.location.href = '/campaignPersonalize'; // 新页面的路径
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   async function onDelete(id: any) {
     const res = await removeCampaign(id)
     if (res.code === SUCCESS_CODE) {
@@ -168,8 +191,19 @@ const Campaign = () => {
         <div className={titleLeft}>
           <span>Campaigns</span>
         </div>
-        <Link href='/campaignEditor' className={newBtn}>New Campaign</Link>
+        <Button className={newBtn} onClick={showModal}>New Campaign</Button>
       </div>
+      <Modal
+          title="Select Campaign Type"
+          visible={isModalVisible}
+          onOk={() => handleOk('bulk')}
+          onCancel={handleCancel}
+      >
+        <p>
+          <Button onClick={() => handleOk('bulk')}>Group Sending</Button>
+          <Button onClick={() => handleOk('personalized')}>Personalize</Button>
+        </p>
+      </Modal>
       <div className={content}>
         <div className={viewWrapper}>
           {/*<div className={viewTitle}>List View</div>*/}
