@@ -4,6 +4,7 @@ import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import ImgWrapper from '@/component/ImgWrapper';
 import {
+  Button,
   DatePicker,
   DatePickerProps,
   Input,
@@ -15,14 +16,21 @@ import {
   TimePicker,
   TimePickerProps
 } from 'antd';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, forwardRef, useCallback, useEffect, useRef, useState} from 'react';
 import dayjs from 'dayjs';
 import ContentModal from './component/ContentModal';
 import Link from 'next/link';
 import {useRouter, useSearchParams} from 'next/navigation'
 import {getGroupList} from '@/server/group';
 import {SUCCESS_CODE} from '@/constant/common';
-import {getCampaign, getLastCampaignId, saveDraft, sendEmail, updateCampaign} from '@/server/campaign';
+import {
+  getCampaign,
+  getContactByGroup,
+  getLastCampaignId,
+  saveDraft,
+  sendEmail,
+  updateCampaign
+} from '@/server/campaign';
 import {getSenderList} from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
@@ -120,6 +128,7 @@ const CampaignEditor = () => {
   let templateId = Number(searchParams.get('templateId'))
   //const [campaignIdOnSend,setCampaignIdOnSend]=useState<number>();
 
+
   const [process, setProcess] = useState([
     { title: 'To', subTitle: '', checked: false },
     { title: 'From', subTitle: '', checked: false },
@@ -156,11 +165,100 @@ const CampaignEditor = () => {
 
   ];
 
+  const getContactList = async (groupId: number | undefined) => {
+    const res = await getContactByGroup(groupId);
+    if (res.code === SUCCESS_CODE) {
+      setContactList(res.data)
+    }
+  };
+
+
+  useEffect(() => {
+    getContactList(toGroup);
+  }, [toGroup]);
+
   function replaceUrls(input: string, replacer: (match: string) => string) {
        const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
         return input.replace(urlRegex, replacer);
     }
 
+
+  type Props = {
+    visible: boolean,
+    value: string,
+    onChange: (val: string) => void,
+    onOk: () => void,
+    onCancel: () => void,
+  };
+
+  const ContentModal: FC<Props> = (props) => {
+    const { visible, onOk, onCancel, value, onChange } = props;
+    const [contactList, setContactList] = useState<{ id: number, firstName: string, lastName: string }[]>([]);
+    const [selectedContact, setSelectedContact] = useState<number | null>(null);
+    const [aiContent, setAiContent] = useState<string>('');
+    const richEditorRef = useRef<{ getEditor: any }>();
+    const [groupId, setGroup] = useState<number>();
+
+    const getContactList = async () => {
+
+    }
+
+    useEffect(() => {
+
+      getContactByGroup(groupId);
+    }, [groupId]);
+    const handleContactClick = async (id: number) => {
+      setSelectedContact(id);
+
+      // Simulate fetching AI-generated content
+      const content = `Generated content for contact ID ${id}`;
+      setAiContent(content);
+    };
+
+    const handleGenerateAI = async () => {
+      if (selectedContact === null) {
+        message.error('Please select a contact to generate AI content.');
+        return;
+      }
+      // Call your AI generation logic here
+      message.success(`AI content generated for contact ID ${selectedContact}`);
+    };
+
+    return (
+        <Modal
+            title="Content"
+            open={visible}
+            onOk={onOk}
+            onCancel={onCancel}
+            wrapClassName={styles.contentModal}
+            width={'80vw'}
+        >
+          <div className={styles.main}>
+            <div className={styles.contactList}>
+              {contactList.map(contact => (
+                  <div
+                      key={contact.id}
+                      className={`${styles.contactCard} ${selectedContact === contact.id ? styles.selected : ''}`}
+                      onClick={() => handleContactClick(contact.id)}
+                  >
+                    {contact.firstName} {contact.lastName}
+                  </div>
+              ))}
+            </div>
+
+            {selectedContact !== null && (
+                <div className={styles.aiWrapper}>
+                  <h3>AI Generated Content:</h3>
+                  <div className={styles.aiContent}>
+                    {aiContent}
+                  </div>
+                  <Button type="primary" onClick={handleGenerateAI}>AI生成</Button>
+                </div>
+            )}
+          </div>
+        </Modal>
+    );
+  };
   //Prohibit modification
   const replaceLinkContentByLink = (links:string)=>{
     let val =links;
@@ -248,16 +346,6 @@ const CampaignEditor = () => {
     }
   }, [])
 
-  const initGroupList = useCallback(async () => {
-    const res = await getGroupList()
-    if (res.code === SUCCESS_CODE) {
-      await initSender()
-      const newGroupList = res.data.map((item: { groupName: string, id: number }) => ({ value: item.id, label: item.groupName }))
-      setGroupList(newGroupList)
-      initCampaign(newGroupList)
-    }
-  }, [])
-
   const getAddress = async () =>{
     const res = await getAddr()
       setAllow(res.data)
@@ -280,17 +368,6 @@ const CampaignEditor = () => {
       }
     });
   };
-
-  useEffect(() => {
-    if(allow){
-      initGroupList()
-    }else {
-      // message.warning('Please provide your address information')
-      // router.push('/contactInfo?form=true')
-      showWarningModal();
-    }
-
-  }, [allow])
 
   const onCampaignNameOk = () => {
     setShowCampaignName(false)
