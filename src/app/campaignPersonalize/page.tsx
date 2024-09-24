@@ -210,7 +210,6 @@ const CampaignEditor = () => {
         return input.replace(urlRegex, replacer);
     }
 
-
   type Props = {
     visible: boolean,
     value: string,
