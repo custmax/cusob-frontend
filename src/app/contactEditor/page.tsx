@@ -422,10 +422,10 @@ const ContactEditor = () => {
             >
               <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
               <div className="space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {/*<Tag color="error">Required</Tag>*/}
-                  firstname
-                </p>
+                {/*<p className="text-sm font-medium leading-none">*/}
+                {/*  /!*<Tag color="error">Required</Tag>*!/*/}
+                {/*  firstname*/}
+                {/*</p>*/}
                 <p className="text-sm text-muted-foreground">
                 </p>
                 <Form.Item name='firstName'
@@ -436,10 +436,10 @@ const ContactEditor = () => {
               </div>
               <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
               <div className="space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {/*<Tag color="error">Required</Tag>*/}
-                  lastname
-                </p>
+                {/*<p className="text-sm font-medium leading-none">*/}
+                {/*  /!*<Tag color="error">Required</Tag>*!/*/}
+                {/*  lastname*/}
+                {/*</p>*/}
                 <p className="text-sm text-muted-foreground">
                 </p>
                 <Form.Item name='lastName'
@@ -464,15 +464,14 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Email
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Tag color="error">Required</Tag>Enter Contact email
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Email*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  <Tag color="error">Required</Tag>Enter Contact email*/}
+              {/*</p>*/}
 
               <Form.Item
-
                   name='email'
                   rules={[{required: true, message: 'Please input your email!'}]}
               >
@@ -493,13 +492,13 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Email2
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {/*/!*<Tag color="error">Required</Tag>*!/<Tag color="warning">optional</Tag>*/}
-                Enter Second email
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Email2*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*/!*<Tag color="error">Required</Tag>*!/<Tag color="warning">optional</Tag>*/}
+              {/*  Enter Second email*/}
+              {/*</p>*/}
               <Form.Item
 
                   name='email2'
@@ -519,13 +518,13 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Phone
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {/*<Tag color="error">Required</Tag>*/}
-                Enter Contact Phone
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Phone*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  /!*<Tag color="error">Required</Tag>*!/*/}
+              {/*  Enter Contact Phone*/}
+              {/*</p>*/}
               <Form.Item
                   name='phone'
               >
@@ -539,12 +538,12 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Company
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Tag color="error">Required</Tag>Enter some musts
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Company*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  <Tag color="error">Required</Tag>Enter some musts*/}
+              {/*</p>*/}
               <Form.Item style={{marginBottom: 0}}>
                 <Form.Item name='company'
                            style={{display: 'inline-block', marginRight: '8px', width: 'calc(50% - 8px)'}}>
@@ -565,13 +564,13 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                BirthDay
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Tag color="warning">optional</Tag>
-                Contact BirthDay
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  BirthDay*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  <Tag color="warning">optional</Tag>*/}
+              {/*  Contact BirthDay*/}
+              {/*</p>*/}
               <Form.Item
                   name='birthdate'
               >
@@ -584,12 +583,12 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Groups
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Tag color="error">Required</Tag>Select Contact Groups
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Groups*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  <Tag color="error">Required</Tag>Select Contact Groups*/}
+              {/*</p>*/}
               <Form.Item
 
                   name='groups'
@@ -616,13 +615,13 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                subscriptionType
-              </p>
-              <p className="text-sm text-muted-foreground">
-                <Tag color="error">Required</Tag>Contacts Subscription Type
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  subscriptionType*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  <Tag color="error">Required</Tag>Contacts Subscription Type*/}
 
-              </p>
+              {/*</p>*/}
               <Form.Item
                   name='subscriptionType'
                   rules={[{required: true, message: 'Please select a subscription type!'}]}
@@ -640,13 +639,13 @@ const ContactEditor = () => {
           >
             <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500"/>
             <div className="space-y-1">
-              <p className="text-sm font-medium leading-none">
-                Note
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {/*<Tag color="error">Required</Tag>*/}
-                {/*Enter Second email*/}
-              </p>
+              {/*<p className="text-sm font-medium leading-none">*/}
+              {/*  Note*/}
+              {/*</p>*/}
+              {/*<p className="text-sm text-muted-foreground">*/}
+              {/*  /!*<Tag color="error">Required</Tag>*!/*/}
+              {/*  /!*Enter Second email*!/*/}
+              {/*</p>*/}
               <Form.Item
                   name='note'
               >

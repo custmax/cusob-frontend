@@ -334,6 +334,7 @@ const ContentModal: FC<Props> = (props) => {
                         value: item.groupName,
                         label: item.groupName,
                       }))}
+                      style={{ width: '100px' }}
                   />
               ) : (
                   <Input
