@@ -37,6 +37,7 @@ import {getEmailsByGroupId} from "@/server/contact";
 import {API_KEY, API_USER, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud";
 import {getAddr} from "@/server/accountInfo";
 import {getTemplate} from "@/server/template";
+import {DataType} from "csstype";
 
 const {
   campaignEditorContainer,
@@ -92,6 +93,12 @@ const {
   sendBtn2,
 } = styles;
 
+type ContactType = {
+  id: number,
+  firstName: string,
+  lastName: string,
+
+}
 
 const CampaignEditor = () => {
   const senderListRef = useRef<{ value: number, label: string }[]>([])
@@ -117,7 +124,7 @@ const CampaignEditor = () => {
   const [zone, setZone] = useState('beiJing')
   const [timeType, setTimeType] = useState()
   const [senderId, setSenderId] = useState<number>()
-  const [contactList, setContactList] = useState('')
+  const [contactList, setContactList] = useState<ContactType[]>([])
   const [trackClicks, setTrackClicks] = useState<boolean>(false)
   const [trackLink, setTrackLink] = useState<boolean>(false)
   const [trackOpens, setTrackOpens] = useState<boolean>(true)
@@ -168,14 +175,35 @@ const CampaignEditor = () => {
   const getContactList = async (groupId: number | undefined) => {
     const res = await getContactByGroup(groupId);
     if (res.code === SUCCESS_CODE) {
-      setContactList(res.data)
+      setContactList(res.data);
     }
   };
 
 
   useEffect(() => {
+    console.log(toGroup)
     getContactList(toGroup);
   }, [toGroup]);
+
+  const initGroupList = useCallback(async () => {
+    const res = await getGroupList()
+    if (res.code === SUCCESS_CODE) {
+      await initSender()
+      const newGroupList = res.data.map((item: { groupName: string, id: number }) => ({ value: item.id, label: item.groupName }))
+      setGroupList(newGroupList)
+      initCampaign(newGroupList)
+    }
+  }, [])
+
+  useEffect(() => {
+    if(allow){
+      initGroupList()
+    }else {
+      // message.warning('Please provide your address information')
+      // router.push('/contactInfo?form=true')
+      showWarningModal();
+    }
+  }, [allow])
 
   function replaceUrls(input: string, replacer: (match: string) => string) {
        const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
@@ -193,20 +221,8 @@ const CampaignEditor = () => {
 
   const ContentModal: FC<Props> = (props) => {
     const { visible, onOk, onCancel, value, onChange } = props;
-    const [contactList, setContactList] = useState<{ id: number, firstName: string, lastName: string }[]>([]);
     const [selectedContact, setSelectedContact] = useState<number | null>(null);
     const [aiContent, setAiContent] = useState<string>('');
-    const richEditorRef = useRef<{ getEditor: any }>();
-    const [groupId, setGroup] = useState<number>();
-
-    const getContactList = async () => {
-
-    }
-
-    useEffect(() => {
-
-      getContactByGroup(groupId);
-    }, [groupId]);
     const handleContactClick = async (id: number) => {
       setSelectedContact(id);
 

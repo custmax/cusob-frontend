@@ -20,7 +20,7 @@ export const getCampaignPage = async ( page: number, limit: number,query: Record
 export const getContactByGroup = async (groupId: number | undefined) => {
   const res = clientFetch({
     url: '/api/campaign/getContacts',
-    method: 'GET',
+    method: 'POST',
     data: groupId,
   })
   return res;
