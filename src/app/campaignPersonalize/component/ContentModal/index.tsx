@@ -8,12 +8,36 @@ import { SUCCESS_CODE } from '@/constant/common';
 import {id} from "postcss-selector-parser";
 import {getContactByGroup} from "@/server/campaign";
 
+import { Textarea } from "@/components/ui/textarea"
+
 const RichEditor = dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 
 type RichEditorProps = {
   onChange: (val: string) => void,
   value: string,
 };
+
+const {
+  contentModal,
+  main,
+  basicFormWrapper,
+  basicForm,
+  richTextTitle,
+  richText,
+  richTextWrapper,
+  presetWrapper,
+  presetTitle,
+  presetItem,
+  aiWrapper,
+  aiContent,
+  buildBtn,
+  generate,
+  uploadWrapper,
+  label,
+  addressValue,
+  AIModal,
+
+} = styles;
 
 const NewRichEditor = forwardRef((props: RichEditorProps, ref) =>
     <RichEditor parentRef={ref} {...props} />);
@@ -27,6 +51,10 @@ type Props = {
   onCancel: () => void,
 };
 
+export function TextareaDemo() {
+  return <Textarea placeholder="Type your message here." />
+}
+
 const ContentModal: FC<Props> = (props) => {
   const { visible, onOk, onCancel, value, onChange } = props;
   const [contactList, setContactList] = useState<{ id: number, firstName: string, lastName: string }[]>([]);
@@ -34,7 +62,11 @@ const ContentModal: FC<Props> = (props) => {
   const [aiContent, setAiContent] = useState<string>('');
   const richEditorRef = useRef<{ getEditor: any }>();
   const [group, setGroup] = useState<number>();
-
+  const [innerContent, setInnerContent] = useState('')
+  const _onChange = (value: string) => {
+    setInnerContent(value)
+    onChange(value)
+  }
 
   const handleContactClick = async (id: number) => {
     setSelectedContact(id);
@@ -62,6 +94,8 @@ const ContentModal: FC<Props> = (props) => {
           wrapClassName={styles.contentModal}
           width={'80vw'}
       >
+
+
         <div className={styles.main}>
           <div className={styles.contactList}>
             {contactList.map(contact => (
@@ -75,6 +109,14 @@ const ContentModal: FC<Props> = (props) => {
             ))}
           </div>
 
+          <div className={richTextTitle}>Content</div>
+          <div className={richText}>
+            <div className={richTextWrapper}>
+              <NewRichEditor ref={richEditorRef} value={innerContent} onChange={_onChange}/>
+            </div>
+
+          </div>
+
           {selectedContact !== null && (
               <div className={styles.aiWrapper}>
                 <h3>AI Generated Content:</h3>
@@ -85,6 +127,7 @@ const ContentModal: FC<Props> = (props) => {
               </div>
           )}
         </div>
+
       </Modal>
   );
 };

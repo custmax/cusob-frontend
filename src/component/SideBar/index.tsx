@@ -76,10 +76,6 @@ const SideBar = () => {
         <ImgWrapper className={barIcon} src='/img/bar_icon1.png' alt='bar icon'/>
         <div className={barText}>Contacts</div>
       </Link>
-      <Link href='/emailTemplates' className={barItem}>
-        <ImgWrapper className={barIcon} src='/img/bar_icon2.png' alt='bar icon'/>
-        <div className={barText}>Templates</div>
-      </Link>
       <Link href='/campaign' className={barItem}>
         <ImgWrapper className={barIcon} src='/img/bar_icon4.png' alt='bar icon'/>
         <div className={barText}>Campaign</div>

@@ -121,8 +121,6 @@ const ContentModal: FC<Props> = (props) => {
   useEffect(() => {
     if (value) {
       initInnerContent(value)
-
-
     }
   }, [value])
 
