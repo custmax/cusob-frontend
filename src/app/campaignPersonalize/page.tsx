@@ -18,12 +18,13 @@ import {
 } from 'antd';
 import React, {FC, forwardRef, useCallback, useEffect, useRef, useState} from 'react';
 import dayjs from 'dayjs';
-import ContentModal from './component/ContentModal';
+import ContentModal, {TextareaDemo} from './component/ContentModal';
 import Link from 'next/link';
 import {useRouter, useSearchParams} from 'next/navigation'
 import {getGroupList} from '@/server/group';
 import {SUCCESS_CODE} from '@/constant/common';
 import {
+
   getCampaign,
   getContactByGroup,
   getLastCampaignId,
@@ -31,6 +32,10 @@ import {
   sendEmail,
   updateCampaign
 } from '@/server/campaign';
+import {
+  generateByPerson,
+} from '@/server/contact';
+
 import {getSenderList} from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
@@ -38,8 +43,11 @@ import {API_KEY, API_USER, SENDER_EMAIL, SENDER_NAME} from "@/constant/sendCloud
 import {getAddr} from "@/server/accountInfo";
 import {getTemplate} from "@/server/template";
 import {DataType} from "csstype";
+import {ScrollArea} from "@/components/ui/scroll-area";
+
 
 const {
+  contentModal,
   campaignEditorContainer,
   main,
   title,
@@ -100,6 +108,21 @@ type ContactType = {
 
 }
 
+type ContactNodeType = {
+  contact: ContactType,
+  content: string,
+}
+type ScrollAreaDemoProps = {
+  className?: string;
+  title: string;
+  items: ContactNodeType[];
+  setContactSelected: (newItems: ContactNodeType) => void;
+};
+
+type AiContentMap = {
+  [key: number]: string; // Change `number` to `string` if your IDs are strings
+};
+
 const CampaignEditor = () => {
   const senderListRef = useRef<{ value: number, label: string }[]>([])
   const [showTo, setShowTo] = useState<boolean>(false)
@@ -134,6 +157,10 @@ const CampaignEditor = () => {
   let campaignId = searchParams.get('id')
   let templateId = Number(searchParams.get('templateId'))
   //const [campaignIdOnSend,setCampaignIdOnSend]=useState<number>();
+  const [contactSelected, setContactSelected] = useState<ContactNodeType>();
+  const [contentList, setContentList] = useState<ContactNodeType[]>([])
+  const [aiContent, setAiContent] = useState<AiContentMap>({}); // Specify the type here
+
 
 
   const [process, setProcess] = useState([
@@ -172,6 +199,7 @@ const CampaignEditor = () => {
 
   ];
 
+
   const getContactList = async (groupId: number | undefined) => {
     const res = await getContactByGroup(groupId);
     if (res.code === SUCCESS_CODE) {
@@ -184,6 +212,14 @@ const CampaignEditor = () => {
     console.log(toGroup)
     getContactList(toGroup);
   }, [toGroup]);
+
+  useEffect(() => {
+    const oneList: ContactNodeType[] = contactList.map(one => ({
+      contact: one,
+      content: '',
+    }))
+    setContentList(oneList)
+  }, [contactList]);
 
   const initGroupList = useCallback(async () => {
     const res = await getGroupList()
@@ -210,6 +246,88 @@ const CampaignEditor = () => {
         return input.replace(urlRegex, replacer);
     }
 
+
+  const ContentModal: FC<Props> = (props) => {
+    const { visible, onOk, onCancel, value, onChange } = props;
+    const [selectedContact, setSelectedContact] = useState<number>(0);
+    const [aiContent, setAiContent] = useState<AiContentMap>({}); // Specify the type here
+
+
+
+    const handleGenerateAI = async (groupId: number | undefined) => {
+      // Call the backend to generate content
+      try {
+        const res = await generateByPerson(groupId);
+        if (res.code === SUCCESS_CODE) {
+          setAiContent(res.data); // Update state with generated content
+        }
+
+      } catch (error) {
+        console.error('Error fetching AI content:', error);
+      }
+    };
+
+
+
+    const handleContactChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (selectedContact !== null) {
+        setAiContent((prev) => ({
+          ...prev,
+          [selectedContact]: e.target.value, // 确保 selectedContact 是数字
+        }));
+      }
+    };
+
+
+    return (
+        <Modal
+            title="Content"
+            open={visible}
+            onOk={onOk}
+            onCancel={onCancel}
+            className={styles.main}
+            width={'80vw'}
+        >
+          <div className="flex mb-2 items-start">
+            <ScrollAreaDemo
+                className="custom-class"
+                title=""
+                items={contentList}
+                setContactSelected={setContactSelected}/>
+
+            <div className="h-full">
+              <div className="text-center font-bold font-serif" onClick={() => {
+                console.log(contactSelected);
+                console.log(aiContent)
+              }
+              }>
+                content
+              </div>
+              <div className={styles.main}>
+                {contactSelected !== null && (
+                    <div className={styles.aiWrapper}>
+                      <h3>AI Generated Content:</h3>
+                      <textarea
+                          value={aiContent[selectedContact] || ''} // 获取对应联系人的内容
+                          onChange={(e) => {
+                            setAiContent((prev) => ({
+                              ...prev,
+                              [selectedContact]: e.target.value, // 更新内容
+                            }));
+                          }}
+                          rows={4}
+                          className={styles.textArea}
+                      />
+                      <Button type="primary" onClick={() => handleGenerateAI(toGroup)}>一键生成</Button>
+                    </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </Modal>
+    );
+  };
+
   type Props = {
     visible: boolean,
     value: string,
@@ -218,67 +336,55 @@ const CampaignEditor = () => {
     onCancel: () => void,
   };
 
-  const ContentModal: FC<Props> = (props) => {
-    const { visible, onOk, onCancel, value, onChange } = props;
-    const [selectedContact, setSelectedContact] = useState<number | null>(null);
-    const [aiContent, setAiContent] = useState<string>('');
-    const handleContactClick = async (id: number) => {
-      setSelectedContact(id);
-
-      // Simulate fetching AI-generated content
-      const content = `Generated content for contact ID ${id}`;
-      setAiContent(content);
+  function ScrollAreaDemo({className, title, setContactSelected}: ScrollAreaDemoProps) {
+    const [checkedItems, setCheckedItems] = useState<boolean[]>(new Array(contactList.length).fill(false));
+    const handleItemClick = async (index: number) => {
+      setContactSelected(contentList[index]);
     };
-
-    const handleGenerateAI = async () => {
-      if (selectedContact === null) {
-        message.error('Please select a contact to generate AI content.');
-        return;
-      }
-      // Call your AI generation logic here
-      message.success(`AI content generated for contact ID ${selectedContact}`);
+    const handleItemChange = (index: number, flag: boolean) => {
+      const newCheckedItems = [...checkedItems];
+      newCheckedItems[index] = flag;
+      setCheckedItems(newCheckedItems);
     };
 
     return (
-        <Modal
-            title="Content"
-            open={visible}
-            onOk={onOk}
-            onCancel={onCancel}
-            wrapClassName={styles.contentModal}
-            width={'80vw'}
-        >
-          <div className={styles.main}>
-            <div className={styles.contactList}>
-              {contactList.map(contact => (
-                  <div
-                      key={contact.id}
-                      className={`${styles.contactCard} ${selectedContact === contact.id ? styles.selected : ''}`}
-                      onClick={() => handleContactClick(contact.id)}
-                  >
-                    {contact.firstName} {contact.lastName}
+        <ScrollArea className={`h-72 w-48 rounded-md border ${className}`}>
+          <div className="p-4" onClick={() => {
+            console.log(contentList)
+          }}>
+            <h4 className="mb-4 text-sm font-medium leading-none">{title}</h4>
+            {contentList.map((contact, index) => (
+                <React.Fragment key={index}>
+                  <div className='flex items-center mb-2'>
+                    <input type="checkbox" className="form-checkbox"
+                           checked={checkedItems[index]}
+                           onChange={(event) => {
+                             handleItemChange(index, event.target.checked);
+                           }}
+                    />
+                    <div
+                        key={contact.contact.id}
+                        className={`${styles.contactCard}`}
+                        onClick={() => {
+                          handleItemClick(contact.contact.id)
+                          console.log(contact)
+                        }}
+                    >
+                      {contact.contact.firstName} {contact.contact.lastName}
+                    </div>
                   </div>
-              ))}
-            </div>
-
-            {selectedContact !== null && (
-                <div className={styles.aiWrapper}>
-                  <h3>AI Generated Content:</h3>
-                  <div className={styles.aiContent}>
-                    {aiContent}
-                  </div>
-                  <Button type="primary" onClick={handleGenerateAI}>AI生成</Button>
-                </div>
-            )}
+                </React.Fragment>
+            ))}
           </div>
-        </Modal>
+        </ScrollArea>
     );
-  };
+  }
+
   //Prohibit modification
-  const replaceLinkContentByLink = (links:string)=>{
-    let val =links;
-    const prefix = "www.cusob.com/api/report"+"/"+campaignId+"/";
-    const myReplacer = (match:string) => {
+  const replaceLinkContentByLink = (links: string) => {
+    let val = links;
+    const prefix = "www.cusob.com/api/report" + "/" + campaignId + "/";
+    const myReplacer = (match: string) => {
       let domain = match.replace(/https?:\/\//, '');
       return prefix + domain;
     };
@@ -289,7 +395,7 @@ const CampaignEditor = () => {
 
   const initCampaign = useCallback(async (groupList: { value: number, label: string }[]) => {
     if (campaignId) {
-      message.loading({ content: 'loading', duration: 10, key: 'loading' })
+      message.loading({content: 'loading', duration: 10, key: 'loading'})
       const res = await getCampaign(campaignId)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE && res.data) {
@@ -917,6 +1023,7 @@ const CampaignEditor = () => {
       onCancel={onContentCancel}
       value={richContent}
       onChange={val => setRichContent(val)}
+
     />
   </div>
 };

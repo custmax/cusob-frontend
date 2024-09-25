@@ -784,7 +784,7 @@ const CampaignEditor = () => {
       </div>
     </Modal>
     <Modal
-      title=""
+      title="content"
       open={showSend}
       onOk={onSendTimeOk}
       onCancel={onSendTimeCancel}
@@ -830,3 +830,6 @@ const CampaignEditor = () => {
 };
 
 export default CampaignEditor;
+
+
+

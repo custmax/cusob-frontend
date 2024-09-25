@@ -100,7 +100,14 @@ export const generateByGroup = async (payload: { groupId: string; content: strin
   return res;
 };
 
-
+export const generateByPerson = async (groupId: number | undefined) => {
+  const res = clientFetch({
+    url: '/api/generate/generateByPerson',
+    method: 'POST',
+    data: groupId,
+  })
+  return res;
+}
 
 export const batchImport = async (data: FormData) => {
   const token = getToken() || ''

@@ -26,6 +26,8 @@ export const getContactByGroup = async (groupId: number | undefined) => {
   return res;
 }
 
+
+
 export const saveDraft = async (data: Partial<Campaign.CampaignNew>) => {
   const res = await clientFetch({
     url: `/api/campaign/saveDraft`,
