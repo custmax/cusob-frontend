@@ -61,6 +61,7 @@ const Home = () => {
             <button  onClick={handleDeclineAll}>Decline All</button>
               <Link href="/policy"><button className={button_black} >Privacy Policy</button></Link>
             </div>
+
           </div>
     </div>
     }

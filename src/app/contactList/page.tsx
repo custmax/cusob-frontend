@@ -414,6 +414,10 @@ const ContactList = () => {
 
                     }}>
                         <Link href={"/importWay"}>Add Contact</Link>
+
+                    </button>
+                    <button>
+                        <Link href='/Blogs'>haha</Link>
                     </button>
                 </div>
             </div>
