@@ -11,18 +11,18 @@ const posts = [
         date: '2024-09-01',
         excerpt: 'For startups or growing businesses, it\'s crucial to understand how to get started with free digital marketing. Digital marketing doesn\'t necessarily require paid advertising, and there are a number of free ways to attract customers.',
     },
-    {
-        id: 2,
-        title: '第二篇博客',
-        date: '2024-09-10',
-        excerpt: '这是第二篇博客的摘要，探讨了一些重要的概念。',
-    },
-    {
-        id: 3,
-        title: '第三篇博客',
-        date: '2024-09-15',
-        excerpt: '这是第三篇博客的摘要，分享了一些实用的技巧。',
-    },
+    // {
+    //     id: 2,
+    //     title: '第二篇博客',
+    //     date: '2024-09-10',
+    //     excerpt: '这是第二篇博客的摘要，探讨了一些重要的概念。',
+    // },
+    // {
+    //     id: 3,
+    //     title: '第三篇博客',
+    //     date: '2024-09-15',
+    //     excerpt: '这是第三篇博客的摘要，分享了一些实用的技巧。',
+    // },
 ];
 
 const BlogPage: React.FC = () => {
