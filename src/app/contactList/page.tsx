@@ -420,6 +420,10 @@ const ContactList = () => {
                     <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
                     }}>
                         <Link href={"/importWay"}>Add Contact</Link>
+
+                    </button>
+                    <button>
+                        <Link href='/Blogs'>haha</Link>
                     </button>
                     <Modal
                         title="Add Group"
