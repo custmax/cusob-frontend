@@ -20,6 +20,7 @@ const config: Config = {
   		},
   		colors: {
 			'custom-purple': '#7241FF',
+			'selected': '#F0F0F0',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

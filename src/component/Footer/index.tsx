@@ -63,6 +63,9 @@ const Footer = () => {
 			<div className={section3SubTitle}>
 				<Link href="/pricing" className={siteText}>Help</Link>
 			</div>
+			<div className={section3SubTitle}>
+				<Link href={"/emailMarketing"}>Add Group</Link>
+			</div>
 		</section>
 		<section className={section4}>
 			<div className={section4Title}>Company</div>

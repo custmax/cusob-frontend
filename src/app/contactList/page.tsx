@@ -8,6 +8,7 @@ import {
     Space,
     TableProps,
     message,
+    Modal,
     PaginationProps,
 } from 'antd';
 import {
@@ -72,6 +73,7 @@ const {
     groupItem,
     active,
     addgroupItem,
+    groupModal
 } = styles;
 
 const pageSize = 10;
@@ -101,6 +103,7 @@ const ContactList = () => {
     let [contacts, setContacts] = useState<DataType2[]>([]);
     let [selectContactList, setSelectContactList] = useState<{ key: number, value: boolean}[]>([]);
     let [allContactButton, setAllContactButton] = useState<boolean>(false);
+    const[visible, setVisible] = useState<boolean>(false);
 
     const initGroupList = async () => {
         const res = await getGroupList()
@@ -393,9 +396,9 @@ const ContactList = () => {
                             activeTab === '2' ? 'text-2xl font-bold border-b-4 border-custom-purple' : 'text-xl  border-b-0'
                         } `}
                         onClick={() => {
-                                getContacts();
-                                handleClick('2');
-                            }
+                            getContacts();
+                            handleClick('2');
+                        }
                         }
                     >
                         <p className="leading-[normal] text-[#000000]">All Contacts</p>
@@ -411,10 +414,21 @@ const ContactList = () => {
                     <div className="flex-grow"></div>
                     {/* 空的 flex-grow 元素，用于推动按钮到最右侧 */}
                     <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
-
+                    }}>
+                        <Link href={""}>Add Group</Link>
+                    </button>
+                    <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
                     }}>
                         <Link href={"/importWay"}>Add Contact</Link>
                     </button>
+                    <Modal
+                        title="Add Group"
+                        open={visible}
+                        wrapClassName={groupModal}
+                        width={'80vw'}
+                    >
+
+                    </Modal>
                 </div>
             </div>
         );

@@ -67,6 +67,14 @@ export const getEmailList = async (togroup:number)=>{
   })
   return res;
 }
+export const generateContent = async (contacts:number[])=>{
+  const res = await clientFetch({
+    url: `/api/generate/generate`,
+    method: 'POST',
+    data: contacts,
+  })
+  return res;
+}
 
 export const sendEmail = async (data: Campaign.CampaignNew, campaignId: string | null) => {
   let campaignIdNumber = Number(campaignId);

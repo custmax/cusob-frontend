@@ -1,20 +1,6 @@
-import React, {
-    FC,
-    ForwardedRef,
-    LegacyRef,
-    createRef,
-    forwardRef,
-    useEffect,
-    useImperativeHandle,
-    useRef,
-    useState
-} from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
-export type ImperativeHandle = {
-    getEditor: any
-}
 
 type Props = {
     parentRef?: any,
@@ -22,74 +8,66 @@ type Props = {
     value: string,
 }
 
-
-const RichEditor = (props: Props) => {
-
-    const {parentRef, onChange, value} = props;
-    const quillRef: LegacyRef<ReactQuill> = useRef(null)
-
+const RichEditor: FC<Props> = ({ parentRef, onChange, value }) => {
+    const quillRef = useRef<ReactQuill>(null);
 
     useEffect(() => {
         if (parentRef) {
-            parentRef.current = quillRef.current
+            parentRef.current = quillRef.current;
         }
-    }, [])
+    }, [parentRef]);
 
+    useEffect(() => {
+        if (quillRef.current) {
+            const editor = quillRef.current.getEditor(); // 获取 Quill 编辑器实例
+            const editorContainer = editor.root; // 获取 .ql-editor
+            editorContainer.style.height = '280px'; // 设置最大高度
+            editorContainer.style.overflowY = 'auto'; // 超出时显示滚动条
+            editorContainer.style.overflowX = 'hidden'; // 隐藏水平滚动条
+        }
+    }, []);
 
     const modules = {
         toolbar: {
             container: [
-                ['bold', 'italic', 'underline', 'strike'], // 加粗，斜体，下划线，删除线
-                ['blockquote', 'code-block'], // 字体样式
-                ['link', 'image'], // 上传图片、上传视频
-                [{list: 'ordered'}, {list: 'bullet'}], // 有序列表，无序列表
-                [{script: 'sub'}, {script: 'super'}], // 下角标，上角标
-                // [{ indent: '-1' }, { indent: '+1' }], // 缩进
-                [{align: []}], // 居中
-                [{color: []}, {background: []}], // 文字颜色、背景颜色选择
-                [{direction: 'rtl'}], // 文字输入方向
-                [{header: [1, 2, 3, 4, 5, 6, false]}], // 标题
-                ['clean'], // 清除样式
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                ['link', 'image'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ script: 'sub' }, { script: 'super' }],
+                [{ align: [] }],
+                [{ color: [] }, { background: [] }],
+                [{ direction: 'rtl' }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['clean'],
             ],
-        }
+        },
     };
-
-    //   const modules = {
-    //       toolbar: [
-    //     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    //     ['bold', 'italic', 'underline', 'strike'],
-    //     [{ list: 'ordered' }, { list: 'bullet' }],
-    //     [{ align: [] }],
-    //     ['link','image'],
-    //     ['clean'],
-    //   ],
-    // }
-
 
     const _onChange = (val: string) => {
         onChange(val);
-    }
+    };
 
-
-    return <div>
-        <ReactQuill
-            ref={quillRef}
-            placeholder="please input context"
-            modules={modules}
-            theme="snow"
-            value={value}
-            onChange={_onChange}
-            formats={[
-                'header', 'font', 'size',
-                'bold', 'italic', 'underline', 'strike', 'blockquote',
-                'list', 'bullet', 'indent',
-                'link',
-                'image', 'video',
-                "clean"
-            ]}
-        />
-
-    </div>
+    return (
+        <div style={{ width: '100%' }}>
+            <ReactQuill
+                ref={quillRef}
+                placeholder="please input context"
+                modules={modules}
+                theme="snow"
+                value={value}
+                onChange={_onChange}
+                formats={[
+                    'header', 'font', 'size',
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    'list', 'bullet', 'indent',
+                    'link',
+                    'image', 'video',
+                    "clean"
+                ]}
+            />
+        </div>
+    );
 };
 
 export default RichEditor;

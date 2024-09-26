@@ -29,7 +29,8 @@ import {
     getLastCampaignId,
     saveDraft,
     sendEmail,
-    updateCampaign
+    updateCampaign,
+    generateContent
 } from '@/server/campaign';
 import {getSenderList} from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
@@ -39,6 +40,17 @@ import {getAddr} from "@/server/accountInfo";
 import {getTemplate} from "@/server/template";
 import {DataType} from "csstype";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import dynamic from "next/dynamic";
+import contact from "@/app/pricing/component/Contact";
+
+const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
+type RichEditorProps = {
+    onChange: (val: string) => void,
+    value: string,
+}
+const NewRichEditor = forwardRef((props: RichEditorProps, ref) =>
+    <RichEditor parentRef={ref} {...props} />)
+NewRichEditor.displayName = 'NewRichEditor'
 
 const {
     campaignEditorContainer,
@@ -103,12 +115,13 @@ type ContactType = {
 type ContactNodeType = {
     contact: ContactType,
     content: string,
+    index: number
 }
 type ScrollAreaDemoProps = {
     className?: string;
     title: string;
     items: ContactNodeType[];
-    setContactSelected: (newItems: ContactNodeType) => void;
+    setContact: (newItems: ContactNodeType) => void;
 };
 
 
@@ -126,10 +139,13 @@ const CampaignEditor = () => {
     const [groupList, setGroupList] = useState<{ value: number, label: string }[]>([]);
     const [toGroup, setToGroup] = useState<number | undefined>()
     const [senderEmail, setSenderEmail] = useState('')
+    const richEditorRef = useRef<{ getEditor: any }>()
+    let [innerContent, setInnerContent] = useState('')
+
     // const [senderName, setSenderName] = useState('')
     const [subject, setSubject] = useState('')
     const [preText, setPreText] = useState('')
-    const [richContent, setRichContent] = useState('')
+    let [richContent, setRichContent] = useState('')
     const [sendDate, setSendDate] = useState('')
     const [sendMinute, setSendMinute] = useState('')
     const [allow, setAllow] = useState(true)
@@ -138,13 +154,18 @@ const CampaignEditor = () => {
     const [senderId, setSenderId] = useState<number>()
     const [contactList, setContactList] = useState<ContactType[]>([])
     const [contentList, setContentList] = useState<ContactNodeType[]>([])
+    let [contactSelected, setContactSelected] = useState<ContactNodeType>();
+    let [contactsSelected, setContactsSelected] = useState<number[]>([]);
+    let [checks, setCheckedItems] = useState<boolean[]>(new Array(contactList.length).fill(false));
+
+
     const [trackClicks, setTrackClicks] = useState<boolean>(false)
     const [trackLink, setTrackLink] = useState<boolean>(false)
     const [trackOpens, setTrackOpens] = useState<boolean>(true)
     const [trackTextClicks, setTrackTextClicks] = useState<boolean>(false)
     const [timeZone, setTimeZone] = useState('UTC+08:00');
     const searchParams = useSearchParams();
-    const [contactSelected, setContactSelected] = useState<ContactNodeType>();
+
     let campaignId = searchParams.get('id');
     let templateId = Number(searchParams.get('templateId'))
 
@@ -193,9 +214,10 @@ const CampaignEditor = () => {
     };
 
     useEffect(() => {
-        const oneList: ContactNodeType[] = contactList.map(one => ({
+        const oneList: ContactNodeType[] = contactList.map((one, index) => ({
             contact: one,
             content: '',
+            index: index,
         }))
         setContentList(oneList)
     }, [contactList]);
@@ -233,6 +255,63 @@ const CampaignEditor = () => {
         return input.replace(urlRegex, replacer);
     }
 
+    function ScrollAreaDemo({className, }: ScrollAreaDemoProps) {
+        const [selectedIndex, setSelectedIndex] = useState<number>(0); // 维护被点击的条目索引
+        let [checkedItems, setCheckedItems] = useState<boolean[]>(new Array(contactList.length).fill(false));
+
+        const handleItemClick = (index: number) => {
+            setSelectedIndex(index); // 设置选中条目的索引
+        };
+
+        useEffect(() => {
+            contactSelected =  contentList[selectedIndex]// 设置选中条目的索引
+            innerContent = contactSelected.content
+            if (richEditorRef.current) {
+                const editor = richEditorRef.current.getEditor();
+                editor.setText(''); // 清空编辑器内容
+                editor.insertText(0, contactSelected.content); // 从光标开始插入新内容
+            }
+            console.log(richContent)
+        }, [selectedIndex]);
+
+        useEffect(() => {
+            console.log(contactsSelected)
+        }, [checkedItems]);
+
+        const handleItemChange = (index: number, flag: boolean) => {
+            const newCheckedItems = [...checkedItems];
+            newCheckedItems[index] = flag;
+            setCheckedItems(newCheckedItems)
+            checks = newCheckedItems;
+        };
+
+        return (
+            <ScrollArea className={`h-full w-[13rem] border-r ${className}`}>
+                <div className="p-4 w-100 h-[26rem]">
+                    <h4 className="mb-2 text-sm font-medium leading-none">Contact List</h4>
+                    <div className="max-h-80 min-h-80 overflow-y-auto">
+                        {contentList.map((contact, index) => (
+                            <button type="button" key={index} className={`flex w-full items-center justify-between 
+                                        ${selectedIndex === index ? 'bg-selected text-lg' : ''}`}
+                                    onClick={() => handleItemClick(index)}
+                            >
+                                <div className={`${styles.contactCard} flex cursor-pointer m-2`} // 添加 cursor-pointer 以指示可点击
+                                >
+                                    {contact.contact.firstName} {contact.contact.lastName}
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    className="form-checkbox text-right m-2"
+                                    checked={checkedItems[index]}
+                                    onChange={(event) => handleItemChange(index, event.target.checked)}
+                                />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </ScrollArea>
+        );
+    }
 
     type Props = {
         visible: boolean,
@@ -241,101 +320,119 @@ const CampaignEditor = () => {
         onOk: () => void,
         onCancel: () => void,
     };
-    function ScrollAreaDemo({className, title}: ScrollAreaDemoProps) {
-        const [checkedItems, setCheckedItems] = useState<boolean[]>(new Array(contactList.length).fill(false));
-        const handleItemClick = async (index: number) => {
-            setContactSelected(contentList[index]);
-        };
-        const handleItemChange = (index: number, flag: boolean) => {
-            const newCheckedItems = [...checkedItems];
-            newCheckedItems[index] = flag;
-            setCheckedItems(newCheckedItems);
-        };
-
-        return (
-            <ScrollArea className={`h-72 w-48 rounded-md border ${className}`}>
-                <div className="p-4" onClick={() => {
-                    console.log(contentList)
-                }}>
-                    <h4 className="mb-4 text-sm font-medium leading-none">{title}</h4>
-                    {contentList.map((contact, index) => (
-                        <React.Fragment key={index}>
-                            <div className='flex items-center mb-2'>
-                                <input type="checkbox" className="form-checkbox"
-                                       checked={checkedItems[index]}
-                                       onChange={(event) => {
-                                           handleItemChange(index, event.target.checked);
-                                       }}
-                                />
-                                <div
-                                    key={contact.contact.id}
-                                    className={`${styles.contactCard}`}
-                                    onClick={() => {
-                                        handleItemClick(contact.contact.id)
-                                        console.log(contact)
-                                    }}
-                                >
-                                    {contact.contact.firstName} {contact.contact.lastName}
-                                </div>
-                            </div>
-                        </React.Fragment>
-                    ))}
-                </div>
-            </ScrollArea>
-        );
-    }
-
     const ContentModal: FC<Props> = (props) => {
         const {visible, onOk, onCancel, value, onChange} = props;
-        const [selectedContact, setSelectedContact] = useState<number | null>(null);
-        const [aiContent, setAiContent] = useState<string>('');
-        const handleContactClick = async (id: number) => {
-            setSelectedContact(id);
-            // Simulate fetching AI-generated content
-            const content = `Generated content for contact ID ${id}`;
-            setAiContent(content);
-        };
 
         const handleGenerateAI = async () => {
-            if (selectedContact === null) {
-                message.error('Please select a contact to generate AI content.');
+            if (toGroup === null || toGroup === undefined) {
+                message.error('Please select a group firstly to generate AI content.');
+                return;
+            }
+            if (contactsSelected.length === 0) {
+                message.error('Please select a contact firstly or click the generate button to generate AI content.');
                 return;
             }
             // Call your AI generation logic here
-            message.success(`AI content generated for contact ID ${selectedContact}`);
+            message.loading({ content: 'loading', duration: 10, key: 'loading' })
+            const res = await generateContent(contactsSelected);
+            message.destroy("Loading")
+            contentList.map(one => {
+                if(res.data[one.contact.id] !== null && res.data[one.contact.id] !== undefined)
+                    one.content = res.data[one.contact.id]
+            })
+            message.success(`AI content generated for contacts selected`);
         };
+
+        // useEffect(() => {
+        //     if(contactSelected !== undefined) {
+        //         innerContent = contactSelected.content
+        //         if (richEditorRef.current) {
+        //             const editor = richEditorRef.current.getEditor();
+        //             editor.setText(''); // 清空编辑器内容
+        //             editor.insertText(0, contactSelected.content); // 从光标开始插入新内容
+        //         }
+        //         console.log(richContent)
+        //     }
+        // }, [contentList]);
+
+        const _onChange = (value: string) => {
+            innerContent = value
+            onChange(value)
+        }
 
         return (
             <Modal
                 open={visible}
-                onOk={onOk}
-                onCancel={onCancel}
                 wrapClassName={contentModal}
                 width={'80vw'}
+                footer={[
+                    <Button key="back" onClick={onCancel}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="submit"
+                        type="primary"
+                        className="bg-custom-purple text-white" // 使用自定义类
+                        style={{
+                            backgroundColor: '#7241FF',
+                            borderColor: '#7241FF',
+                            color: 'white',
+                        }}
+                        onClick={onOk}
+                    >
+                        Confirm
+                    </Button>,
+                ]}
             >
-                <div className="flex mb-2 items-start">
+                <div className="flex mb-2 h-[31rem] items-start">
                     <ScrollAreaDemo
                         className="custom-class"
                         title=""
                         items={contentList}
-                        setContactSelected={setContactSelected}/>
+                        setContact={setContactSelected}/>
                     <div className="h-full">
                         <div className="text-center font-bold font-serif">
-                            content
+                            Content
                         </div>
-                        <div className={styles.main}>
-                            {contactSelected !== null && (
-                                <div className={styles.aiWrapper}>
-                                    <h3>AI Generated Content:</h3>
-                                    <div className={styles.aiContent}>
-                                        {aiContent}
-                                    </div>
-                                    <Button type="primary" onClick={handleGenerateAI}>AI生成</Button>
-                                </div>
-                            )}
+                        <div className="m-3 flex justify-between">
+                            <h3 className="flex mb-2 items-start">AI Generated Content:</h3>
+                            <Button type="primary"
+                                    style={{
+                                        backgroundColor: '#7241FF',
+                                        borderColor: '#7241FF',
+                                        color: 'white',
+                                    }}
+                                    onClick={()=> {
+                                        const temp: number[] = [];
+                                        contentList.map((one, index) => {
+                                                temp.push(one.contact.id)
+                                        })
+                                        contactsSelected = temp
+                                        handleGenerateAI()
+                                    }}>Generate</Button>
+                        </div>
+                        <div className="m-3 w-[55rem] min-h-[21rem]">
+                            <NewRichEditor ref={richEditorRef} value={innerContent} onChange={_onChange}/>
+                        </div>
+                        <div className="m-3 text-right">
+                            <Button type="primary"
+                                    style={{
+                                        backgroundColor: '#7241FF',
+                                        borderColor: '#7241FF',
+                                        color: 'white',
+                                    }}
+                                    onClick={() => {
+                                        const temp: number[] = [];
+                                        contentList.map((one, index) => {
+                                            if(checks[index])
+                                                temp.push(one.contact.id)
+                                        })
+                                        contactsSelected = temp
+                                        console.log(contactsSelected)
+                                        handleGenerateAI()
+                                    }}>Rebuild</Button>
                         </div>
                     </div>
-
                 </div>
             </Modal>
         );
@@ -812,6 +909,10 @@ const CampaignEditor = () => {
     }
 
 
+    function handleChangeContent(val: string) {
+        richContent = val;
+    }
+
     return <div className={campaignEditorContainer}>
         <EnteredHeader/>
         <SideBar/>
@@ -986,7 +1087,7 @@ const CampaignEditor = () => {
             onOk={onContentOk}
             onCancel={onContentCancel}
             value={richContent}
-            onChange={val => setRichContent(val)}
+            onChange={val => handleChangeContent(val)}
         />
     </div>
 };
