@@ -413,17 +413,18 @@ const ContactList = () => {
                     </button>
                     <div className="flex-grow"></div>
                     {/* 空的 flex-grow 元素，用于推动按钮到最右侧 */}
-                    <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
-                    }}>
-                        <Link href={""}>Add Group</Link>
-                    </button>
+                        <button className="py-2 px-4 text-white rounded bg-custom-purple">
+                            <Link href="/groupAdder">
+                            Add Group
+                            </Link>
+                        </button>
                     <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
                     }}>
                         <Link href={"/importWay"}>Add Contact</Link>
 
                     </button>
                     <button>
-                        <Link href='/Blogs'>haha</Link>
+                        <Link href='/Ebooks'>haha</Link>
                     </button>
                     <Modal
                         title="Add Group"

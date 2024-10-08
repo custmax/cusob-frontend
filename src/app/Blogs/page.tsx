@@ -32,16 +32,25 @@ const BlogPage: React.FC = () => {
             <h1 className="text-4xl font-bold text-center mb-8">我的博客</h1>
             <div className="space-y-6">
                 {posts.map((post) => (
-                    <div key={post.id} className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
+                    <div key={post.id}
+                         className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
                         <h2 className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors">{post.title}</h2>
                         <p className="text-gray-500 text-sm">{post.date}</p>
                         <p className="mt-2 text-gray-700">{post.excerpt}</p>
-                        <a
-                            href={`/BlogsContent/${post.id}`} // 跳转到具体的博文页面
-                            className="text-blue-600 hover:underline mt-4 inline-block transition-transform transform hover:scale-105"
-                        >
-                            Read More
-                        </a>
+                        <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '20px'}}>
+                            <a
+                                href={`/BlogsContent/${post.id}`} // 跳转到具体的博文页面
+                                className="text-blue-600 hover:underline mt-4 inline-block transition-transform transform hover:scale-105"
+                            >
+                                Read More
+                            </a>
+                            <a
+                                href={`/contactList`} // 跳转到联系列表
+                                className="text-blue-600 hover:underline mt-4 inline-block transition-transform transform hover:scale-105"
+                            >
+                                Back
+                            </a>
+                        </div>
                     </div>
                 ))}
             </div>

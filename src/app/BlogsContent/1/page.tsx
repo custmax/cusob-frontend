@@ -19,7 +19,7 @@ const Post1: React.FC = () => {
 
                 <h2 className="text-xl font-semibold mt-6">Why is Digital Marketing Important?</h2>
                 <p>
-                    Today's world is more like a community connected by the Internet. You can acquire knowledge, shop,
+                    Now world is more like a community connected by the Internet. You can acquire knowledge, shop,
                     and work through the Internet. Compared with traditional marketing, e-marketing can enable you to
                     reach a larger customer group and automatically help your enterprise attract customers.
                     If you overlook the importance of digital marketing, it is undoubtedly detrimental to the long-term

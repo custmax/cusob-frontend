@@ -42,6 +42,7 @@ import {DataType} from "csstype";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import dynamic from "next/dynamic";
 import contact from "@/app/pricing/component/Contact";
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 type RichEditorProps = {
@@ -141,7 +142,7 @@ const CampaignEditor = () => {
     const [senderEmail, setSenderEmail] = useState('')
     const richEditorRef = useRef<{ getEditor: any }>()
     let [innerContent, setInnerContent] = useState('')
-
+    const [showAlert, setShowAlert] = useState(false);
     // const [senderName, setSenderName] = useState('')
     const [subject, setSubject] = useState('')
     const [preText, setPreText] = useState('')
@@ -264,15 +265,23 @@ const CampaignEditor = () => {
         };
 
         useEffect(() => {
-            contactSelected =  contentList[selectedIndex]// 设置选中条目的索引
-            innerContent = contactSelected.content
+            const contactSelected = contentList[selectedIndex]; // 设置选中条目的索引
+
+            if (!contactSelected) { // 检查 contactSelected 是否有效
+                setShowAlert(true); // 显示警告弹窗
+                return; // 退出 useEffect
+            }
+
+            const innerContent = contactSelected.content; // 现在可以安全访问 content
+
             if (richEditorRef.current) {
                 const editor = richEditorRef.current.getEditor();
                 editor.setText(''); // 清空编辑器内容
-                editor.insertText(0, contactSelected.content); // 从光标开始插入新内容
+                editor.insertText(0, innerContent); // 从光标开始插入新内容
             }
-            console.log(richContent)
-        }, [selectedIndex]);
+
+            console.log(innerContent); // 可以安全地打印 innerContent
+        }, [selectedIndex, contentList]);
 
         useEffect(() => {
             console.log(contactsSelected)
@@ -310,6 +319,7 @@ const CampaignEditor = () => {
                     </div>
                 </div>
             </ScrollArea>
+
         );
     }
 
@@ -739,7 +749,12 @@ const CampaignEditor = () => {
             setShowSubject(true)
         }
         if (title === 'Content') {
+            if(toGroup === null || toGroup === undefined){
+                message.error("please selecct a group!")
+                return
+            }
             setShowContent(true)
+
         }
         if (title === 'Send time') {
             setShowSend(true)

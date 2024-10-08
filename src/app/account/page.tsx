@@ -1,10 +1,11 @@
 'use client'
+
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import { Form, GetProp, Input, Select, Space, Upload, UploadProps, message } from 'antd';
 import { countryOptions } from '@/constant/phone';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import ImgWrapper from '@/component/ImgWrapper';
 import { getUserInfo, updateUser, uploadAvatar } from '@/server/user';
@@ -31,6 +32,8 @@ const {
   cancel,
   save
 } = styles;
+
+
 
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -198,26 +201,34 @@ const Account = () => {
         </Select>
       </Form.Item>
   );
-
+  const handlePointerEnter = () => {};
+  const handlePointerLeave = () => {};
   const uploadButton = (
-    <button style={{ border: 0, background: 'none' }} type="button">
-      {loading ? <LoadingOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined} /> : <PlusOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined} />}
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </button>
+
+      <button style={{border: 0, background: 'none'}} type="button">
+        {loading ? (
+            // @ts-ignore
+            <LoadingOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined}/>
+        ) : (
+            // @ts-ignore
+            <PlusOutlined onPointerOverCapture={undefined} onPointerOutCapture={undefined}/>
+        )}
+        <div style={{marginTop: 8}}>Upload</div>
+      </button>
   );
 
   return <div className={accountContainer}>
-    <EnteredHeader avatar={avatarStr} />
-    <SideBar />
+    <EnteredHeader avatar={avatarStr}/>
+    <SideBar/>
     <div className={main}>
       <div className={title}>Account</div>
       <div className={content}>
         <Upload
-          name="avatar"
-          listType="picture-card"
-          className={avatarUploader}
-          showUploadList={false}
-          action=""
+            name="avatar"
+            listType="picture-card"
+            className={avatarUploader}
+            showUploadList={false}
+            action=""
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
