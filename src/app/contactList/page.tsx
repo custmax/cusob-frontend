@@ -423,7 +423,7 @@ const ContactList = () => {
                         <Link href={"/importWay"}>Add Contact</Link>
                     </button>
                     <button>
-                        <Link href='/Ebooks'>haha</Link>
+                        <Link href='/Ebooks/HomePage'>haha</Link>
                     </button>
                     <Modal
                         title="Add Group"

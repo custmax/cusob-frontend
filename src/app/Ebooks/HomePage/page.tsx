@@ -28,7 +28,9 @@ const EbookPage: React.FC = () => {
                 <div className="flex items-center w-3/4 justify-center"> {/* 使用 justify-center 使内容居中 */}
                     <div className="text-3xl font-bold">首页</div>
                     <div className="flex-grow"></div>
-                    <div>我的账户</div>
+                    <div>
+                        <Link href={"/Ebooks"}>我的账户</Link>
+                    </div>
                     {/* 左对齐标题 */}
                     {/*<DropdownMenu.Root open={open} onOpenChange={setOpen}>*/}
                     {/*    <DropdownMenu.Trigger className="focus:outline-none ml-10"> /!* 加一些左边距以分隔 *!/*/}

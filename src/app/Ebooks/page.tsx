@@ -38,12 +38,12 @@ const EbookPage: React.FC = () => {
                     {showDropdown && isLoggedIn && (
                         <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
                             <ul className="py-2">
-                                    <button
-                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                                        onClick={handleLogout}
-                                    >
-                                        登出
-                                    </button>
+                                <button
+                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                                    onClick={handleLogout}
+                                >
+                                    登出
+                                </button>
                             </ul>
                         </div>
                     )}
