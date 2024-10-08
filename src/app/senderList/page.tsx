@@ -9,7 +9,6 @@ import {SUCCESS_CODE} from "@/constant/common";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import {createdomain, getdomain} from "@/server/mailu/Domain";
-import boolean from "async-validator/dist-types/validator/boolean";
 import {getDomain} from "@/server/sendcloud/domain";
 
 type DataType = {

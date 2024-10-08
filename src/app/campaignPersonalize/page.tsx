@@ -272,7 +272,7 @@ const CampaignEditor = () => {
                 return; // 退出 useEffect
             }
 
-            const innerContent = contactSelected.content; // 现在可以安全访问 content
+            innerContent = contactSelected.content; // 现在可以安全访问 content
 
             if (richEditorRef.current) {
                 const editor = richEditorRef.current.getEditor();
@@ -375,6 +375,7 @@ const CampaignEditor = () => {
                 open={visible}
                 wrapClassName={contentModal}
                 width={'80vw'}
+                onCancel={onCancel}
                 footer={[
                     <Button key="back" onClick={onCancel}>
                         Cancel

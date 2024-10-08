@@ -101,9 +101,9 @@ const ContactList = () => {
     let [allGroupButton, setAllGroupButton] = useState<boolean>(false);
 
     let [contacts, setContacts] = useState<DataType2[]>([]);
-    let [selectContactList, setSelectContactList] = useState<{ key: number, value: boolean}[]>([]);
+    let [selectContactList, setSelectContactList] = useState<{ key: number, value: boolean }[]>([]);
     let [allContactButton, setAllContactButton] = useState<boolean>(false);
-    const[visible, setVisible] = useState<boolean>(false);
+    const [visible, setVisible] = useState<boolean>(false);
 
     const initGroupList = async () => {
         const res = await getGroupList()
@@ -413,15 +413,14 @@ const ContactList = () => {
                     </button>
                     <div className="flex-grow"></div>
                     {/* 空的 flex-grow 元素，用于推动按钮到最右侧 */}
-                        <button className="py-2 px-4 text-white rounded bg-custom-purple">
-                            <Link href="/groupAdder">
+                    <button className="py-2 px-4 text-white rounded bg-custom-purple">
+                        <Link href="/groupAdder">
                             Add Group
-                            </Link>
-                        </button>
+                        </Link>
+                    </button>
                     <button className="py-2 px-4 text-white rounded bg-custom-purple" onClick={() => {
                     }}>
                         <Link href={"/importWay"}>Add Contact</Link>
-
                     </button>
                     <button>
                         <Link href='/Ebooks'>haha</Link>
@@ -510,9 +509,10 @@ const ContactList = () => {
                     <TableCaption>A list of your groups.</TableCaption>
                     <TableHeader>
                         <TableRow>
-                            <TableHead >
+                            <TableHead>
                                 <button className="bg-custom-purple text-white" onClick={selectOrCancelAllByGroup}
-                                > deleteAll </button>
+                                > deleteAll
+                                </button>
                                 {/* 表头复选框 */}
                             </TableHead>
                             <TableHead>Group Name</TableHead>
@@ -618,7 +618,8 @@ const ContactList = () => {
                         <TableRow>
                             <TableHead className="px-1 text-center w-11">
                                 <button className="bg-custom-purple text-white" onClick={selectOrCancelAllByContact}
-                                > deleteAll </button>
+                                > deleteAll
+                                </button>
                                 {/* 表头复选框 */}
                             </TableHead>
                             <TableHead className="px-2 text-left max-w-12">
@@ -719,4 +720,5 @@ const ContactList = () => {
     </div>
 };
 
+// @ts-ignore
 export default ContactList;
