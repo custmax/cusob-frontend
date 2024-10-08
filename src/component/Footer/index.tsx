@@ -61,13 +61,13 @@ const Footer = () => {
 		<section className={section3}>
 			<div className={section3Title}>Resources</div>
 			<div className={section3SubTitle}>
-				<Link href="/pricing" className={siteText}>Help</Link>
+				<Link href="/pricing" >Help</Link>
 			</div>
 			<div className={section3SubTitle}>
-				<Link href={"/emailMarketing"}>Email Marketing</Link>
+				<Link href={"/email-marketing"} className={siteText}>Email Marketing</Link>
 			</div>
 			<div className={section3SubTitle}>
-				<Link href='/Blogs' >Blogs</Link>
+				<Link href='/blogs' className={siteText}>Blogs</Link>
 			</div>
 		</section>
 		<section className={section4}>

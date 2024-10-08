@@ -140,6 +140,9 @@
 			font-size: 20vpx;
 			color: #FFFFFF;
 			cursor: pointer;
+			&:nth-of-type(n+3) {
+				margin-top: 15vpx;
+			}
 			
 		}
 	}

@@ -109,8 +109,10 @@ const columns: TableProps<DataType>['columns'] = [
     render: (value:string) => (
         <div style={{ whiteSpace: 'normal' }}>
           <span style={{ marginRight: '5px' }}>{value}</span>
-          <CopyOutlined style={{cursor: 'pointer'}} onClick={() => handleCopy(value)}
-                        onPointerOverCapture={undefined} onPointerOutCapture={undefined} />
+          {
+            //@ts-ignore
+            <CopyOutlined style={{cursor: 'pointer'}} onClick={() => handleCopy(value)}
+                         onPointerOverCapture={undefined} onPointerOutCapture={undefined}/>}
         </div>
     ),
     ellipsis: true, // 添加这行来启用省略号
