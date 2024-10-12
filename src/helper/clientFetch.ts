@@ -7,6 +7,7 @@ type RequestOptions = {
   data?: any,
   contentType?: string,
   Authorization?: string,
+  headers?: { [key: string]: string }; // 添加 headers 属性
 }
 
 const request = async (options: RequestOptions) => {

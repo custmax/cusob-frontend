@@ -44,6 +44,22 @@ export const registerForInvited = async (info: User.UserSign, encode: string) =>
 }
 
 
+export const islogin = async () => {
+  // 从 localStorage 获取 token（或其他存储方式）
+  const token = getToken(); // 确保 token 已存储在 localStorage 中
+
+  const res = await clientFetch({
+    url: '/api/user/islogin',
+    method: 'GET',
+    headers: {
+      'token': token, // 将 token 添加到请求头
+    },
+  });
+
+  return res;
+}
+
+
 export const login = async (data: Pick<User.UserSign, 'email' | 'password'>) => {
   const res = await clientFetch({
     url: '/api/user/login',

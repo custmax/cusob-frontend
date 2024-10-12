@@ -68,6 +68,21 @@ export const login = async (data: Pick<User.UserSign, 'email' | 'password'>) => 
   return res;
 }
 
+export const islogin = async () => {
+  // 从 localStorage 获取 token（或其他存储方式）
+  const token = getToken(); // 确保 token 已存储在 localStorage 中
+
+  const res = await clientFetch({
+    url: '/api/Ebooks/user/islogin',
+    method: 'GET',
+    headers: {
+      'token': token, // 将 token 添加到请求头
+    },
+  });
+
+  return res;
+}
+
 export const uploadAvatar = async (data: FormData) => {
   const token = getToken() || ''
   const result = await fetch('/api/user/uploadAvatar', {
