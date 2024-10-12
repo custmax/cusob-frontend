@@ -67,7 +67,7 @@ const Signup = () => {
       delete value.prefix
       // console.log('value', value)
       message.loading({content: 'loading', duration: 10, key: 'loading'})
-      const res = await register(value,turnstileToken)
+      const res = await register(value, turnstileToken)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
         message.success({

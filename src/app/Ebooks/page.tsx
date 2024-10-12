@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import UserInfo from './userInfo/page'; // 导入 UserInfo 组件
 import MyBooks from './MyBooks/page';
-import MyAccount from '@/app/Ebooks/myaccount/page'// 导入 MyBooks 组件
+import MyAccount from './myaccount/page'// 导入 MyBooks 组件
+import MyTrade from './mytrade/page'// 导入 MyBooks 组件
+import MyUpload from './myupload/page'// 导入 MyBooks 组件
+
 
 const EbookPage: React.FC = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -79,7 +82,7 @@ const EbookPage: React.FC = () => {
                             我的账户
                         </button>
                         <button
-                            onClick={() => setActiveTab('myaccount')}
+                            onClick={() => setActiveTab('mytrade')}
                             className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${
                                 activeTab === 'mytrade' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                             }`}
@@ -88,7 +91,7 @@ const EbookPage: React.FC = () => {
                         </button>
 
                         <button
-                            onClick={() => setActiveTab('myaccount')}
+                            onClick={() => setActiveTab('myupload')}
                             className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${
                                 activeTab === 'myupload' ? 'border-sky-500 text-sky-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                             }`}
@@ -105,6 +108,9 @@ const EbookPage: React.FC = () => {
             {activeTab === 'userinfo' && <UserInfo/>}
             {activeTab === 'mybooks' && <MyBooks/>}
             {activeTab === 'myaccount' && <MyAccount/>}
+            {activeTab === 'mytrade' && <MyTrade/>}
+            {activeTab === 'myupload' && <MyUpload/>}
+
         </div>
     );
 };

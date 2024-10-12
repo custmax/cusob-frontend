@@ -23,16 +23,31 @@ export const sendPhoneCode = async (prefix: string)=>{
   return res;
 }
 
-export const register = async (info: User.UserSign, turnstileToken:string) => {
-  console.log({...info,turnstileToken})
-  const res = await clientFetch({
-    url: '/api/user/register',
-    method: 'POST',
-    data: {...info,turnstileToken}
-  })
-
-  return res;
+// 假设 userData 类型定义
+interface userData {
+  nickname: string;
+  email: string;
+  password: string;
+  // 可选的 Turnstile 令牌
+  turnstileToken?: string;
 }
+
+export const register = async (info: userData) => {
+  console.log({...info}); // 输出用户信息以供调试
+
+  try {
+    const res = await clientFetch({
+      url: '/api/user/register',
+      method: 'POST',
+      data: info, // 直接传递 info，若需要可以在这里添加其他字段
+    });
+
+    return res;
+  } catch (error) {
+    console.error('注册请求失败:', error);
+    throw new Error('注册请求失败');
+  }
+};
 
 export const registerForInvited = async (info: User.UserSign, encode: string) => {
   const res = await clientFetch({
