@@ -69,7 +69,9 @@ const EbookPage: React.FC = () => {
                     <div>
                         {isLoggedIn ? (
                             <button className="ml-10 text-blue-600 hover:underline">
-                                欢迎回来, {userName}
+                                <Link href="/Ebooks">
+                                    欢迎回来, {userName}
+                                </Link>
                             </button>
                         ) : (
                             <button className="ml-10 text-blue-600 hover:underline">
