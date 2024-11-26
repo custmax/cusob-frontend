@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+div,
+span{
+  /* user-select: none; */
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+ul,li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
