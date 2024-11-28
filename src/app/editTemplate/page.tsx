@@ -2,15 +2,17 @@
 import EnteredHeader from '@/component/EnteredHeader';
 import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
-import { Form, Input, Radio, RadioChangeEvent, message } from 'antd';
+import { Form, Input, Radio, RadioChangeEvent, message ,Select} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import dynamic from 'next/dynamic'
 import { getTemplate, saveTemplate, updateTemplate } from '@/server/template';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { SUCCESS_CODE } from '@/constant/common';
 import Link from "next/link";
+import Modall from "@/app/campaignEditor/component/Modall";
 
+import EmailEditor, { EditorRef } from 'react-email-editor';
 const RichEditor =  dynamic(() => import('@/component/RichEditor/index'), { ssr: false });
 
 const {
@@ -42,7 +44,8 @@ const EditTemplate = () => {
   const templateId = Number(searchParams.get('id'))
   const [richContent, setRichContent] = useState('');
   const [originTemplate, setOriginTemplate] = useState<Template.TemplateNew | null>(null)
-
+  const [designContent, setDesignContent] = useState<object | null>(null);
+  const emailEditorRef = useRef<EditorRef>(null);
   useEffect(() => {
     initTemplate()
   }, [])
@@ -60,10 +63,11 @@ const EditTemplate = () => {
           name,
           subject,
           type,
+          designContent,
         } = res.data || {}
-  
+
         setOriginTemplate(res.data)
-        
+
         form.setFieldsValue({
           name,
           folder,
@@ -71,11 +75,27 @@ const EditTemplate = () => {
         })
         setRichContent(content)
         setRaioValue(type)
+        setDesignContent(designContent)
+        if (designContent && emailEditorRef.current?.editor) {
+          try {
+            const design = JSON.parse(designContent);
+            emailEditorRef.current.editor.loadDesign(design);
+          } catch (error) {
+            console.error('Failed to load design content:', error);
+          }
+        }
       }else {
         message.error(res.message)
       }
     }
   }
+  const exportHtml = () => {
+    emailEditorRef.current?.editor?.exportHtml((data) => {
+      const { design, html } = data;
+      setRichContent(html);
+      setDesignContent(design);
+    });
+  };
 
   const onRadioChange = (e: RadioChangeEvent) => {
     setRaioValue(e.target.value);
@@ -86,6 +106,11 @@ const EditTemplate = () => {
   }
 
   const onSave = async () => {
+    emailEditorRef.current?.editor?.exportHtml((data) => {
+      const { design, html } = data;
+      setRichContent(html);
+      setDesignContent(design);
+    });
     const values = form.getFieldsValue()
     const {
       name,
@@ -98,6 +123,8 @@ const EditTemplate = () => {
       name,
       subject,
       type: raioValue,
+      // [!] 新增：保存设计内容
+      designContent: designContent ? JSON.stringify(designContent) : null,
     }
     if (templateId) {
       data.id = templateId
@@ -123,6 +150,7 @@ const EditTemplate = () => {
 
   const onContentChange = (val: string) => {}
 
+  // @ts-ignore
   return <div className={editTemplateContainer}>
     <EnteredHeader />
     <SideBar />
@@ -181,7 +209,21 @@ const EditTemplate = () => {
         </div>
         <div className={richTextTitle}>Content</div>
         <div className={richTextWrapper}>
-          <RichEditor value={richContent} onChange={(val: string) => { setRichContent(val) }} />
+          <EmailEditor
+              ref={emailEditorRef}
+              onReady={(editor) => {
+                // 如果有初始设计内容，加载
+                if (designContent) {
+                  // try {
+                  //   console.log('designContent=', designContent)
+                  //   // const design = JSON.parse(designContent);
+                  //   // emailEditorRef.current?.editor?.loadDesign(design);
+                  // } catch (error) {
+                  //   console.error('Initial design load failed:', error);
+                  // }
+                }
+              }}
+          />
         </div>
         <div className={operateWrapper}>
           <div className={saveBtn} onClick={onSave}>Save</div>
