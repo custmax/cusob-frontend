@@ -9,7 +9,6 @@ import {getReportList, getSenderName, removeReport} from '@/server/report';
 import { SUCCESS_CODE } from '@/constant/common';
 import emailStatistics from "@/server/mailgun/emailStatistics";
 import {removeCampaign} from "@/server/campaign";
-import EmailEditor, {EditorRef, EmailEditorProps} from "react-email-editor";
 
 type DataType = Report.ReportItem & { key: string }
 
@@ -35,26 +34,8 @@ const {
 const pageSize = 10;
 
 const Reports = () => {
-  const emailEditorRef = useRef<EditorRef>(null);
 
-  const exportHtml = () => {
-    const unlayer = emailEditorRef.current?.editor;
 
-    unlayer?.exportHtml((data) => {
-      const { design, html } = data;
-      console.log('exportHtml', html);
-    });
-  };
-
-  const onReady: EmailEditorProps['onReady'] = (unlayer) => {
-    // editor is ready
-    // you can load your template here;
-    // the design json can be obtained by calling
-    // unlayer.loadDesign(callback) or unlayer.exportHtml(callback)
-
-    // const templateJson = { DESIGN JSON GOES HERE };
-    // unlayer.loadDesign(templateJson);
-  };
   const [total, setTotal] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
   const [reportList, setReportList] = useState<DataType[]>([])
@@ -217,13 +198,7 @@ const Reports = () => {
         />
       </div>
     </div>
-    <div>
-      <div>
-        <button onClick={exportHtml}>Export HTML</button>
-      </div>
 
-      <EmailEditor ref={emailEditorRef} onReady={onReady}/>
-    </div>
   </div>
 };
 
