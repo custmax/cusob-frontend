@@ -106,11 +106,19 @@ const EditTemplate = () => {
   }
 
   const onSave = async () => {
-    emailEditorRef.current?.editor?.exportHtml((data) => {
-      const { design, html } = data;
-      setRichContent(html);
-      setDesignContent(design);
+    let tmp=''
+    await new Promise((resolve) => {
+      emailEditorRef.current?.editor?.exportHtml((data) => {
+        const { design, html } = data;
+        console.log("design:" + design)
+        tmp=JSON.stringify(design)
+        setRichContent(html);
+        setDesignContent(design);
+        resolve(null);
+      });
     });
+    console.log("ddddd:"+tmp)
+    console.log("aaaaa:"+JSON.stringify(designContent))
     const values = form.getFieldsValue()
     const {
       name,
@@ -124,7 +132,7 @@ const EditTemplate = () => {
       subject,
       type: raioValue,
       // [!] 新增：保存设计内容
-      designContent: designContent ? JSON.stringify(designContent) : null,
+      designContent: tmp
     }
     if (templateId) {
       data.id = templateId
