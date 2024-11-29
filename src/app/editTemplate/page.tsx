@@ -173,12 +173,12 @@ const EditTemplate = () => {
             </Form.Item>
           </Form>
         </div>
-        <div className={radioWrapper}>
-          <Radio.Group onChange={onRadioChange} value={raioValue}>
-            <Radio value={0}>Basic Templates</Radio>
-            <Radio value={1}>Pre-designed Templates</Radio>
-          </Radio.Group>
-        </div>
+        {/*<div className={radioWrapper}>*/}
+        {/*  <Radio.Group onChange={onRadioChange} value={raioValue}>*/}
+        {/*    <Radio value={0}>Basic Templates</Radio>*/}
+        {/*    <Radio value={1}>Pre-designed Templates</Radio>*/}
+        {/*  </Radio.Group>*/}
+        {/*</div>*/}
         <div className={richTextTitle}>Content</div>
         <div className={richTextWrapper}>
           <RichEditor value={richContent} onChange={(val: string) => { setRichContent(val) }} />

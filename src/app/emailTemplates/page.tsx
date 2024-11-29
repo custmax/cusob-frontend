@@ -44,7 +44,7 @@ const EmailTemplates = () => {
 
   const initList = async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
-    const query = {}
+    const query = { folder: "all" }
     const res = await getTemplateList(query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE) {
