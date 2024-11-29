@@ -36,7 +36,7 @@ const EmailTemplates = () => {
   const [templateList, setTemplateList] = useState<{ folder: string, list: Template.TemplateNew[] }[]>([])
   const [searchVal, setSearchVal] = useState('');
   const [selectOptions, setSelectOptions] = useState([{ value: 'all', label: 'All' }])
-  
+
   useEffect(() => {
     initList();
     initFolderList()
@@ -64,16 +64,25 @@ const EmailTemplates = () => {
   }
 
   const initFolderList = async () => {
-    const res = await getFolderList()
-    if (res.code === SUCCESS_CODE) {
-      const newSelectOptions = res.data.map((item: string) => ({ value: item, label: item }))
-      newSelectOptions.unshift({ value: 'all', label: 'All' })
-      setSelectOptions(newSelectOptions)
-    }
+    // const res = await getFolderList()
+    // if (res.code === SUCCESS_CODE) {
+    //   const newSelectOptions = res.data.map((item: string) => ({ value: item, label: item }))
+    //   newSelectOptions.unshift({ value: 'all', label: 'All' })
+    //   setSelectOptions(newSelectOptions)
+    // }
+    //   todo 此处由于只有那些folder，硬编码
+    const tempSelectOptions = [];
+    tempSelectOptions.unshift({value: 'all', label: 'All'})
+    tempSelectOptions.push({value: 'personal', label: 'Personal'})
+    tempSelectOptions.push({value: 'welcome', label: 'Welcome'})
+    tempSelectOptions.push({value: 'seasons', label: 'Seasons'})
+    tempSelectOptions.push({value: 'dealsAndOffers', label: 'Deals & Offers'})
+    setSelectOptions(tempSelectOptions)
   }
 
   const onSelectChange = async (value: string) => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
+    // folder 如果为all，则传入一个空值，进行全查询
     const query = { folder: value === 'all' ? '' : value, keyword: searchVal || ''  }
     const res = await getTemplateList(query)
     message.destroy('listLoading')
@@ -136,10 +145,10 @@ const EmailTemplates = () => {
       <div className={content}>
         <div className={filterBox}>
           <Select
-            defaultValue="all"
-            style={{ width: 120 }}
-            onChange={onSelectChange}
-            options={selectOptions}
+              defaultValue="all"
+              style={{ width: "226px" }}
+              onChange={onSelectChange}
+              options={selectOptions}
           />
         </div>
         {
@@ -147,7 +156,7 @@ const EmailTemplates = () => {
             <div className={templateTitle}>{item.folder}</div>
             <div className={itemWrapper}>
               {item.list.map((i, idx) => <div key={idx} onClick={() => router.push(`/editTemplate?id=${i.id}`)} className={itemBox}>
-                <div className={cover}></div>
+                <div className={cover}>这是封面</div>
                 <div className={text}>{i.name}</div>
               </div>)}
             </div>
