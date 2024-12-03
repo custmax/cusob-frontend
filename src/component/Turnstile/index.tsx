@@ -27,7 +27,7 @@ const Turnstile: React.FC<TurnstileProps> = ({ onVerify }) => {
             //@ts-ignore
             if (window.turnstile) {
                 //@ts-ignore
-                window.turnstile.render('#turnstile-container', { sitekey: '0x4AAAAAAAbYPWJf81s_lrmo', callback: handleVerification });
+                window.turnstile.render('#turnstile-container', { sitekey: '0x4AAAAAAAbYS5Shq7Off4zS', callback: handleVerification });
             }
         }
     }, [scriptLoaded]);

@@ -34,12 +34,6 @@ const ForgotPwModal: FC<Props> = (props) => {
   const [available, setAvailable] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    if (visible) {
-      setEmail('')
-    }
-  }, [visible]);
-
   function validateEmail(email:string) {
     // 正则表达式用于验证邮箱格式
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,6 +58,12 @@ const ForgotPwModal: FC<Props> = (props) => {
     setEmail(newEmail);
     setAvailable(validateEmail(newEmail));
   };
+
+  useEffect(() => {
+    if (visible) {
+      setEmail('')
+    }
+  }, [visible]);
 
 
   const _onOk = async () => {

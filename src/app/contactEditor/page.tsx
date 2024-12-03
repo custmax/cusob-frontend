@@ -61,7 +61,6 @@ const ContactEditor = () => {
   const [showGroup, setShowGroup] = useState<boolean>(false);
   const [groupName, setGroupName] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-
   useEffect(() => {
     initGroupList()
     initContact()
