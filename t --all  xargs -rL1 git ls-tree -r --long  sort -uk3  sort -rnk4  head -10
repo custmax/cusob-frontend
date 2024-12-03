@@ -1,0 +1,294 @@
+[33mcommit a82806d201bae1bfaf0f7c635fbe6b5f5ce1d7b1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtony[m[33m)[m
+Author: 童映霖 <3332410976@qq.com>
+Date:   Tue Nov 26 14:32:10 2024 +0800
+
+    11.26
+
+[33mcommit 94f5da6af75b557cceb4bf5606addcc92b5b9a95[m
+Author: 童映霖 <3332410976@qq.com>
+Date:   Tue Nov 26 14:16:27 2024 +0800
+
+    11.26
+
+[33mcommit bbcc58a9f7718f3f0370f1c304e25060ce7ed397[m[33m ([m[1;31morigin/tony[m[33m)[m
+Author: 童映霖 <3332410976@qq.com>
+Date:   Tue Aug 27 16:17:01 2024 +0800
+
+    8.27
+
+[33mcommit ed46b861c9b8465f00a8f26177f1f5aabc1b4d84[m
+Merge: f680df8 2ecca28
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Fri Jun 14 16:08:26 2024 +0800
+
+    Merge pull request #49 from Customer-Obsession-Inc/tim
+    
+    6.14
+
+[33mcommit 2ecca28acaa8f932d18aba6afe777f8acbb1afb1[m
+Author: xtl <tim@chtrak.com>
+Date:   Fri Jun 14 16:06:56 2024 +0800
+
+    6.14
+
+[33mcommit f680df8b2649187783a71752f903b80be44f364c[m
+Merge: b31d289 ec0d471
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Wed Jun 12 08:17:01 2024 +0800
+
+    Merge pull request #48 from Customer-Obsession-Inc/tim
+    
+    6.12
+
+[33mcommit ec0d47106bc432a00840bea3376cc5cdcd5b2327[m
+Author: xtl <tim@chtrak.com>
+Date:   Wed Jun 12 08:14:32 2024 +0800
+
+    6.12
+
+[33mcommit b31d289dbdf0af30269725ef724580e412011b7a[m
+Merge: 2665453 8941ca8
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Thu Jun 6 17:14:06 2024 +0800
+
+    Merge pull request #47 from Customer-Obsession-Inc/tim
+    
+    6.6
+
+[33mcommit 8941ca80b959c62a89fa0461ef80ebe7880a8fcb[m
+Author: xtl <tim@chtrak.com>
+Date:   Thu Jun 6 17:11:38 2024 +0800
+
+    6.6
+
+[33mcommit 266545392b280d5917e339e1a770a14d14235eca[m
+Merge: 44afb3c 9a86856
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Wed Jun 5 17:57:04 2024 +0800
+
+    Merge pull request #46 from Customer-Obsession-Inc/tim
+    
+    6.5
+
+[33mcommit 9a86856fe71d85615802884b2b094ff1c2c62b8e[m
+Author: xtl <tim@chtrak.com>
+Date:   Wed Jun 5 17:52:25 2024 +0800
+
+    6.5
+
+[33mcommit 44afb3c2d118c1f2803486719b171c5b50465601[m
+Merge: 071f5a6 20af3b7
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Tue Jun 4 17:49:19 2024 +0800
+
+    Merge pull request #45 from Customer-Obsession-Inc/tim
+    
+    Tim
+
+[33mcommit 20af3b7024760836d68654aee753e2261a61dd8f[m
+Merge: efed9b4 071f5a6
+Author: xtl <tim@chtrak.com>
+Date:   Tue Jun 4 17:44:23 2024 +0800
+
+    Merge branch 'main' of https://github.com/Customer-Obsession-Inc/cusob-frontend into tim
+
+[33mcommit efed9b4e3d7f33491907378e34b384901394ea59[m
+Author: xtl <tim@chtrak.com>
+Date:   Tue Jun 4 17:31:57 2024 +0800
+
+    6.4
+
+[33mcommit 071f5a66557da86557d2688f8b5446fa01170477[m
+Merge: 10b2dc8 b56402a
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Tue Jun 4 08:57:38 2024 +0800
+
+    Merge pull request #44 from Customer-Obsession-Inc/tim
+    
+    Tim
+
+[33mcommit b56402aa752e86002cea6dab48c07093a4b92be4[m
+Merge: a77ab38 10b2dc8
+Author: xtl <tim@chtrak.com>
+Date:   Tue Jun 4 08:54:52 2024 +0800
+
+    Merge branch 'main' of https://github.com/Customer-Obsession-Inc/cusob-frontend into tim
+
+[33mcommit a77ab38ea5ca5841579c62f86b372e7247c0fecf[m
+Author: xtl <tim@chtrak.com>
+Date:   Tue Jun 4 08:31:06 2024 +0800
+
+    6.3
+
+[33mcommit 9053f6df363f6f65b19faed7d23f631164fb18f7[m
+Author: xtl <tim@chtrak.com>
+Date:   Tue Jun 4 08:30:52 2024 +0800
+
+    6.3
+
+[33mcommit 10b2dc88c6903458170a27817545c75d66df4bc1[m
+Merge: 459c8d9 873d8d5
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Sat Jun 1 18:01:59 2024 +0800
+
+    Merge pull request #43 from Customer-Obsession-Inc/tim
+    
+    6.1
+
+[33mcommit 873d8d5bef3177f169022aa78021e5dafceb1d25[m
+Author: xtl <tim@chtrak.com>
+Date:   Sat Jun 1 17:54:39 2024 +0800
+
+    6.1
+
+[33mcommit 459c8d987d48c93c69682dbcd3dc0c019beb5ac5[m
+Merge: 0429db9 071abae
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Sat Jun 1 17:22:33 2024 +0800
+
+    Merge pull request #42 from Customer-Obsession-Inc/tim
+    
+    Tim
+
+[33mcommit 071abaea4148e2a22087ec1a0b8e814ba41f5e96[m
+Author: xtl <tim@chtrak.com>
+Date:   Sat Jun 1 17:20:14 2024 +0800
+
+    6.1
+
+[33mcommit ba87959d43d1dc009062c5f1362556f3e7e8fcb2[m
+Merge: e80cc6e 0429db9
+Author: xtl <tim@chtrak.com>
+Date:   Fri May 31 19:01:31 2024 +0800
+
+    Merge branch 'main' of https://github.com/Customer-Obsession-Inc/cusob-frontend into tim
+
+[33mcommit e80cc6e6f80cf5bcff66058a1318c9b894b3f9a8[m
+Author: xtl <tim@chtrak.com>
+Date:   Fri May 31 18:18:51 2024 +0800
+
+    5.31
+
+[33mcommit 0429db9c0449bad315d44b96e857fa7fead12370[m
+Merge: 233496e 15dd953
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Fri May 31 18:17:30 2024 +0800
+
+    Merge pull request #41 from Customer-Obsession-Inc/Xiaohu
+    
+    链接激活
+
+[33mcommit 15dd9533a50f98f83e4820067bcf05d3e7e98908[m[33m ([m[1;31morigin/Xiaohu[m[33m)[m
+Author: Luffy <1827551750@qq.com>
+Date:   Fri May 31 18:09:14 2024 +0800
+
+    链接激活
+
+[33mcommit 233496e386b114b5a6700526ee1cad01e8b4daef[m
+Merge: ef14039 d6c85dc
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Fri May 31 17:57:10 2024 +0800
+
+    Merge pull request #40 from Customer-Obsession-Inc/tim
+    
+    5.31
+
+[33mcommit d6c85dc6ecb325877d1dc892ef8f91ae2b1b1085[m
+Author: xtl <tim@chtrak.com>
+Date:   Fri May 31 17:55:29 2024 +0800
+
+    5.31
+
+[33mcommit ef14039e920a90657d1c07aa12fe8e02b375103d[m
+Merge: 9899da3 3f31702
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Thu May 30 17:07:33 2024 +0800
+
+    Merge pull request #39 from Customer-Obsession-Inc/tim
+    
+    5.30
+
+[33mcommit 3f317023fed8b7e6308d0cb66f2d3e07517e9e5f[m
+Author: xtl <tim@chtrak.com>
+Date:   Thu May 30 17:06:26 2024 +0800
+
+    5.30
+
+[33mcommit 9899da3152bd860a898b36a50f54afd3b2d15065[m
+Merge: abc11ca bcbc6c4
+Author: Xiongtianle <167385730+Xiongtianle@users.noreply.github.com>
+Date:   Wed May 29 19:16:14 2024 +0800
+
+    Merge pull request #38 from Customer-Obsession-Inc/tim
+    
+    5.29
+
+[33mcommit bcbc6c4a33056c4f915f955c45fba22514c8087f[m
+Author: xtl <tim@chtrak.com>
+Date:   Wed May 29 18:21:46 2024 +0800
+
+    5.29
+
+[33mcommit abc11caaf67078f7e79bfd2c03878edb96f39dc3[m[33m ([m[1;31morigin/XIaohu[m[33m)[m
+Author: xtl <tim@chtrak.com>
+Date:   Fri May 24 17:05:27 2024 +0800
+
+    5.24
+
+[33mcommit 46b2d7a66dae78b51ff7b7b9c3afd227f2c53cdb[m
+Merge: 9064052 660a8e5
+Author: xtl <tim@chtrak.com>
+Date:   Mon May 20 09:02:15 2024 +0800
+
+    Merge branch 'main' of https://github.com/Customer-Obsession-Inc/cusob-frontend
+
+[33mcommit 660a8e5410c7213f5608afc464900eb813173416[m
+Merge: eec65d9 ab0ad4c
+Author: DaybreakCusob <163366821+DaybreakCusob@users.noreply.github.com>
+Date:   Fri May 17 17:43:57 2024 +0800
+
+    Merge pull request #37 from Customer-Obsession-Inc/sendcloud
+    
+    Sendcloud
+
+[33mcommit ab0ad4ce83eeff12b33a3fd514a725341e2b4577[m[33m ([m[1;31morigin/sendcloud[m[33m)[m
+Author: Daybreak <daybreak@chtrak.com>
+Date:   Fri May 17 17:37:10 2024 +0800
+
+    unsubscribe function refine
+
+[33mcommit 59880b8695ba59c91a4cd462a9af42d10f81cac5[m
+Author: Daybreak <daybreak@chtrak.com>
+Date:   Fri May 17 13:49:51 2024 +0800
+
+    sendcloud send email and toGroup bug fix
+
+[33mcommit 4595d86742824378b348c4dd7b85d9d2fe146989[m
+Author: Daybreak <daybreak@chtrak.com>
+Date:   Fri May 17 08:55:17 2024 +0800
+
+    sendcloud send email
+
+[33mcommit eec65d90c29ce0495ee03dbac741f274cb3e2490[m
+Merge: 4503b7a 5fc56e7
+Author: DaybreakCusob <163366821+DaybreakCusob@users.noreply.github.com>
+Date:   Thu May 16 22:20:06 2024 +0800
+
+    Merge pull request #36 from Customer-Obsession-Inc/tim
+    
+    Tim
+
+[33mcommit 5fc56e78d7602205ad81c364b6fca526118dd806[m
+Author: xtl <tim@chtrak.com>
+Date:   Thu May 16 17:23:42 2024 +0800
+
+    update
+
+[33mcommit 5bf6e496f26fec5ce2b9bacc3d509029060bb0ed[m
+Author: xtl <tim@chtrak.com>
+Date:   Thu May 16 17:23:30 2024 +0800
+
+    update
+
+[33mcommit 7c97fb4354b1f5c9cceb025b42812073ee52a679[m
+Author: xtl <tim@chtrak.
