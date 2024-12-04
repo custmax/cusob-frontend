@@ -90,7 +90,9 @@ const Campaign = () => {
   }
   const initList = useCallback(async () => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
-    const query = { status, name: searchVal, order: order }
+    const query = { status: status, name: searchVal, order: order }
+    console.log(query)
+    // todo 这里get请求，携带不了query参数
     const res = await getCampaignPage(pageSize, currentPage,  query)
     // const m = await valid('941563132@qq.com')
     const m = await getstatus()
@@ -131,7 +133,7 @@ const Campaign = () => {
 
   const onSearch = async (val: string) => {
     message.loading({ content: 'loading', duration: 10, key: 'listLoading' })
-    const query = { status, name: val }
+    const query = { status, name: val, order }
     const res = await getCampaignPage(pageSize, currentPage,  query)
     message.destroy('listLoading')
     if (res.code === SUCCESS_CODE && res.data) {
@@ -146,11 +148,13 @@ const Campaign = () => {
     if (value === 'createdTime'){
       setOrder('0')
       console.log("order111:",order)
+      console.log(status)
       initList()
     }
     if (value === 'updatedTime'){
       setOrder('1')
       console.log("order222:",order)
+      console.log(status)
       initList()
     }
   };
