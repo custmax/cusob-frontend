@@ -1,65 +1,65 @@
 import clientFetch from '@/helper/clientFetch';
 
-export const getCampaignPage = async ( limit: number, page: number, query: Record<string, string>) => {
-  const res = await clientFetch({
-    url: `/api/campaign/getPage/${limit}/${page}`,
-    method: 'GET',
-    data: query,
-  })
-  return res;
+export const getCampaignPage = async (limit: number, page: number, query: Record<string, string>) => {
+    const res = await clientFetch({
+        url: `/api/campaign/getPage/${limit}/${page}`,
+        method: 'GET',
+        data: query,
+    })
+    return res;
 }
 
 export const saveDraft = async (data: Partial<Campaign.CampaignNew>) => {
-  const res = await clientFetch({
-    url: `/api/campaign/saveDraft`,
-    method: 'POST',
-    data: { ...data, id: 0 }
-  })
-  return res;
+    const res = await clientFetch({
+        url: `/api/campaign/saveDraft`,
+        method: 'POST',
+        data: {...data, id: 0}
+    })
+    return res;
 }
 
 export const getCampaign = async (id: string) => {
-  const res = await clientFetch({
-    url: `/api/campaign/get/${id}`,
-    method: 'GET',
-  })
-  return res;
+    const res = await clientFetch({
+        url: `/api/campaign/get/${id}`,
+        method: 'GET',
+    })
+    return res;
 }
 export const removeCampaign = async (id: string) => {
-  const res = await clientFetch({
-    url: `/api/campaign/remove/${id}`,
-    method: 'DELETE',
-  })
-  return res;
+    const res = await clientFetch({
+        url: `/api/campaign/remove/${id}`,
+        method: 'DELETE',
+    })
+    return res;
 }
 
 export const updateCampaign = async (data: Partial<Campaign.CampaignNew>) => {
-  const res = await clientFetch({
-    url: `/api/campaign/update`,
-    method: 'POST',
-    data
-  })
-  return res;
+    const res = await clientFetch({
+        url: `/api/campaign/update`,
+        method: 'POST',
+        data
+    })
+    return res;
 }
 
-export const getEmailList = async (togroup:number)=>{
-  const res = await clientFetch({
-    url: `/api/campaign/emailList/${togroup}`,
-    method: 'GET',
-  })
-  return res;
+export const getEmailList = async (togroup: number) => {
+    const res = await clientFetch({
+        url: `/api/campaign/emailList/${togroup}`,
+        method: 'GET',
+    })
+    return res;
 }
 
 export const sendEmail = async (data: Campaign.CampaignNew, campaignId: string | null) => {
-  let campaignIdNumber = Number(campaignId);
-  // 检查转换是否成功
-  if (isNaN(campaignIdNumber)) {
-    campaignIdNumber = 0
-  }
-  const res = await clientFetch({
-    url: `/api/campaign/sendEmail`,
-    method: 'POST',
-    data: { ...data,id:campaignIdNumber }
-  })
-  return res;
+    let campaignIdNumber = Number(campaignId);
+    // 检查转换是否成功
+    if (isNaN(campaignIdNumber)) {
+        campaignIdNumber = 0
+    }
+    const res = await clientFetch({
+        url: `/api/campaign/sendEmail`,
+        method: 'POST',
+        data: {...data, id: campaignIdNumber}
+    })
+    return res;
 }

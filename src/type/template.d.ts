@@ -7,5 +7,6 @@ declare module Template {
     type: number,
     id?: number,
     designContent?: string | null,
+    isCustomized: number
   }
 }

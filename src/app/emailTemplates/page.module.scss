@@ -151,13 +151,19 @@
           }
 
           .text {
+            width: 280vpx;
+            text-align: center;
             margin-top: 30vpx;
-            font-family: PingFangSC, PingFang SC;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: PingFangSCs, PingFang SC;
             font-weight: 400;
             font-size: 18vpx;
             color: #333333;
             line-height: 25vpx;
           }
+
         }
       }
     }

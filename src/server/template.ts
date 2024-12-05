@@ -44,3 +44,12 @@ export const getTemplate = async (id: number) => {
   })
   return res;
 }
+
+export const removeCustomizedTemplate = async (id: number) => {
+  const res = await clientFetch({
+    url: `/api/template/remove/${id}`,
+    method: 'DELETE',
+    // contentType: 'application/x-www-form-urlencoded',
+  })
+  return res;
+}
