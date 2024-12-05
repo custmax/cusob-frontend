@@ -123,11 +123,11 @@ const Header: FC<Props> = (props) => {
             <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>
           {/* 点击notification图标跳转到stationMessage*/}
           </Link>
-          <ImgWrapper
-              className={avatar}
-              alt='avatar'
-              src={props.avatar || localAvatar || '/img/default-avatar.png'}
-          />
+          {/*<ImgWrapper*/}
+          {/*    className={avatar}*/}
+          {/*    alt='avatar'*/}
+          {/*    src={props.avatar || localAvatar || '/img/default-avatar.png'}*/}
+          {/*/>*/}
           <Tooltip//Tooltip提示框
               placement="bottomRight"//提示框位置
               className={tooltip}//提示框样式
@@ -142,6 +142,11 @@ const Header: FC<Props> = (props) => {
               </div>}
               getPopupContainer={() => document.querySelector('#enterHeader') || document.body}//获取弹出框的容器
           >
+            <ImgWrapper
+                className={avatar}
+                alt='avatar'
+                src={props.avatar || localAvatar || '/img/default-avatar.png'}
+            />
             <span className={nickname}>{firstName}</span>
             <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
           </Tooltip>

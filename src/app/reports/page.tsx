@@ -4,7 +4,7 @@ import styles from './page.module.scss';
 import SideBar from '@/component/SideBar';
 import {Input, Table, TableProps, message, PaginationProps} from 'antd';
 import ImgWrapper from '@/component/ImgWrapper';
-import { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {getReportList, getSenderName, removeReport} from '@/server/report';
 import { SUCCESS_CODE } from '@/constant/common';
 import emailStatistics from "@/server/mailgun/emailStatistics";
@@ -34,6 +34,8 @@ const {
 const pageSize = 10;
 
 const Reports = () => {
+
+
   const [total, setTotal] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
   const [reportList, setReportList] = useState<DataType[]>([])
@@ -196,9 +198,9 @@ const Reports = () => {
         />
       </div>
     </div>
+
   </div>
 };
-
 
 
 export default Reports;

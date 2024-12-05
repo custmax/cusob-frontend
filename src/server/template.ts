@@ -37,10 +37,19 @@ export const getFolderList = async () => {
 
 export const getTemplate = async (id: number) => {
   const res = await clientFetch({
-    url: `/api/template/get`,
+    url: `/api/template/get/${id}`,
     method: 'GET',
-    data: { id },
+    //data: { id },
     contentType: 'application/x-www-form-urlencoded',
+  })
+  return res;
+}
+
+export const removeCustomizedTemplate = async (id: number) => {
+  const res = await clientFetch({
+    url: `/api/template/remove/${id}`,
+    method: 'DELETE',
+    // contentType: 'application/x-www-form-urlencoded',
   })
   return res;
 }

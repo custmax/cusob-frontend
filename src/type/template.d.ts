@@ -5,6 +5,8 @@ declare module Template {
     name: string,
     subject: string,
     type: number,
-    id?: number
+    id?: number,
+    designContent?: string | null,
+    isCustomized: number
   }
 }

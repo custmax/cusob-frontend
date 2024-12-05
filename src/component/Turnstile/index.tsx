@@ -14,6 +14,7 @@ const Turnstile: React.FC<TurnstileProps> = ({ onVerify }) => {
         script.async = true;
         script.defer = true;
         script.onload = () => {
+            //@ts-ignore
             window.turnstileCallback = handleVerification;
             setScriptLoaded(true); // 标记脚本加载完成
         };
@@ -23,7 +24,9 @@ const Turnstile: React.FC<TurnstileProps> = ({ onVerify }) => {
     useEffect(() => {
         if (scriptLoaded) {
             // 当脚本加载完成时，初始化 Turnstile
+            //@ts-ignore
             if (window.turnstile) {
+                //@ts-ignore
                 window.turnstile.render('#turnstile-container', { sitekey: '0x4AAAAAAAbYS5Shq7Off4zS', callback: handleVerification });
             }
         }

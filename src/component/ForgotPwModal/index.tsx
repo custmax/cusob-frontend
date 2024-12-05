@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import styles from './index.module.scss';
 import {Input, Modal, message} from 'antd';
 import {forgetPassword, sendEmailForResetPassword} from '@/server/user';
@@ -58,6 +58,12 @@ const ForgotPwModal: FC<Props> = (props) => {
     setEmail(newEmail);
     setAvailable(validateEmail(newEmail));
   };
+
+  useEffect(() => {
+    if (visible) {
+      setEmail('')
+    }
+  }, [visible]);
 
 
   const _onOk = async () => {

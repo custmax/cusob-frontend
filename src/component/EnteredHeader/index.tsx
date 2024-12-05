@@ -61,11 +61,7 @@ const Header: FC<Props> = (props) => {
         {/*<Link href='/stationMessage'>*/}
         {/*  <ImgWrapper className={notification} alt='notification icon' src='/img/notification_icon.png'/>*/}
         {/*</Link>*/}
-        <ImgWrapper
-          className={avatar}
-          alt='avatar'
-          src={props.avatar || localAvatar || '/img/default-avatar.png'}
-        />
+
         <Tooltip
           placement="bottomRight"
           className={tooltip}
@@ -81,6 +77,11 @@ const Header: FC<Props> = (props) => {
           </div>}
           getPopupContainer={() => document.querySelector('#enterHeader') || document.body}
         >
+            <ImgWrapper
+                className={avatar}
+                alt='avatar'
+                src={props.avatar || localAvatar || '/img/default-avatar.png'}
+            />
           <span className={nickname}>{firstName}</span>
           <ImgWrapper className={arrowDown} alt='arrow down' src='/img/arrow_down_999.png'/>
         </Tooltip>

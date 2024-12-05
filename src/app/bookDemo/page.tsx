@@ -4,6 +4,7 @@ import DemoForm from './component/DemoForm'
 import Header from '@/component/Header';
 import Footer from '@/component/Footer';
 import type {Metadata} from "next";
+import EmailEditor from "react-email-editor";
 
 const {
   bookContainer

@@ -110,6 +110,7 @@ const columns: TableProps<DataType>['columns'] = [
         <div style={{ whiteSpace: 'normal' }}>
           <span style={{ marginRight: '5px' }}>{value}</span>
           <CopyOutlined style={{cursor: 'pointer'}} onClick={() => handleCopy(value)}
+                        onPointerOverCapture={undefined} onPointerMoveCapture={undefined}
                         onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
         </div>
     ),

@@ -78,8 +78,7 @@
       }
       &.active {
         font-weight: 600;
-        color: #7241FF;
-        background-color: #F1F1FE;
+        background-color: lighten(#7241FF, 10%);
       }
   
       .barIcon {

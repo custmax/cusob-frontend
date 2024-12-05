@@ -141,15 +141,16 @@ const UploadModal: FC<Props> = (props) => {
       setAvailable(true);  // 文件上传成功，设置 available 为 true
       const formData = new FormData();
       if (fileRef.current) formData.append('file', fileRef.current as Blob)
-      const res = await parseFields(formData)
-      if (res.code === SUCCESS_CODE) {
-        // message.success(res.message, () => {
-        //   router.push('/contactList')
-        // })
-        message.success(res.message)
-      } else {
-        message.error(res.message)
-      }
+      // const res = await parseFields(formData)
+      // console.log("res", res)
+      // if (res.code === SUCCESS_CODE) {
+      //   // message.success(res.message, () => {
+      //   //   router.push('/contactList')
+      //   // })
+      //   message.success(res.message)
+      // } else {
+      //   message.error(res.message)
+      // }
     }
   };
 
@@ -163,7 +164,10 @@ const UploadModal: FC<Props> = (props) => {
     console.log(formData);
     const res = await batchImport(formData)
     if (res.code === SUCCESS_CODE) {
-      message.success(res.message, () => {
+      const { successCount, failCount } = res.data; // 从 res.data 中解构成功和失败数量
+      const customMessage = `导入完成，成功添加 ${successCount} 位联系人，${failCount} 位邮箱无效导入失败。`;
+      console.log(customMessage)
+      message.success(customMessage, () => {
         router.push('/contactList')
         setIsProcessing(false);
       })

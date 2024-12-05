@@ -2,7 +2,7 @@
 import styles from './index.module.scss';
 import ImgWrapper from '../ImgWrapper';
 import Link from 'next/link';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 import {message} from "antd";
 import {getCampaignPage} from "@/server/campaign";
@@ -24,6 +24,13 @@ const SideBar = () => {
   const [responseText, setResponseText] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState<string>('');
+
+  useEffect(() => {
+    const savedStatus = localStorage.getItem('sidebarStatus');
+    if (savedStatus) {
+      setStatus(savedStatus);
+    }
+  }, []);
 
   const handleGenerateClick = async () => {
     const payload = JSON.stringify({
@@ -67,19 +74,20 @@ const SideBar = () => {
   };
   const onStatusClick = async (val: string) => {
     setStatus(val)
-
+    localStorage.setItem('sidebarStatus', val);
+    console.log("11111:",status)
   };
   return <div className={sideBarContainer}>
     <div className={scrollWrapper}>
-      <Link href='/dashboard' className={classNames(barItem, { [active]: status === '1' })} onClick={() => setStatus('1')}>
+      <Link href='/dashboard' onClick={() => onStatusClick('0')} className={classNames(barItem, { [active]: status === '0' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon0.png' alt='bar icon'/>
-        <div className={classNames(barText, { [active]: status === '' })} onClick={() => onStatusClick('')}>Dashboard</div>
+        <div className={barText}>Dashboard</div>
       </Link>
-      <Link href='/contactList' className={classNames(barItem, { [active]: status === '2' })} onClick={() => setStatus('2')}>
+      <Link href='/contactList' onClick={() => onStatusClick('1')} className={classNames(barItem, { [active]: status === '1' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon1.png' alt='bar icon'/>
         <div className={barText}>Contacts</div>
       </Link>
-      <Link href='/emailTemplates' className={barItem}>
+      <Link href='/emailTemplates' onClick={() => onStatusClick('2')} className={classNames(barItem, { [active]: status === '2' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon2.png' alt='bar icon'/>
         <div className={barText}>Templates</div>
       </Link>
@@ -87,19 +95,19 @@ const SideBar = () => {
       {/*  <ImgWrapper className={barIcon} src='/img/bar_icon3.png' alt='bar icon'/>*/}
       {/*  <div className={barText}>Media</div>*/}
       {/*</Link>*/}
-      <Link href='/campaign' className={barItem}>
+      <Link href='/campaign' onClick={() => onStatusClick('3')} className={classNames(barItem, { [active]: status === '3' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon4.png' alt='bar icon'/>
         <div className={barText}>Campaign</div>
       </Link>
-      <Link href='/reports' className={barItem}>
+      <Link href='/reports' onClick={() => onStatusClick('4')} className={classNames(barItem, { [active]: status === '4' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon5.png' alt='bar icon'/>
         <div className={barText}>Reports</div>
       </Link>
-      <Link href='/account' className={barItem}>
+      <Link href='/account' onClick={() => onStatusClick('5')} className={classNames(barItem, { [active]: status === '5' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon6.png' alt='bar icon'/>
         <div className={barText}>Account</div>
       </Link>
-      <Link href='/addSender' className={barItem}>
+      <Link href='/addSender' onClick={() => onStatusClick('6')} className={classNames(barItem, { [active]: status === '6' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon7.png' alt='bar icon'/>
         <div className={barText}>Sender</div>
       </Link>
