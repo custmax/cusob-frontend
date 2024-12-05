@@ -63,12 +63,16 @@
         }
 
         .value {
-          width: 265vpx;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          width: 420vpx;
           font-family: PingFangSC, PingFang SC;
           font-weight: 400;
           font-size: 20vpx;
           color: #000000;
           line-height: 28vpx;
+          word-wrap: break-word;
+          white-space: normal;
         }
       }
 

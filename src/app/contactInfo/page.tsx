@@ -38,6 +38,7 @@ const ContactInfo = () => {
     const res = await getAccountInfo()
     message.destroy('loading')
     if (res.code === SUCCESS_CODE) {
+      console.log(res.data)
       setAccountInfo(res.data)
     } else {
       message.error(res.message)
@@ -129,7 +130,7 @@ const ContactInfo = () => {
           <div className={label}>Company/Organization</div>
           <div className={value}>{accountInfo?.company}</div>
         </div>
-        <div className={primaryItem}>
+        <div className={primaryItem} style={{height: "auto"}}>
           <div className={label}>Address</div>
           <div className={value}>{accountInfo?.addressLine1} {accountInfo?.addressLine2}</div>
         </div>
