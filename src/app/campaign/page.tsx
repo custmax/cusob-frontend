@@ -70,13 +70,6 @@ const Campaign = () => {
   const [order, setOrder] = useState<string>('0');
   const router = useRouter()
   const onCampaignNameOk = () => {
-    // setShowCampaignName(false)
-    // router.push("/campaignEditor");
-    // router.push({
-    //   pathname: "/campaignEditor",
-    //   query: { campaignName }
-    // }as UrlObject);
-    //若campaignName为空，则警告
     if (!campaignName) {
       message.error('Campaign Name is required');
       setShowCampaignName(false)
