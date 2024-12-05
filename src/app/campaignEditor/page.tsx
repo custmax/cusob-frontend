@@ -874,7 +874,7 @@ const CampaignEditor = () => {
                 showIcon
                 closable={false}
                 className={limitAlert}
-                style={{fontWeight: "normal", fontSize: "large"}}
+                style={{fontWeight: "normal", fontSize: "16px"}}
             />
         </Modal>
     </div>

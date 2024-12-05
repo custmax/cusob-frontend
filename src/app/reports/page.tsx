@@ -165,9 +165,7 @@ const Reports = () => {
           <div>
             <button className={deleteButton} onClick={() => onDelete(record.key)}>Details</button>
             <button className={deleteButton} onClick={() => onDelete(record.key)}>Delete</button>
-
           </div>
-
       )
     }
   ];

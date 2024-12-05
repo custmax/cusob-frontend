@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import {useCallback, useEffect, useState} from 'react';
 import {Checkbox, Input, Select, message, Table, PaginationProps, Modal} from 'antd';
 import Link from 'next/link';
-import {getCampaignPage, removeCampaign} from '@/server/campaign';
+import {checkCampaignNameExists, getCampaignPage, removeCampaign} from '@/server/campaign';
 import {SUCCESS_CODE} from '@/constant/common';
 import {getstatus} from "@/server/mailgun/status";
 import {getOrderHistory} from "@/server/orderHistory";
@@ -17,6 +17,7 @@ import {router} from "next/client";
 import {useRouter} from "next/navigation";
 import {UrlObject} from "node:url";
 import EmailEditor, {EditorRef, EmailEditorProps} from 'react-email-editor';
+import {duration} from "@mui/material";
 
 
 const {
@@ -70,29 +71,26 @@ const Campaign = () => {
         updateTime: string
     })[]>([])
     const [total, setTotal] = useState(0)
-    const [order, setOrder] = useState<string>('0');
+    const [order, setOrder] = useState<string>('1');
     const router = useRouter()
-    const onCampaignNameOk = () => {
-        // setShowCampaignName(false)
-        // router.push("/campaignEditor");
-        // router.push({
-        //   pathname: "/campaignEditor",
-        //   query: { campaignName }
-        // }as UrlObject);
+    const onCampaignNameOk = async () => {
         //若campaignName为空，则警告
         if (!campaignName) {
             message.error('Campaign Name is required');
-            setShowCampaignName(false)
             return
         }
-        router.push(`/campaignEditor?campaignName=${encodeURIComponent(campaignName)}`);
+        const res = await checkCampaignNameExists(campaignName)
+        if (res.code === SUCCESS_CODE) {
+            router.push(`/campaignEditor?campaignName=${encodeURIComponent(campaignName)}`);
+        } else {
+            message.error(res.data);
+        }
     }
 
     const onCampaignNameCancel = () => {
         setShowCampaignName(false)
     }
 
-    // todo 每次页面加载init两边
     const initList = useCallback(async () => {
         message.loading({content: 'loading', duration: 10, key: 'listLoading'})
         const query = {status: status, name: searchVal, order: order}
@@ -115,6 +113,10 @@ const Campaign = () => {
         getCampaignList()
         setSearchVal('')
     }, [status]);
+
+    useEffect(() => {
+        getCampaignList()
+    }, [order]);
 
     const getCampaignList = async () => {
         message.loading({content: 'loading', duration: 10, key: 'listLoading'})
@@ -151,7 +153,6 @@ const Campaign = () => {
         if (value === 'updatedTime') {
             setOrder('1')
         }
-        await getCampaignList()
     };
 
     const pagination = {
@@ -297,7 +298,11 @@ const Campaign = () => {
             <div className={subjectContent}>
                 <div className={inputItem}>
                     <div className={label}>name</div>
-                    <Input value={campaignName} onChange={e => setCampaignName(e.target.value)} className={value}/>
+                    <Input value={campaignName}
+                           onChange={e => setCampaignName(e.target.value)}
+                           className={value}
+                    />
+                    {}
                 </div>
             </div>
         </Modal>

@@ -255,9 +255,9 @@
                 font-size: 14vpx;
                 color: #FFFFFF;
                 margin-right: 20vpx;
-                //pointer-events: none; /* 禁用鼠标点击事件 */
-                ////color: #999; /* 可选：改变链接颜色以表示禁用状态 */
-                //cursor: not-allowed; /* 鼠标指针显示为不可用状态 */
+                pointer-events: none; /* 禁用鼠标点击事件 */
+                //color: #999; /* 可选：改变链接颜色以表示禁用状态 */
+                cursor: not-allowed; /* 鼠标指针显示为不可用状态 */
               }
             }
           }

@@ -63,3 +63,11 @@ export const sendEmail = async (data: Campaign.CampaignNew, campaignId: string |
     })
     return res;
 }
+
+export const checkCampaignNameExists = async (campaignName: String) => {
+    const res = await clientFetch({
+        url: `/api/campaign/getCampaignByName/${campaignName}`,
+        method: 'GET',
+    })
+    return res;
+}
