@@ -58,7 +58,6 @@ const {
   searchInput,
   searchIconBox,
   searchIcon,
-  editIcon,
   tag,
   categoryBox,
   editButton,
@@ -90,6 +89,8 @@ const ContactList = () => {
   const [searchVal, setSearchVal] = useState('');
   const [total, setTotal] = useState(0)
   const [totalCount, setTotalCount] = useState(0);
+  const [isEditGroupProcess, setIsEditGroupProcess] = useState<boolean>(false)
+  const [isAddGroupProcess, setIsAddGroupProcess] = useState<boolean>(false)
 
   const initGroupList = async () => {
     const res = await getGroupList()
@@ -99,20 +100,16 @@ const ContactList = () => {
   }
 
   const initGroupNum = async () => {
-    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getGroupsAndContactCount()
     if (res.code === SUCCESS_CODE) {
       setGroupNumObj(res.data)
     }
   }
   const initSubNum = async () => {
-    //console.log("sadfhsadhfgsdjafgdsajhf");
     const res = await getSubscriptionCount()
-    //console.log("HHH");
     console.log(res.data);
     if (res.code === SUCCESS_CODE) {
       setSubObj(res.data)
-
     }
   }
 
@@ -143,6 +140,10 @@ const ContactList = () => {
   }, [])
 
   const onGroupOk = async () => {
+    if (isAddGroupProcess) {
+      return
+    }
+    setIsAddGroupProcess(true)
     if (groupName) {
       const res = await addGroup(groupName)
       if (res.code === SUCCESS_CODE) {
@@ -155,6 +156,7 @@ const ContactList = () => {
       }
     }
     setShowGroup(false)
+    setIsEditGroupProcess(false)
   }
 
   const onGroupCancel = () => {
@@ -162,11 +164,16 @@ const ContactList = () => {
   }
 
   const onEditGroupOk = async () => {
+    if (isEditGroupProcess) {
+      return
+    }
+    setIsEditGroupProcess(true)
     if (editGroupName && activeGroupId !== -1) {
       const res = await updateGroup(editGroupName, activeGroupId)
       if (res.code === SUCCESS_CODE) {
         message.success(res.message)
         setShowEditGroup(false)
+        console.log(activeGroupId)
         initList()
         initGroupList()
         initGroupNum()
@@ -175,6 +182,7 @@ const ContactList = () => {
         message.error(res.message)
       }
     }
+    setIsEditGroupProcess(true)
   }
 
   const onEditGroupDelete = async () => {
@@ -458,10 +466,9 @@ const ContactList = () => {
     </div>
     {/*添加group*/}
     <Modal
-
       title="Add Group"
       open={showGroup}
-      onOk={onGroupOk}
+      onOk={!isAddGroupProcess?onGroupOk: undefined}
       onCancel={onGroupCancel}
       wrapClassName={groupModal}
     >
@@ -487,7 +494,7 @@ const ContactList = () => {
         >
           <Button danger style={{ marginRight: '1em' }}>Delete</Button>
         </Popconfirm>
-        <Button onClick={onEditGroupOk} type='primary'>Ok</Button>
+        <Button onClick={!isEditGroupProcess?onEditGroupOk: undefined} type='primary'>Ok</Button>
       </div>}
     >
       <div className={groupContent}>

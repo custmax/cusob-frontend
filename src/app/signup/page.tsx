@@ -146,9 +146,9 @@ const Signup = () => {
                                 rules={[
                                     {required: true, message: 'Please input your password!'},
                                     {min: 8, message: 'Password must be at least 8 characters!'},
-                                    {max: 20, message: 'Password must be at most 8 characters!'},
+                                    {max: 20, message: 'Password must be at most 20 characters!'},
                                     {pattern: /^((?=.*[a-z])(?=.*\d)(?=.*[A-Z]))|((?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]))|((?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z]))|((?=.*[!@#$%^&*])(?=.*\d)(?=.*[A-Z])).*$/,
-                                        message: 'Password must include at least 3 of the following: uppercase letters, lowercase letters, digits, or !@#$%^&*.'}
+                                        message: 'Password must include at least 3 of the following: uppercase letters, lowercase letters, digits, or !@#$%^&*'}
                                 ]}
                             >
                                 <Input style={{//输入框样式

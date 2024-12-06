@@ -121,6 +121,7 @@ const CampaignEditor = () => {
     const [trackOpens, setTrackOpens] = useState<boolean>(true)
     const [trackTextClicks, setTrackTextClicks] = useState<boolean>(false)
     const [timeZone, setTimeZone] = useState('UTC+08:00');
+    const [isSaveDraftProcess, setIsSaveDraftProcess] = useState<boolean>(false)
     const searchParams = useSearchParams()
     const campaignId = searchParams.get('id')
     const [process, setProcess] = useState([
@@ -618,6 +619,10 @@ const CampaignEditor = () => {
     }
 
     const onDraft = async () => {
+        if (isSaveDraftProcess) {
+            return
+        }
+        setIsSaveDraftProcess(true)
         const senderName = senderListRef.current.find(item => item.value === senderId)?.label
         const chosenTo = process.find(item => item.title === 'To')?.checked
         const chosenFrom = process.find(item => item.title === 'From')?.checked
@@ -659,6 +664,7 @@ const CampaignEditor = () => {
                 message.error(res.message)
             }
         }
+        setIsSaveDraftProcess(false)
     }
 
     return <div className={campaignEditorContainer}>
@@ -676,7 +682,7 @@ const CampaignEditor = () => {
                 </div>
                 <div className={sendWrapper}>
 
-                    <div onClick={onDraft} className={sendBtn2}>Save as Draft</div>
+                    <div onClick={!isSaveDraftProcess?onDraft: undefined} className={sendBtn2}>Save as Draft</div>
                     <div onClick={onSend} className={sendBtn}>Send</div>
                 </div>
                 {/*<div onClick={onSend} className={exitBtn}>Send</div>*/}
