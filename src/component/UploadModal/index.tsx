@@ -165,7 +165,7 @@ const UploadModal: FC<Props> = (props) => {
     const res = await batchImport(formData)
     if (res.code === SUCCESS_CODE) {
       const { successCount, failCount } = res.data; // 从 res.data 中解构成功和失败数量
-      const customMessage = `导入完成，成功添加 ${successCount} 位联系人，${failCount} 位邮箱无效导入失败。`;
+      const customMessage = `Import completed, ${successCount} contacts added successfully, ${failCount} email addresses were invalid and import failed.`;
       console.log(customMessage)
       message.success(customMessage, () => {
         router.push('/contactList')
