@@ -71,7 +71,7 @@ const Campaign = () => {
         updateTime: string
     })[]>([])
     const [total, setTotal] = useState(0)
-    const [order, setOrder] = useState<string>('1');
+    const [order, setOrder] = useState<string>('0');
     const router = useRouter()
     const onCampaignNameOk = async () => {
         //若campaignName为空，则警告
