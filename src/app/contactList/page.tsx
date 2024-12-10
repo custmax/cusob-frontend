@@ -79,8 +79,8 @@ const {
     addgroupItem,
 } = styles;
 
-const pageSize = 10;
-
+// todo 在切换页数后，再切换组别，页数显示有问题
+// todo 调整页面大小的控件中有一个竖线
 const ContactList = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [showGroup, setShowGroup] = useState<boolean>(false);
@@ -96,6 +96,7 @@ const ContactList = () => {
     const [searchVal, setSearchVal] = useState('');
     const [total, setTotal] = useState(0)
     const [subscription, setSubscription] = useState<string>('')
+    const [pageSize, setPageSize] = useState<number>(10)
     const [totalCount, setTotalCount] = useState(0);
     const [isEditGroupProcess, setIsEditGroupProcess] = useState<boolean>(false)
     const [isAddGroupProcess, setIsAddGroupProcess] = useState<boolean>(false)
@@ -150,6 +151,7 @@ const ContactList = () => {
     }, [])
 
     const getPage = async (cur: number, size: number, searchVal: string, groupId: number, subscription: string) => {
+        console.log(cur, size, searchVal || '', groupId || 0, subscription || '')
         message.loading({content: 'loading', duration: 10, key: 'listLoading'})
         const res = await getList(cur, size, searchVal || '', groupId || 0, subscription || '')
         message.destroy('listLoading')
@@ -236,10 +238,11 @@ const ContactList = () => {
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
-    const onPageChange: PaginationProps['onChange'] = async (pageNumber: number) => {
+    const onPageChange: PaginationProps['onChange'] = async (pageNumber: number, size: number) => {
         setCurrentPage(pageNumber)
+        setPageSize(size)
 
-        await getPage(pageNumber, pageSize, searchVal, activeGroupId, subscription)
+        await getPage(pageNumber, size, searchVal, activeGroupId, subscription)
     }
 
     let pagination = {
@@ -247,6 +250,8 @@ const ContactList = () => {
         pageSize: pageSize,
         defaultCurrent: 1,
         total: total,
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '10', '20', '50'],
         onChange: onPageChange,
     }
 

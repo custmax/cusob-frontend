@@ -163,7 +163,7 @@ const Reports = () => {
       align: 'center',
       render: (_item, record) => (
           <div>
-            <button className={deleteButton} onClick={() => onDelete(record.key)}>Details</button>
+            {/*<button className={deleteButton} onClick={() => onDelete(record.key)}>Details</button>*/}
             <button className={deleteButton} onClick={() => onDelete(record.key)}>Delete</button>
           </div>
       )

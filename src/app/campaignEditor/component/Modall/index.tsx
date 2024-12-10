@@ -28,14 +28,16 @@ const Modall: FC<Props> = (props) => {
     const emailEditorRef = useRef<EditorRef>(null);
     const [templateList, setTemplateList] = useState<{ value: number, label: string }[]>([])
     const [accountInfo, setAccountInfo] = useState<AccountInfo>();
+
     useEffect(() => {
         if (visible) {
             initTemplateList()
             initAccountInfo()
         }
     }, [visible])
+
     const initTemplateList = async () => {
-        const query = {}
+        const query = { folder: 'all' }
         const res = await getTemplateList(query)
         if (res.code === SUCCESS_CODE && res.data) {
             const data = res.data
