@@ -240,7 +240,7 @@ const ContactList = () => {
 
     const onPageChange: PaginationProps['onChange'] = async (pageNumber: number, size: number) => {
         setCurrentPage(pageNumber)
-        setPageSize(size)
+        // setPageSize(size)
 
         await getPage(pageNumber, size, searchVal, activeGroupId, subscription)
     }
@@ -250,8 +250,8 @@ const ContactList = () => {
         pageSize: pageSize,
         defaultCurrent: 1,
         total: total,
-        showSizeChanger: true,
-        pageSizeOptions: ['5', '10', '20', '50'],
+        showSizeChanger: false,
+        // pageSizeOptions: ['5', '10', '20', '50'],
         onChange: onPageChange,
     }
 

@@ -107,7 +107,7 @@ const SideBar = () => {
         <ImgWrapper className={barIcon} src='/img/bar_icon6.png' alt='bar icon'/>
         <div className={barText}>Account</div>
       </Link>
-      <Link href='/addSender' onClick={() => onStatusClick('6')} className={classNames(barItem, { [active]: status === '6' })}>
+      <Link href='/emailList' onClick={() => onStatusClick('6')} className={classNames(barItem, { [active]: status === '6' })}>
         <ImgWrapper className={barIcon} src='/img/bar_icon7.png' alt='bar icon'/>
         <div className={barText}>Sender</div>
       </Link>
