@@ -175,7 +175,7 @@ const ContactList = () => {
             if (res.code === SUCCESS_CODE) {
                 await getPage(pagination.current, pageSize, searchVal, activeGroupId, subscription)
                 await initGroupList()
-                message.success(res.message)
+                message.success("Your group has been successfull added")
                 setShowGroup(false)
                 setGroupName('')
             } else {
@@ -221,7 +221,7 @@ const ContactList = () => {
             if (res.code === SUCCESS_CODE) {
                 setActiveGroupId(0)
                 // 删除当前后，跳转至首页
-                message.success(res.message)
+                message.success("Your group has been successfull deleted")
                 setShowEditGroup(false)
 
                 // 重置信息
@@ -322,7 +322,7 @@ const ContactList = () => {
                 await initGroupList()
                 await initGroupNum()
                 await initSubNum()
-                message.success(res.message)
+                message.success("Your contacts has been successfully deleted")
             } else {
                 message.error(res.message)
             }

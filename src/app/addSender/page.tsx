@@ -141,7 +141,7 @@ const AddSender = () => {
       const res = await saveSender(data)
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
-        message.success(res.message)
+        message.success("Your sender has been successfully added")
         router.push('/emailList')
       } else {
         message.error(res.message)
@@ -187,7 +187,7 @@ const AddSender = () => {
 
       message.destroy('loading')
       if (res.code === SUCCESS_CODE) {
-        message.success(res.message)
+        message.success("Your sender has been successfully added")
         router.push('/emailList')
       } else {
         message.error(res.message)
@@ -257,7 +257,7 @@ const AddSender = () => {
     if (verifyEmail) {
       const res = await sendCodeForSender(verifyEmail)
       if (res.code === SUCCESS_CODE) {
-        message.success(res.message)
+        message.success("Verification code has been sent to your email")
       } else {
         message.error(res.message)
       }

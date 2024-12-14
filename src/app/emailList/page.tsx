@@ -139,19 +139,19 @@ const EmailList = () => {
                 />
             </div>
         </div>
-        <div className={domainBox}>
-            <div className={title}>Senders</div>
-            <div className={domainTitle}>Domain</div>
-            {
-                domainList.map((item, index) => <div
-                    className={classNames(domainItem, { [active]: item.id === activeDomainId })}
-                    key={index}
-                    onClick={() => onDomainItemClick(item)}
-                >
-                    {item.domain}
-                </div>)
-            }
-        </div>
+        {/*<div className={domainBox}>*/}
+        {/*    <div className={title}>Senders</div>*/}
+        {/*    <div className={domainTitle}>Domain</div>*/}
+        {/*    {*/}
+        {/*        domainList.map((item, index) => <div*/}
+        {/*            className={classNames(domainItem, { [active]: item.id === activeDomainId })}*/}
+        {/*            key={index}*/}
+        {/*            onClick={() => onDomainItemClick(item)}*/}
+        {/*        >*/}
+        {/*            {item.domain}*/}
+        {/*        </div>)*/}
+        {/*    }*/}
+        {/*</div>*/}
 
     </div>
 }

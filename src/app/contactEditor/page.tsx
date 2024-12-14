@@ -128,7 +128,7 @@ const ContactEditor = () => {
         initGroupList()
         initGroupNum()
         initSubNum()
-        message.success(res.message)
+        message.success("Add group successfully")
       } else {
         message.error(res.message)
       }
@@ -224,16 +224,19 @@ const ContactEditor = () => {
       if (!email) {
         message.error('Please fill in email!');
         setSubmit(false);
+        setIsProcessing(false);
         return;
       }
       if (!groups) {
         message.error('Please fill in groups!');
         setSubmit(false);
+        setIsProcessing(false);
         return;
       }
       if (!subscriptionType) {
         message.error('Please fill in subscriptionType!');
         setSubmit(false);
+        setIsProcessing(false);
         return;
       }
       const data = {
@@ -257,11 +260,13 @@ const ContactEditor = () => {
       if (contactId) {
         const res = await updateContact(data);
         if (res.code === SUCCESS_CODE) {
-
-          message.success(res.message, () => {
+          setIsProcessing(false);
+          console.log("res:",res)
+          message.success("This contact has been successfully updated", () => {
             router.back()
           })
         } else {
+          setIsProcessing(false);
           message.error(res.message)
           setSubmit(false);
         }
@@ -270,10 +275,12 @@ const ContactEditor = () => {
         const res = await addContact(data);
 
         if (res.code === SUCCESS_CODE) {
-          message.success(res.message, () => {
+          setIsProcessing(false);
+          message.success("This contact has been successfully updated", () => {
             router.back()
           })
         } else {
+          setIsProcessing(false);
           message.error(res.message)
           setSubmit(false);
         }

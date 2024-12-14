@@ -582,7 +582,7 @@ const CampaignEditor = () => {
             console.log(data)
             const res = await sendEmail(data, campaignId)
             if (res.code === SUCCESS_CODE) {
-                message.success(res.message, () => {
+                message.success("Your email has been successfully sent", () => {
                     router.back()
                 })
             } else {
@@ -652,14 +652,14 @@ const CampaignEditor = () => {
 
             const res = await updateCampaign({...data, id: +campaignId})
             if (res.code === SUCCESS_CODE) {
-                message.success(res.message)
+                message.success("Your campaign has been successfully updated")
             } else {
                 message.error(res.message)
             }
         } else {
             const res = await saveDraft(data)
             if (res.code === SUCCESS_CODE) {
-                message.success(res.message)
+                message.success("Your campaign has been successfully saved as draft")
             } else {
                 message.error(res.message)
             }

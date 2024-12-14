@@ -86,7 +86,11 @@ const Login = () => {
         } else if (res.code == 208) {
             message.error({
                 content: res.message,
-                duration: 0 // 设置 duration 为 0，表示提示不会自动消失
+                // duration: 30, // 设置 duration 为 30，30秒后自动消失
+                // onClose: () => {
+                //     // 可选：添加一个回调，确保即使在30秒内切换页面也会清除消息
+                //     message.destroy();
+                // }
             });
         } else {
             message.error({content: res.message})

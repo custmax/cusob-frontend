@@ -34,7 +34,7 @@ const ChangePwModal: FC<Props> = (props) => {
     }
     const res = await updatePassword(data);
     if (res.code === SUCCESS_CODE) {
-      message.success(res.message)
+      message.success("Your password has been successfully updated")
     } else {
       message.error(res.message)
     }
