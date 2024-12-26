@@ -24,7 +24,7 @@ import Link from 'next/link';
 import {useRouter, useSearchParams} from 'next/navigation'
 import {getGroupList} from '@/server/group';
 import {SUCCESS_CODE} from '@/constant/common';
-import {getCampaign, saveDraft, sendEmail, updateCampaign} from '@/server/campaign';
+import {checkCampaignNameExists, getCampaign, saveDraft, sendEmail, updateCampaign} from '@/server/campaign';
 import {getSenderList} from '@/server/sender';
 import {sendEmailBySendCloud} from "@/server/sendcloud/mail";
 import {getEmailsByGroupId} from "@/server/contact";
@@ -623,45 +623,54 @@ const CampaignEditor = () => {
             return
         }
         setIsSaveDraftProcess(true)
-        const senderName = senderListRef.current.find(item => item.value === senderId)?.label
-        const chosenTo = process.find(item => item.title === 'To')?.checked
-        const chosenFrom = process.find(item => item.title === 'From')?.checked
-        const chosenSubject = process.find(item => item.title === 'Subject')?.checked
-        const chosenContent = process.find(item => item.title === 'Content')?.checked
-        const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
-        //const chosenTimeZone = process.find(item => item.title === 'Send time')?.checked
-        if (!campaignName) return message.error('please set campaignName');
-        const data = {
-            campaignName,
-            content: chosenContent ? richContent : '',
-            preText: chosenSubject ? preText : '',
-            sendTime: chosenSendTime ? `${sendDate} ${sendMinute}` : '',
-            // senderEmail: chosenFrom ? senderEmail : '',
-            senderId,
-            timeZone,
-            senderName: chosenFrom ? senderName : '',
-            subject: chosenSubject ? subject : '',
-            toGroup: chosenTo ? toGroup : -1,
-            trackClicks,
-            trackLink,
-            trackOpens,
-            trackTextClicks,
-            designContent: designContent,
+        // 判断是否重名
+        message.loading({content: 'loading', duration: 10, key: 'existLoading'})
+        const isExistsRes = await checkCampaignNameExists(campaignName)
+        message.destroy('existLoading')
+        if (isExistsRes.code !== SUCCESS_CODE) {
+            message.error("campaign: " + campaignName + " already exists.")
         }
-        if (campaignId) {
-
-            const res = await updateCampaign({...data, id: +campaignId})
-            if (res.code === SUCCESS_CODE) {
-                message.success("Your campaign has been successfully updated")
-            } else {
-                message.error(res.message)
+        else {
+            const senderName = senderListRef.current.find(item => item.value === senderId)?.label
+            const chosenTo = process.find(item => item.title === 'To')?.checked
+            const chosenFrom = process.find(item => item.title === 'From')?.checked
+            const chosenSubject = process.find(item => item.title === 'Subject')?.checked
+            const chosenContent = process.find(item => item.title === 'Content')?.checked
+            const chosenSendTime = process.find(item => item.title === 'Send time')?.checked
+            //const chosenTimeZone = process.find(item => item.title === 'Send time')?.checked
+            if (!campaignName) return message.error('please set campaignName');
+            const data = {
+                campaignName,
+                content: chosenContent ? richContent : '',
+                preText: chosenSubject ? preText : '',
+                sendTime: chosenSendTime ? `${sendDate} ${sendMinute}` : '',
+                // senderEmail: chosenFrom ? senderEmail : '',
+                senderId,
+                timeZone,
+                senderName: chosenFrom ? senderName : '',
+                subject: chosenSubject ? subject : '',
+                toGroup: chosenTo ? toGroup : -1,
+                trackClicks,
+                trackLink,
+                trackOpens,
+                trackTextClicks,
+                designContent: designContent,
             }
-        } else {
-            const res = await saveDraft(data)
-            if (res.code === SUCCESS_CODE) {
-                message.success("Your campaign has been successfully saved as draft")
+            if (campaignId) {
+
+                const res = await updateCampaign({...data, id: +campaignId})
+                if (res.code === SUCCESS_CODE) {
+                    message.success("Your campaign has been successfully updated")
+                } else {
+                    message.error(res.message)
+                }
             } else {
-                message.error(res.message)
+                const res = await saveDraft(data)
+                if (res.code === SUCCESS_CODE) {
+                    message.success("Your campaign has been successfully saved as draft")
+                } else {
+                    message.error(res.message)
+                }
             }
         }
         setIsSaveDraftProcess(false)
