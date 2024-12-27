@@ -10,7 +10,6 @@ function HomePage() {
       <div>
           <Header />
           <HomePageMain />
-          <div style={{height: "50vh"}}/>
           <Footer />
       </div>
     );
