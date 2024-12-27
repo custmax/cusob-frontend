@@ -10,8 +10,8 @@ const FAQ = () => {
 
     return (
         <div className="bg-[#0b0121] h-auto max-h-[1020px] flex justify-center items-center">
-            <div className="max-w-[960px] w-[960px] mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-                <h1 className="py-10 text-4xl font-bold text-center mb-6">Frequently Asked Questions</h1>
+            <div className="w-[960px] h-[650px] mx-auto mt-10 p-6 bg-white rounded-3xl shadow-lg">
+                <h1 className="py-10 text-4xl font-bold text-center mb-2">Frequently Asked Questions</h1>
 
                 {[...Array(5)].map((_, index) => (
                     <div key={index} className="mb-4 border-b border-gray-300">
@@ -27,17 +27,17 @@ const FAQ = () => {
                             {/* 使用SVG图标代替箭头 */}
                             {activeIndex === index ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600"
-                                     viewBox="0 0 20 20" fill="currentColor">
+                                    viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd"
-                                          d="M5.293 12.707a1 1 0 011.414 0L10 9.414l3.293 3.293a1 1 0 111.414-1.414l-4-4a1 1 0 01-1.414 0l-4 4a1 1 0 010 1.414z"
-                                          clipRule="evenodd"/>
+                                        d="M5.293 12.707a1 1 0 011.414 0L10 9.414l3.293 3.293a1 1 0 111.414-1.414l-4-4a1 1 0 01-1.414 0l-4 4a1 1 0 010 1.414z"
+                                        clipRule="evenodd"/>
                                 </svg>
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600"
-                                     viewBox="0 0 20 20" fill="currentColor">
+                                    viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"/>
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clipRule="evenodd"/>
                                 </svg>
                             )}
                         </div>

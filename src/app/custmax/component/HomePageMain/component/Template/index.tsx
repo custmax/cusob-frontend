@@ -3,12 +3,12 @@ import React from 'react';
 const Template = () => {
     return (
         <div className="bg-[#0b0121] flex justify-center items-center min-h-screen ">
-            <div className="w-4/5 h-auto] bg-white shadow-lg rounded-3xl p-6">
+            <div className="w-4/5 h-auto] bg-white shadow-lg w-[1080px] rounded-3xl p-6">
                 <div className="flex h-full">
                     {/* Left side: Title, Paragraph and Button */}
                     <div className="ml-14 w-1/2 pr-6 flex flex-col justify-center">
                         <div>
-                            <h1 className="text-6xl font-bold text-gray-800 mb-8 py-0">
+                            <h1 className="text-4xl font-bold text-gray-800 mb-8 py-0">
                                 Creative templates<br/>
                                 tailored for your<br/>
                                 brand<br/>
@@ -31,26 +31,26 @@ const Template = () => {
                         {/* First column (tall image on top, short image below) */}
                         <div className="col-span-1 flex flex-col gap-4">
                             <img
-                                src="https://via.placeholder.com/150x300"
+                                src="/temp_imgs/DealsOffers.png"
                                 alt="Image 1"
                                 className="w-full h-auto object-cover rounded-lg"
                             />
                             <img
-                                src="https://via.placeholder.com/150x150"
+                                src="/temp_imgs/Seasons-1.png"
                                 alt="Image 2"
-                                className="w-full h-auto object-cover rounded-lg"
+                                className="w-full h-60 object-cover rounded-lg"
                             />
                         </div>
 
                         {/* Second column (short image on top, tall image below) */}
                         <div className="col-span-1 flex flex-col gap-4">
                             <img
-                                src="https://via.placeholder.com/150x150"
+                                src="/temp_imgs/HappyNewYear.png"
                                 alt="Image 3"
-                                className="w-full h-auto object-cover rounded-lg"
+                                className="w-full h-60 object-cover rounded-lg"
                             />
                             <img
-                                src="https://via.placeholder.com/150x300"
+                                src="/temp_imgs/ThankYou.png"
                                 alt="Image 4"
                                 className="w-full h-auto object-cover rounded-lg"
                             />
@@ -59,14 +59,14 @@ const Template = () => {
                         {/* Third column (tall image on top, short image below) */}
                         <div className="col-span-1 flex flex-col gap-4">
                             <img
-                                src="https://via.placeholder.com/150x300"
+                                src="/temp_imgs/Seasons.png"
                                 alt="Image 5"
                                 className="w-full h-auto object-cover rounded-lg"
                             />
                             <img
-                                src="https://via.placeholder.com/150x150"
+                                src="/temp_imgs/Welcome.png"
                                 alt="Image 6"
-                                className="w-full h-auto object-cover rounded-lg"
+                                className="w-full h-60 object-cover rounded-lg"
                             />
                         </div>
                     </div>
