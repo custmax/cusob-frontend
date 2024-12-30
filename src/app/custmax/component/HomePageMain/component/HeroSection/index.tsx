@@ -9,7 +9,7 @@ const HeroSection = () => {
             <div
                 className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
                 {/* 宣传标语 */}
-                <h3 className="text-lg tracking-wide mb-9 mt-30 font-semibold md:text-xl border-2 border-[#7158aa] rounded-full px-6 py-2">
+                <h3 className="text-lg tracking-wide mb-9 mt-30 md:text-xl border-2 border-[#7158aa] rounded-full px-4 py-2">
                     Start Free, Stay Free. Engage Forever.
                 </h3>
 
@@ -31,7 +31,7 @@ const HeroSection = () => {
                     <input
                         type="text"
                         placeholder="Enter your email here"
-                        className="px-4 py-3 w-full focus:outline-none h-14 focus:ring-2 bg-transparent text-[#999999] placeholder-gray-500 border-2 border-gray-300 rounded-full pr-20"
+                        className="px-6 py-3 w-full focus:outline-none h-14 focus:ring-2 bg-transparent text-[#999999] placeholder-gray-500 border-[1.5px] border-gray-300 rounded-full pr-20"
                         onFocus={(e) => e.target.placeholder = ''}  // 清空 placeholder
                         onBlur={(e) => e.target.placeholder = 'Enter your email here'} // 恢复 placeholder
                     />

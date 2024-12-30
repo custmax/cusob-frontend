@@ -1,17 +1,17 @@
 import HeroSection from "@/app/custmax/component/Price/component/HeroSection";
-import Tail from "@/app/custmax/component/Price/component/Tail";
-import CustomerComments from "@/app/custmax/component/Price/component/CustomerComments";
 import FAQ from "@/app/custmax/component/Price/component/FAQ";
-import PriceAdvantage from "@/app/custmax/component/Price/PriceAdvantage";
+import PriceAdvantage from "@/app/custmax/component/sharedComponents/PriceAdvantage";
+import CustomerComments from "@/app/custmax/component/sharedComponents/CustomerComments";
+import Tail from "@/app/custmax/component/sharedComponents/Tail";
 
 const PricePage = () => {
     return (
         <div>
             <HeroSection />
             <PriceAdvantage />
-            <CustomerComments />
+            <CustomerComments theme={"light"} />
             <FAQ />
-            <Tail />
+            <Tail theme={"light"} />
         </div>
     )
 }

@@ -1,14 +1,14 @@
 'use client'
-import LighterFooter from "@/app/custmax/component/LighterFooter";
 import Header from "@/app/custmax/component/Header";
 import BookDemoPage from "@/app/custmax/component/BookDemoPage";
+import Footer from "@/app/custmax/component/Footer";
 
 export default function BookDemo() {
     return (
         <div>
             <Header />
             <BookDemoPage />
-            <LighterFooter />
+            <Footer theme={"light"} />
         </div>
     )
 }

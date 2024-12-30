@@ -3,10 +3,10 @@ import FAQ from "@/app/custmax/component/HomePageMain/component/FAQ";
 import Description from "@/app/custmax/component/HomePageMain/component/Description";
 import Functions from "@/app/custmax/component/HomePageMain/component/Functions";
 import Template from "@/app/custmax/component/HomePageMain/component/Template";
-import CustomerComments from "@/app/custmax/component/HomePageMain/component/CustomerComments";
-import PriceAdvantage from "@/app/custmax/component/HomePageMain/component/PriceAdvantage";
 import Privacy from "@/app/custmax/component/HomePageMain/component/Privacy";
-import Tail from "@/app/custmax/component/HomePageMain/component/Tail";
+import PriceAdvantage from "@/app/custmax/component/sharedComponents/PriceAdvantage";
+import CustomerComments from "@/app/custmax/component/sharedComponents/CustomerComments";
+import Tail from "@/app/custmax/component/sharedComponents/Tail";
 
 const HomePage = () => {
     return (
@@ -15,11 +15,11 @@ const HomePage = () => {
             <Description />
             <Functions />
             <Template />
-            <CustomerComments />
+            <CustomerComments theme={'dark'} />
             <PriceAdvantage />
             <Privacy />
             <FAQ />
-            <Tail />
+            <Tail theme={'dark'} />
         </div>
     )
 }

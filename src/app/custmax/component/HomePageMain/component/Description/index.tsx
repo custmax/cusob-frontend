@@ -2,16 +2,16 @@ const Description = () => {
     return (
         <div className="flex bg-[#0b0121] h-[850px]">
             <div
-                className="mt-20 relative w-[1080px] h-[720px] mx-auto" // 设置背景色
+                className="mt-10 relative w-[1080px] h-[720px] mx-auto" // 设置背景色
             >
                 {/* 文字内容部分 */}
-                <div className="absolute left-8 top-1/2 transform -translate-y-1/2 text-white z-10">
-                    <h1 className="text-5xl font-bold mb-8">
+                <div className="absolute left-8 -mt-20 top-1/2 transform -translate-y-1/2 text-white z-10">
+                    <h1 className="text-5xl leading-[60px] font-bold mb-8">
                         Email marketing :<br/>
                         Cost-effective customer<br/>
                         engagement<br/>
                     </h1>
-                    <p className="text-lg">
+                    <p className="text-lg leading-[30px]">
                         For every $1 spent, email marketing generates<br/>
                         an average return of $42. With personalized<br/>
                         content and targeted delivery, it boosts<br/>
@@ -25,10 +25,8 @@ const Description = () => {
                 </div>
 
                 {/* 背景图片部分 */}
-                <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center z-0"
+                <div className="absolute top-0 left-0 w-[1200px] h-[600px] rounded-[20px] bg-cover bg-center z-0"
                      style={{backgroundImage: "url(/temp_imgs/description.png)"}}>
-                    {/* 添加灰紫色滤镜 */}
-                    <div className="absolute top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50"></div>
                 </div>
             </div>
         </div>

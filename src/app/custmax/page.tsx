@@ -10,7 +10,7 @@ function Home() {
       <div>
           <Header />
           <HomePage />
-          <Footer />
+          <Footer theme={"dark"}/>
       </div>
     );
 }

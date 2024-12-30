@@ -1,14 +1,14 @@
 'use client'
 import Header from "@/app/custmax/component/Header";
-import LighterFooter from "@/app/custmax/component/LighterFooter";
 import PricePage from "@/app/custmax/component/Price";
+import Footer from "@/app/custmax/component/Footer";
 
 const Price = () => {
     return (
         <div>
             <Header />
             <PricePage />
-            <LighterFooter />
+            <Footer theme={"light"} />
         </div>
     )
 }
