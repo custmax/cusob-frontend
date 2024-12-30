@@ -8,7 +8,7 @@ import PriceAdvantage from "@/app/custmax/component/HomePageMain/component/Price
 import Privacy from "@/app/custmax/component/HomePageMain/component/Privacy";
 import Tail from "@/app/custmax/component/HomePageMain/component/Tail";
 
-const HomePageMain = () => {
+const HomePage = () => {
     return (
         <div>
             <HeroSection />
@@ -24,4 +24,4 @@ const HomePageMain = () => {
     )
 }
 
-export default HomePageMain;
+export default HomePage;

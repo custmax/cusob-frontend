@@ -4,7 +4,7 @@ import CustomerComments from "@/app/custmax/component/Price/component/CustomerCo
 import FAQ from "@/app/custmax/component/Price/component/FAQ";
 import PriceAdvantage from "@/app/custmax/component/Price/PriceAdvantage";
 
-const Price = () => {
+const PricePage = () => {
     return (
         <div>
             <HeroSection />
@@ -16,4 +16,4 @@ const Price = () => {
     )
 }
 
-export default Price;
+export default PricePage;

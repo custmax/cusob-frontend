@@ -1,16 +1,16 @@
 'use client'
 import Header from "@/app/custmax/component/Header";
 import LighterFooter from "@/app/custmax/component/LighterFooter";
-import Price from "@/app/custmax/component/Price";
+import PricePage from "@/app/custmax/component/Price";
 
-const Pricing = () => {
+const Price = () => {
     return (
         <div>
             <Header />
-            <Price />
+            <PricePage />
             <LighterFooter />
         </div>
     )
 }
 
-export default Pricing;
+export default Price;
