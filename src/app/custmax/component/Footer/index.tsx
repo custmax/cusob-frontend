@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-black text-white py-8">
+        <footer className="bg-[#0b0121] text-white py-8">
             {/* 最上面是 Logo */}
             <div className="flex justify-center mb-8">
                 <img src="/img/logo.png" alt="Logo" className="h-12"/>
