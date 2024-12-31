@@ -1,52 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const BookDemoForm: React.FC = () => {
-    // 表单数据管理
+const MarketingForm: React.FC = () => {
     const [formData, setFormData] = useState({
-        name: '',
-        mobile: '',
-        email: '',
-        company: '',
-        requirementDescription: '',
+        name: "",
+        mobile: "",
+        email: "",
+        company: "",
+        description: "",
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        console.log("Form Data Submitted:", formData);
+        alert("Form submitted successfully!");
     };
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row p-6 bg-gray-100">
-            {/* 左侧长形卡片 */}
-            <div className="w-full md:w-1/3 bg-white p-8 rounded-lg shadow-lg mb-6 md:mb-0">
-                <div className="mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">卡片标题</h2>
-                    <p className="text-gray-600">卡片的描述或内容，展示一些信息。</p>
-                </div>
-                <div>
-                    <h3 className="text-xl font-semibold text-gray-800">卡片分区一</h3>
-                    <p className="text-gray-600 mb-4">这是卡片的第一部分。</p>
-                    <h3 className="text-xl font-semibold text-gray-800">卡片分区二</h3>
-                    <p className="text-gray-600">这是卡片的第二部分。</p>
+        <div className="flex flex-col md:flex-row items-start justify-center bg-gray-50 min-h-screen p-6 md:p-12">
+            {/* Left Section */}
+            <div className="bg-white shadow-lg rounded-lg p-6 md:p-8 max-w-md w-full">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                    Transform your email marketing now
+                </h2>
+                <p className="text-gray-600 mb-4">
+                    Streamline your workflow, focus on growth, and let CustMax handle the rest.
+                </p>
+                <div className="bg-[#faf9ff] p-4 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2">With CustMax, you can:</h3>
+                    <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
+                        <li>Create impactful email campaigns easily</li>
+                        <li>Organize customer data seamlessly</li>
+                        <li>Automate repetitive tasks to save time</li>
+                        <li>Drive engagement & grow customer base</li>
+                    </ul>
+                    <h3 className="text-lg font-semibold mt-4 mb-2">Why choose us?</h3>
+                    <p className="text-sm text-gray-700">
+                        We craft a tailored experience to suit your unique business needs.
+                    </p>
+                    <h3 className="text-lg font-semibold mt-4 mb-2">Want to know more?</h3>
+                    <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
+                        <li>Reach out to us at <a href="mailto:hello@custmax.com" className="text-blue-600">hello@custmax.com</a></li>
+                        <li>Visit our website: <a href="https://www.custmax.com" className="text-blue-600">www.custmax.com</a></li>
+                    </ul>
                 </div>
             </div>
 
-            {/* 右侧表单 */}
-            <div className="w-full md:w-2/3 bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">联系我们</h2>
-
-                <form onSubmit={handleSubmit}>
-                    {/* Name */}
-                    <div className="mb-4">
-                        <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+            {/* Right Section */}
+            <div className="bg-white shadow-lg rounded-lg p-6 md:p-8 max-w-md w-full mt-6 md:mt-0 md:ml-12">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                             Name
                         </label>
                         <input
@@ -55,31 +63,36 @@ const BookDemoForm: React.FC = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             required
                         />
                     </div>
-
-                    {/* Mobile */}
-                    <div className="mb-4">
-                        <label htmlFor="mobile" className="block text-gray-700 font-semibold mb-2">
+                    <div>
+                        <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
                             Mobile
                         </label>
-                        <input
-                            type="tel"
-                            id="mobile"
-                            name="mobile"
-                            value={formData.mobile}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
+                        <div className="relative mt-1">
+                            <select
+                                className="absolute inset-y-0 left-0 flex items-center pl-3 pr-8 bg-gray-50 border-gray-300 text-gray-500 sm:text-sm rounded-l-md focus:outline-none"
+                            >
+                                <option value="+10">+10</option>
+                                <option value="+86">+86</option>
+                                <option value="+91">+91</option>
+                            </select>
+                            <input
+                                type="tel"
+                                id="mobile"
+                                name="mobile"
+                                value={formData.mobile}
+                                onChange={handleInputChange}
+                                className="block w-full pl-16 rounded-r-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                required
+                            />
+                        </div>
                     </div>
-
-                    {/* Email */}
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
-                            Email
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            Email*
                         </label>
                         <input
                             type="email"
@@ -87,14 +100,12 @@ const BookDemoForm: React.FC = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             required
                         />
                     </div>
-
-                    {/* Company */}
-                    <div className="mb-4">
-                        <label htmlFor="company" className="block text-gray-700 font-semibold mb-2">
+                    <div>
+                        <label htmlFor="company" className="block text-sm font-medium text-gray-700">
                             Company
                         </label>
                         <input
@@ -103,39 +114,37 @@ const BookDemoForm: React.FC = () => {
                             name="company"
                             value={formData.company}
                             onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                     </div>
-
-                    {/* Requirement Description */}
-                    <div className="mb-4">
-                        <label htmlFor="requirementDescription" className="block text-gray-700 font-semibold mb-2">
-                            Requirement Description
+                    <div>
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                            Requirement description
                         </label>
                         <textarea
-                            id="requirementDescription"
-                            name="requirementDescription"
-                            value={formData.requirementDescription}
-                            // onChange={handleInputChange}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            id="description"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             rows={4}
-                        ></textarea>
+                        />
                     </div>
-
-                    {/* 说明性小字 */}
-                    <p className="text-sm text-gray-500 mb-4">请填写上述信息，以便我们更好地为您服务。</p>
-
-                    {/* 提交按钮 */}
-                    <button
-                        type="submit"
-                        className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    >
-                        提交
-                    </button>
+                    <div>
+                        <button
+                            type="submit"
+                            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </form>
+                <p className="mt-4 text-xs text-gray-500 text-center">
+                    By submitting this form, you agree to the processing of personal data according to Privacy Policy.
+                </p>
             </div>
         </div>
     );
 };
 
-export default BookDemoForm;
+export default MarketingForm;

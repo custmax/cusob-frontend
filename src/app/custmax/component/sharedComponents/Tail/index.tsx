@@ -15,7 +15,7 @@ const Tail: React.FC<props> = ({theme}: props) => {
 
             {/* 两排小字 */}
             <div className={`text-center mb-10 mt-4 ${theme === 'dark' ? 'text-[#ececec]' : 'text-[#0b0121]'}`}>
-                <p className="text-xl">${theme === 'dark' ? 'Turn clicks into connections. Build results that last.' :'Start Free, Stay Free. Engage Forever.'}</p>
+                <p className="text-xl">{theme === 'dark' ? 'Turn clicks into connections. Build results that last.' :'Start Free, Stay Free. Engage Forever.'}</p>
             </div>
 
             {/* 圆角透明按钮 */}

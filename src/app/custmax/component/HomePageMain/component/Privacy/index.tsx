@@ -23,7 +23,7 @@ const Privacy = () => {
             {/* 图片部分 */}
             <div className="grid grid-cols-3 gap-x-16 mb-20">
                 <div className="flex flex-col items-center">
-                    <img src="/temp_imgs/security_1.png" alt="Image 1"
+                    <img src="/temp_imgs/home/privacy/security_1.png" alt="Image 1"
                          className="rounded-lg mb-2 max-w-80 w-[80] h-[80] max-h-80"/>
                     <p className="text-xl text-center -mt-16 text-white">
                         Advanced<br/>
@@ -31,7 +31,7 @@ const Privacy = () => {
                     </p>
                 </div>
                 <div className="flex flex-col items-center">
-                    <img src="/temp_imgs/security_2.png" alt="Image 2"
+                    <img src="/temp_imgs/home/privacy/security_2.png" alt="Image 2"
                          className="rounded-lg mb-2 max-w-80 w-[80] h-[80] max-h-80"/>
                     <p className="text-xl text-center -mt-16 text-white">
                         Multi-layered<br/>
@@ -39,7 +39,7 @@ const Privacy = () => {
                     </p>
                 </div>
                 <div className="flex flex-col items-center">
-                    <img src="/temp_imgs/security_3.png" alt="Image 3"
+                    <img src="/temp_imgs/home/privacy/security_3.png" alt="Image 3"
                          className="rounded-lg mb-2 max-w-80 w-[80] h-[80] max-h-80"/>
                     <p className="text-xl text-center -mt-10 text-white">
                         Privacy-first approach

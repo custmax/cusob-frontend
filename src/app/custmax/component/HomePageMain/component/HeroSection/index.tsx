@@ -4,7 +4,7 @@ const HeroSection = () => {
     return (
         <section
             className="relative bg-cover bg-center h-screen"
-            style={{backgroundImage: 'url(/temp_imgs/gbimg.png)', backgroundSize: '100% 100%'}}
+            style={{backgroundImage: 'url(/temp_imgs/home/hero_section/background.png)', backgroundSize: '100% 100%'}}
         >
             <div
                 className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
@@ -31,11 +31,11 @@ const HeroSection = () => {
                     <input
                         type="text"
                         placeholder="Enter your email here"
-                        className="px-6 py-3 w-full focus:outline-none h-14 focus:ring-2 bg-transparent text-[#999999] placeholder-gray-500 border-[1.5px] border-gray-300 rounded-full pr-20"
+                        className="px-6 py-3 placeholder-[#999999] w-full focus:outline-none h-14 focus:ring-2 bg-transparent text-[#999999] placeholder-gray-500 border-[1.5px] border-gray-300 rounded-full pr-20"
                         onFocus={(e) => e.target.placeholder = ''}  // 清空 placeholder
                         onBlur={(e) => e.target.placeholder = 'Enter your email here'} // 恢复 placeholder
                     />
-                    <button className="font-bold absolute right-4 top-1/2 h-8 transform -translate-y-1/2 px-5 py-1 bg-[#ececec] text-black rounded-full">
+                    <button className="absolute right-4 top-1/2 h-8 transform -translate-y-1/2 px-5 py-1 bg-[#ececec] text-black rounded-full">
                         Get started free
                     </button>
                 </div>
@@ -47,14 +47,14 @@ const HeroSection = () => {
 
                 {/* 小图片部分 */}
                 <div className="flex flex-wrap justify-center gap-4 mt-6">
-                    <img src="/temp_imgs/logo_1.png" alt="Image 1" className="w-40 h-12 rounded-full"/>
-                    <img src="/temp_imgs/logo_2.png" alt="Image 2" className="w-18 h-12 rounded-full"/>
-                    <img src="/temp_imgs/logo_3.png" alt="Image 3" className="w-20 h-18 rounded-full"/>
-                    <img src="/temp_imgs/logo_4.png" alt="Image 4" className="w-40 h-12 rounded-full"/>
-                    <img src="/temp_imgs/logo_5.png" alt="Image 5" className="w-22 h-10 mt-2 rounded-full"/>
-                    <img src="/temp_imgs/logo_6.png" alt="Image 6" className="w-22 h-12 rounded-full"/>
-                    <img src="/temp_imgs/logo_7.png" alt="Image 7" className="w-32 h-12 rounded-full"/>
-                    <img src="/temp_imgs/logo_8.png" alt="Image 8" className="w-14 h-14 -mt-2 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_1.png" alt="Image 1" className="w-40 h-12 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_2.png" alt="Image 2" className="w-18 h-12 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_3.png" alt="Image 3" className="w-20 h-18 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_4.png" alt="Image 4" className="w-40 h-12 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_5.png" alt="Image 5" className="w-22 h-10 mt-2 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_6.png" alt="Image 6" className="w-22 h-12 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_7.png" alt="Image 7" className="w-32 h-12 rounded-full"/>
+                    <img src="/temp_imgs/home/hero_section/logo_8.png" alt="Image 8" className="w-14 h-14 -mt-2 rounded-full"/>
                 </div>
             </div>
         </section>

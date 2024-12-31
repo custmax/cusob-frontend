@@ -16,11 +16,11 @@ const Footer: React.FC<props> = ({theme}: props) => {
 
             {/* 中间一排小图片 */}
             <div className="flex justify-center space-x-4 mb-8">
-                <img src="/temp_imgs/img.png" alt="Image 1" className="h-8"/>
-                <img src="/temp_imgs/img_1.png" alt="Image 2" className="h-8"/>
-                <img src="/temp_imgs/img_2.png" alt="Image 3" className="h-8"/>
-                <img src="/temp_imgs/img_3.png" alt="Image 4" className="h-8"/>
-                <img src="/temp_imgs/img_4.png" alt="Image 5" className="h-8"/>
+                <img src="/temp_imgs/footer/media_1.png" alt="Image 1" className="h-8"/>
+                <img src="/temp_imgs/footer/media_2.png" alt="Image 2" className="h-8"/>
+                <img src="/temp_imgs/footer/media_3.png" alt="Image 3" className="h-8"/>
+                <img src="/temp_imgs/footer/media_4.png" alt="Image 4" className="h-8"/>
+                <img src="/temp_imgs/footer/media_5.png" alt="Image 5" className="h-8"/>
             </div>
 
             {/* 下方文字链接 */}

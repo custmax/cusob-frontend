@@ -30,7 +30,7 @@ const PriceAdvantage:React.FC = () => {
                     {/* Right side: Large Image */}
                     <div className="-mr-6 mb-6 -mt-6">
                         <img
-                            src="/temp_imgs/price.png"
+                            src="/temp_imgs/shared_component/price_advantage/price.png"
                             alt="Large Image"
                             className="w-full h-full object-cover rounded-lg"
                         />

@@ -26,7 +26,7 @@ const Description = () => {
 
                 {/* 背景图片部分 */}
                 <div className="absolute top-0 left-0 w-[1200px] h-[600px] rounded-[20px] bg-cover bg-center z-0"
-                     style={{backgroundImage: "url(/temp_imgs/description.png)"}}>
+                     style={{backgroundImage: "url(/temp_imgs/home/description/description.png)"}}>
                 </div>
             </div>
         </div>
