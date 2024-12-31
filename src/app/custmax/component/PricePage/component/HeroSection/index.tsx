@@ -101,7 +101,7 @@ const HeroSection: React.FC = () => {
                 />
 
                 {/* 滑动条的最小值和最大值 */}
-                <div className="flex justify-between w-full mt-2 text-sm text-gray-600">
+                <div className="flex font-bold justify-between w-full mt-2 text-xl text-gray-600">
                     <span>0</span>
                     <span>100,000</span>
                 </div>

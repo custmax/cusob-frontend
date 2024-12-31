@@ -1,5 +1,6 @@
 import React from 'react';
 import {flexbox} from "@mui/system";
+import BookADemoButton from "@/app/custmax/component/sharedComponents/BookADemoButton";
 
 const Privacy = () => {
     return (
@@ -16,9 +17,7 @@ const Privacy = () => {
             </div>
 
             {/* 圆角透明按钮 */}
-            <button className="px-8 py-3 text-[#ececec] border-2 border-[#ececec] rounded-full mb-20">
-                Book a Demo
-            </button>
+            <BookADemoButton />
 
             {/* 图片部分 */}
             <div className="grid grid-cols-3 gap-x-16 mb-20">

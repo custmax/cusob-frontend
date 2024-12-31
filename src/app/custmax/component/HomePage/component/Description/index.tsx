@@ -1,3 +1,5 @@
+import BookADemoButton from "@/app/custmax/component/sharedComponents/BookADemoButton";
+
 const Description = () => {
     return (
         <div className="flex bg-[#0b0121] h-[850px]">
@@ -18,10 +20,7 @@ const Description = () => {
                         customer conversion rates by 40%.<br/>
                     </p>
                     {/* 按钮部分 */}
-                    <button
-                        className="mt-20 px-6 py-2 text-white border-2 border-white rounded-full hover:bg-white hover:text-black transition-all">
-                        Book a Demo
-                    </button>
+                    <BookADemoButton />
                 </div>
 
                 {/* 背景图片部分 */}

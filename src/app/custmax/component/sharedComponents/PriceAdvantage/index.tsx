@@ -1,4 +1,5 @@
 import React from 'react';
+import BookADemoButton from "@/app/custmax/component/sharedComponents/BookADemoButton";
 
 const PriceAdvantage:React.FC = () => {
     return (
@@ -22,9 +23,7 @@ const PriceAdvantage:React.FC = () => {
                             </p>
                         </div>
                         {/* Button - Transparent circular button */}
-                        <button className="w-40 h-[54px] border-[1.5px] border-black text-black font-semibold rounded-full">
-                            Book a Demo
-                        </button>
+                        <BookADemoButton />
                     </div>
 
                     {/* Right side: Large Image */}

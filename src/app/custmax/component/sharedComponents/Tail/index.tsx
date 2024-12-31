@@ -1,4 +1,5 @@
 import React from "react";
+import BookADemoButton from "@/app/custmax/component/sharedComponents/BookADemoButton";
 
 interface props {
     theme: 'dark' | 'light';
@@ -19,9 +20,7 @@ const Tail: React.FC<props> = ({theme}: props) => {
             </div>
 
             {/* 圆角透明按钮 */}
-            <button className={`px-8 py-3 border-2 rounded-full mb-10 ${theme === 'dark' ? 'text-[#ececec] border-[#ececec]' : 'text-[#0b0121] border-[#0b0121]'}`}>
-                Book a Demo
-            </button>
+            <BookADemoButton />
 
         </div>
     );

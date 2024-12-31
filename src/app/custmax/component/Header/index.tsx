@@ -66,7 +66,7 @@ const Header = () => {
                 <div className="flex items-center space-x-4">
                     {/* Contact Sales 按钮 */}
                     <button
-                        className="bg-transparent text-white px-6 py-2 rounded-full border-2 border-white hover:bg-violet-600">
+                        className="bg-transparent text-white px-6 py-2 rounded-full border-[1.5px] border-white">
                         Contact Sales
                     </button>
                     {/* Log In 按钮 */}
