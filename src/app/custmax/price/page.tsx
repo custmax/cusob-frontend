@@ -1,6 +1,6 @@
 'use client'
 import Header from "@/app/custmax/component/Header";
-import PricePage from "@/app/custmax/component/Price";
+import PricePage from "../component/PricePage";
 import Footer from "@/app/custmax/component/Footer";
 
 const Price = () => {

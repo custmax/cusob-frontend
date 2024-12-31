@@ -2,7 +2,7 @@
 
 import Header from "./component/Header";
 import Footer from "@/app/custmax/component/Footer";
-import HomePage from "./component/HomePageMain";
+import HomePage from "./component/HomePage";
 
 function Home() {
 
