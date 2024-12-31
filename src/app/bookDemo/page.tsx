@@ -11,7 +11,7 @@ const {
 } = styles;
 
 export const metadata: Metadata = {
-  title: "BookDemo | Cusob",
+  title: "BookDemoPage | Cusob",
   description: "CusOb",
 };
 

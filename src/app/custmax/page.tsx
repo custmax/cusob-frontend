@@ -2,17 +2,17 @@
 
 import Header from "./component/Header";
 import Footer from "@/app/custmax/component/Footer";
-import HomePageMain from "./component/HomePageMain";
+import HomePage from "./component/HomePage";
 
-function HomePage() {
+function Home() {
 
     return (
       <div>
           <Header />
-          <HomePageMain />
-          <Footer />
+          <HomePage />
+          <Footer theme={"dark"}/>
       </div>
     );
 }
 
-export default HomePage;
+export default Home;

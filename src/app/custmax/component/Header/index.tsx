@@ -38,7 +38,7 @@ const Header = () => {
                             </svg>
                         </button>
                         {/* 下拉菜单 */}
-                        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transform -translate-y-2 transition-all duration-200 ease-in-out">
+                        <div className="absolute z-10 left-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transform -translate-y-2 transition-all duration-200 ease-in-out">
                             <a
                                 href="#docs"
                                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
@@ -66,7 +66,7 @@ const Header = () => {
                 <div className="flex items-center space-x-4">
                     {/* Contact Sales 按钮 */}
                     <button
-                        className="bg-transparent text-white px-6 py-2 rounded-full border-2 border-white hover:bg-violet-600">
+                        className="bg-transparent text-white px-6 py-2 rounded-full border-[1.5px] border-white">
                         Contact Sales
                     </button>
                     {/* Log In 按钮 */}
