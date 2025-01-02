@@ -10,3 +10,13 @@ export const unsubscribeCampaign = async (email: string) => {
     })
     return res;
 }
+export const subscribeCampaign = async (email: string) => {
+    const res = await clientFetch({
+        url: `/api/unsubscribe/subscribe`,
+        method: 'GET',
+        data: {
+            email: email
+        }
+    })
+    return res;
+}
