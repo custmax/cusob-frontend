@@ -1,25 +1,51 @@
-import React, {useState} from "react";
-
+import React, {ChangeEvent, useEffect, useState} from "react";
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+import {onChange} from "input-format";
+import CountryPhoneInput from "@/app/custmax/component/sharedComponents/CountryPhoneInput";
+import {saveBook} from "@/server/book";
+import {message} from "antd";
+import {SUCCESS_CODE} from "@/constant/common";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 const MarketingForm: React.FC = () => {
     const [formData, setFormData] = useState({
         name: "",
-        mobile: "",
+        phone: "",
         email: "",
         company: "",
-        description: "",
+        message: "",
     });
+    const [isClient, setIsClient] = useState(false);  // 用于检查是否在客户端
+    const router = useRouter();
+    const [isRedirecting, setIsRedirecting] = useState(false);
 
+    useEffect(() => {
+        setIsClient(true);  // 客户端渲染后设置为 true
+    }, []);
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        //setIsRedirecting(true);
         e.preventDefault();
         console.log("Form Data Submitted:", formData);
-        alert("Form submitted successfully!");
+        const res = await saveBook({...formData})
+        message.destroy('loading')
+        if (res.code === SUCCESS_CODE) {
+            //跳转到bookDemoSuccess页面
+            router.push('/bookDemoSuccess');
+        } else {
+            message.error({content: res.message})
+        }
     };
-
+    useEffect(() => {
+        if (isRedirecting) {
+            router.push('/bookDemoSuccess');
+        }
+    }, [isRedirecting, router]);  // 在状态变化后执行跳转
     return (
         <div className="flex flex-col md:flex-row items-start justify-center bg-[#ffffff] min-h-screen p-6 md:p-12">
             {/* Left Section */}
@@ -82,44 +108,13 @@ const MarketingForm: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="mobile" className="block font-semibold text-xl text-[#000000] mb-2">
+                        <label htmlFor="phone" className="block font-semibold text-xl text-[#000000] mb-2">
                             Mobile
                         </label>
-                        <div className="relative border-2 h-[45px] border-[#cccccc] rounded-2xl flex items-center">
-                            {/* 国旗和电话前缀 */}
-                            <div className="flex items-center pl-3">
-                                <img
-                                    src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg"
-                                    alt="US Flag"
-                                    className="w-10 h-8 mr-2 rounded-[12px]"
-                                />
-                                <select
-                                    className="appearance-none bg-transparent text-gray-700 focus:outline-none"
-                                    defaultValue="+10"
-                                >
-                                    <option value="+10">+10</option>
-                                    <option value="+86">+86</option>
-                                    <option value="+91">+91</option>
-                                </select>
-                            </div>
-                            {/* 下拉箭头 */}
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-4 h-4 text-gray-700"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                            {/* 电话输入框 */}
-                            <input
-                                type="tel"
-                                id="mobile"
-                                name="mobile"
-                                className="flex-1 h-full rounded-r-2xl border-none pl-2 focus:outline-none text-sm"
-                            />
-                        </div>
+                        <CountryPhoneInput
+                            value={formData.phone}
+                            onChange={(value: string) => setFormData({ ...formData, phone: value })}
+                        />
                     </div>
                     <div>
                         <label htmlFor="email" className="block font-semibold text-xl text-[#000000]">
@@ -149,13 +144,13 @@ const MarketingForm: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="description" className="block font-semibold text-xl text-[#000000]">
+                        <label htmlFor="message" className="block font-semibold text-xl text-[#000000]">
                             Requirement description
                         </label>
                         <textarea
-                            id="description"
-                            name="description"
-                            value={formData.description}
+                            id="message"
+                            name="message"
+                            value={formData.message}
                             onChange={handleInputChange}
                             className="mt-2 px-4 py-2  w-full resize-none h-[140px] border-2 border-[#cccccc] rounded-2xl block"
                             rows={4}

@@ -34,6 +34,7 @@
     "react-dom": "^18",
     "react-email-editor": "^1.7.11",
     "react-helmet": "^6.1.0",
+    "react-phone-number-input": "^3.4.10",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1"
   },
